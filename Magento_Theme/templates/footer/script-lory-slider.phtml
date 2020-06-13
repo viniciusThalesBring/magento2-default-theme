@@ -1,0 +1,20 @@
+
+<script>
+    'use strict';
+    function loadLorySliders() {
+        if (lory) {
+            Array.prototype.slice.call(document.querySelectorAll('.js_slider')).forEach(function (element, index) {
+                function handleSlide(e) {
+                    // console.log(element.querySelectorAll('.js_slide')[0].childNodes);
+                }
+                element.addEventListener('before.lory.slide', handleSlide);
+                lory(element, {
+                    rewind: true
+                });
+            });
+        }
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lory.js/2.5.3/lory.min.js" defer="defer"
+    onload="loadLorySliders()"
+></script>

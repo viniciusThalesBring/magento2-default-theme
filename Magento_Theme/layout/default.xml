@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="header.container">
+            <block name="header-content" template="Magento_Theme::header.phtml">
+                <block name="header-search" template="Magento_Theme::header/search-form.phtml"/>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="footer">
+            <block name="footer-content" template="Magento_Theme::footer.phtml">
+                <block class="Magento\Cms\Block\Block" name="footer-cms-content">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">footer_content</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="script-lory-slider" template="Magento_Theme::footer/script-lory-slider.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

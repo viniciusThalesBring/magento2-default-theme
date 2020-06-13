@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!--        <css src_type="url" src="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" defer="defer"/>-->
+        <css src="css/styles.css" defer="defer"/>
+        <css src_type="url" defer="defer"
+            src="https://fonts.googleapis.com/css2?family=Open+Sans&amp;family=Roboto:wght@400;500&amp;display=swap"
+        />
+
+        <script src_type="url" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer="defer" />
+    </head>
+    <body>
+    </body>
+</page>

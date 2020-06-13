@@ -1,0 +1,25 @@
+<?php
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+?>
+<div class="container mx-auto py-4 text-black">
+    <form class="form minisearch" id="search_mini_form" action="<?= $block->escapeUrl($helper->getResultUrl()) ?>" method="get">
+        <label class="hidden" for="search" data-role="minisearch-label">
+            <span><?= $block->escapeHtml(__('Search')) ?></span>
+        </label>
+        <input id="search"
+               type="search"
+               name="<?= $block->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+               value="<?= $block->escapeHtmlAttr($helper->getEscapedQueryText()) ?>"
+               placeholder="<?= $block->escapeHtmlAttr(__('Search entire store here...')) ?>"
+               maxlength="<?= $block->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+               autofocus="autofocus"
+               class="w-full text-grey-800 transition focus:outline-none focus:border-transparent p-2 appearance-none leading-normal text-xl lg:text-2xl"
+        />
+    </form>
+</div>

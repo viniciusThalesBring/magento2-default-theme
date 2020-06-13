@@ -1,0 +1,41 @@
+<footer class="text-gray-700 body-font bg-background-lighter">
+    <div class="container px-5 py-8 mx-auto">
+        <div class="flex flex-wrap md:text-left text-center order-first">
+            <?= $block->getChildHtml() ?>
+        </div>
+    </div>
+    <div class="bg-background">
+        <div class="container px-5 py-6 mx-auto flex items-center sm:flex-row flex-col">
+            <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+                <span class="ml-3 text-xl">Tailwind Theme</span>
+            </a>
+            <p class="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">
+                © 2020 wigman —
+                <a class="text-gray-600 ml-1" href="https://twitter.com/willemwigman" target="_blank" rel="noopener noreferrer">@willemwigman</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        margin-top: -25px;
+        display: block;
+        cursor: pointer;
+    }
+
+    .next {
+        right: 0;
+    }
+
+    .prev {
+        left: 0;
+    }
+
+    .next svg, .prev svg {
+        width: 25px;
+    }
+</style>
