@@ -13,12 +13,12 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
             <span><?= $block->escapeHtml(__('Search')) ?></span>
         </label>
         <input id="search"
+               x-ref="searchInput"
                type="search"
                name="<?= $block->escapeHtmlAttr($helper->getQueryParamName()) ?>"
                value="<?= $block->escapeHtmlAttr($helper->getEscapedQueryText()) ?>"
                placeholder="<?= $block->escapeHtmlAttr(__('Search entire store here...')) ?>"
                maxlength="<?= $block->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
-               autofocus="autofocus"
                class="w-full text-grey-800 transition focus:outline-none focus:border-transparent p-2 appearance-none leading-normal text-lg lg:text-xl"
         />
     </form>
