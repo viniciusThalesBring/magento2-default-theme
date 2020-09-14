@@ -3,9 +3,10 @@
  * Copyright © Wigman Interactive. All rights reserved.
  * This product is licensed per Magento production install
  */
+
 declare(strict_types=1);
 
-use Magento\Framework\App\Action\Action;
+use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Helper\Output as CatalogOutputHelper;
 use Magento\Framework\Escaper;
 use Wigman\Tailwind\ViewModel\ProductPage;
@@ -13,7 +14,7 @@ use Wigman\Tailwind\ViewModel\ProductPage;
 // phpcs:disable Magento2.Templates.ThisInTemplate
 // phpcs:disable Generic.Files.LineLength.TooLong
 
-/** @var $block Magento\Catalog\Block\Product\AbstractProduct */
+/** @var $block AbstractProduct */
 /** @var $escaper Escaper */
 
 /** @var ProductPage $productViewModel */
@@ -58,17 +59,15 @@ if (!$product) return; ?>
     <p class="pt-1 text-gray-900"><?= /* @noEscape */
         $block->getProductPrice($product) ?></p>
     <div class="pt-3 flex justify-center">
-        <button
-            class="flex ml-auto btn btn-primary">
-            <svg class="h-6 w-6 border-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        <a class="w-auto mr-auto btn btn-primary justify-center text-sm px-4 md:px-2 lg:px-4"
+           href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+            <svg class="h-6 w-6 border-current inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
-            <?= /* @noEscape */
-            __('Add to cart') ?>
-        </button>
+            <span class="inline md:hidden lg:inline">Add to cart</span>
+        </a>
         <button
-            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 mr-auto">
+            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-auto">
             <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
                  viewBox="0 0 24 24">
                 <path

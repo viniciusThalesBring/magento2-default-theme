@@ -1,111 +1,57 @@
-/*.text-open-sans {
-    font-family: 'Open Sans', sans-serif;
-}
-.text-roboto {
-    font-family: 'Roboto', sans-serif;
-}
-
-.font-title {
-    @apply text-roboto;
-}*/
-html {
-    @apply antialiased;
-}
-
-body {
-    @apply text-gray-600 /*text-open-sans*/ leading-normal text-base tracking-normal;
-}
-
-.page-header {
-    @apply sticky top-0 z-10;
-}
-
-.page-main {
+#cart-drawer {
+    @apply text-black;
 }
 
 .input {
     @apply w-auto rounded mr-2 border text-base py-2 px-4;
-}
 
-.input-light {
-    @apply bg-gray-100 border-gray-400;
-}
+    @screen md {
+        @apply mr-4;
+    }
+    @screen lg {
+        @apply mr-0;
+    }
+    @screen xl {
+        @apply mr-4;
+    }
 
-.imput-light:focus {
-    @apply outline-none border-indigo-500;
+    &-light {
+        @apply bg-white border-gray-400;
+
+        &:focus {
+            @apply outline-none border-indigo-500;
+        }
+    }
 }
 
 .btn {
-    @apply inline-flex text-white bg-black border-0 py-2 px-6 rounded text-lg
-}
+    @apply py-2 px-6 text-lg uppercase;
 
-.btn:focus {
-    @apply outline-none;
-}
+    &:hover {
+        @apply text-black bg-white;
+    }
 
-.btn:hover {
-    @apply text-black bg-white;
-}
+    &-primary {
+        @apply bg-primary border border-primary-darker text-white;
 
-.btn-primary {
-    @apply bg-primary;
-}
+        &:hover {
+            @apply bg-primary-darker border border-primary text-white;
+        }
+    }
 
-.btn-primary:hover {
-    @apply bg-primary-lighter;
-}
+    &-secondary {
+        @apply bg-secondary border border-secondary-darker text-black;
 
-.btn-secondary {
-    @apply bg-secondary;
-}
-
-.btn-secondary:hover {
-    @apply bg-secondary-lighter;
-}
-
-@media (min-width: 640px) {
-    .input {
-        @apply mr-4;
+        &:hover {
+            @apply bg-secondary-darker border border-secondary text-black;
+        }
     }
 }
 
-@media (min-width: 1024px) {
-    .input {
-        @apply mr-0;
-    }
-}
+.card {
+    @apply p-4 rounded-md bg-gray-100 shadow;
 
-@media (min-width: 1280px) {
-    .input {
-        @apply mr-4;
-    }
-}
-
-.duration-200 {
-    transition-duration: 200ms;
-}
-
-.ease-in {
-    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-}
-
-.ease-out {
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-}
-
-.transition {
-    transition: transform 250ms ease, color 250ms ease;
-}
-
-.transform-180 {
-    transform: rotate(-180deg);
-}
-
-.hover\:grow {
-    transition: all 0.3s;
-    transform: scale(1);
-}
-
-.hover\:grow:hover {
-    transform: scale(1.02);
+    &:hover {
+         @apply bg-gray-200;
+     }
 }

@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+
+declare(strict_types=1);
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var \Magento\Customer\Block\Form\Login\Info $block */
+?>
+<?php if ($block->getRegistration()->isAllowed()): ?>
+    <div class="block-new-customer card w-full md:w-1/2 my-8 mx-4">
+        <div class="block-title">
+            <h2 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900" role="heading"
+                aria-level="2"><?= $block->escapeHtml(__('New Customers')) ?></h2>
+        </div>
+        <div class="block-content" aria-labelledby="block-new-customer-heading">
+            <p>
+                <?= $block->escapeHtml(
+                    __('Creating an account has many benefits: check out faster, keep more than one address, track orders and more.')
+                ) ?>
+            </p>
+            <div class="actions-toolbar">
+                <div class="mt-4">
+                    <a href="<?= $block->escapeUrl($block->getCreateAccountUrl()) ?>"
+                       class="btn btn-primary"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

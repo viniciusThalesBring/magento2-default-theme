@@ -11,19 +11,19 @@ module.exports = {
             yellow: colors.yellow,
             green: colors.green,
             primary: {
-                lighter: '#e7e7e7',
-                default: '#3e3e3e',
-                darker: '#000000',
+                lighter: colors.orange['300'],
+                default: colors.orange['500'],
+                darker: colors.orange['600'],
             },
             secondary: {
-                lighter: '#f5f2f2',
-                default: '#e2dede',
-                darker: '#d7d3d3',
+                lighter: colors.orange['100'],
+                default: colors.orange['200'],
+                darker: colors.orange['300'],
             },
             background: {
-                lighter: '#fdf8f5',
-                default: '#F8EBE6',
-                darker: '#f5d7d1',
+                lighter: colors.orange['100'],
+                default: colors.orange['200'],
+                darker: colors.orange['300'],
             }
         },
         screens: {

@@ -1,19 +1,9 @@
 
 .product.media {
     @apply w-full h-auto;
-}
-
-@media (min-width: 640px) {
-
-}
-
-@media (min-width: 1024px) {
-    .product.media {
-        @apply w-1/2;
+    @screen md {
+        .product.media {
+            @apply w-1/2;
+        }
     }
 }
-
-@media (min-width: 1280px) {
-
-}
-
