@@ -12,7 +12,11 @@ declare(strict_types=1);
         return {
             messages: window.mageMessages || [],
             isEmpty: function () {
-                return this.messages.reduce( function (isEmpty, message) { return isEmpty && message === undefined}, true)
+                return this.messages.reduce(
+                    function (isEmpty, message) {
+                        return isEmpty && message === undefined
+                    }, true
+                )
             },
             removeMessage: function (messageIndex) {
                 this.messages[messageIndex] = undefined;
@@ -21,11 +25,15 @@ declare(strict_types=1);
                 var $this = this;
                 messages.map(function(message) {
                     $this.messages = $this.messages.concat(message);
-
                     if (hideAfter) {
                         $this.setHideTimeOut($this.messages.length -1, hideAfter);
                     }
                 });
+            },
+            getMessages: function (data) {
+                if (data.messages) {
+                    this.addMessages(data.messages);
+                }
             },
             setHideTimeOut: function (messageIndex, hideAfter) {
                 var $this = this;
@@ -37,6 +45,7 @@ declare(strict_types=1);
 <section id="messages"
          x-data="initMessages()"
          @messages-loaded.window="addMessages(event.detail.messages, event.detail.hideAfter)"
+         @private-content-loaded.window="getMessages(event.detail.data)"
 >
     <template x-if="!isEmpty()">
         <div class="w-full">
