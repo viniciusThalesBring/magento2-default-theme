@@ -31,7 +31,7 @@ declare(strict_types=1);
                 });
             },
             getMessages: function (data) {
-                if (data.messages) {
+                if (data.messages && data.messages.lenght) {
                     this.addMessages(data.messages);
                 }
             },
