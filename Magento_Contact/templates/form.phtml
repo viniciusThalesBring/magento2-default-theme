@@ -1,15 +1,15 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
  */
 
-use Magento\Contact\Block\ContactForm;
-use Wigman\Tailwind\ViewModel\FormKey;
+declare(strict_types=1);
+
+use Magento\Contact\Block\ContactForm;Z
 
 /** @var ContactForm $block */
-/** @var FormKey $formKeyViewModel */
-$formKeyViewModel = $block->getFormKeyViewModel();
 ?>
 <div class="container px-5 py-6 mx-auto flex flex-wrap">
     <form class="form contact lg:w-1/2 md:w-2/3 bg-white rounded p-4 shadow"
@@ -60,10 +60,10 @@ $formKeyViewModel = $block->getFormKeyViewModel();
             </div>
         </fieldset>
         <div class="p-2 w-full">
-                <input type="hidden" name="form_key" value="<?= $formKeyViewModel->getFormKey() ?>" />
-                <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="btn btn-primary">
-                    <span><?= $block->escapeHtml(__('Submit')) ?></span>
-                </button>
+            <?= $block->getBlockHtml('formkey') ?>
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="btn btn-primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
         </div>
     </form>
     <div class="lg:w-1/2 md:w-1/3">

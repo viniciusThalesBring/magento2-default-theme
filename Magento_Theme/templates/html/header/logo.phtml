@@ -1,11 +1,16 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
  */
 
+declare(strict_types=1);
+
+use Magento\Theme\Block\Html\Header\Logo;
+
 /**
- * @var \Magento\Theme\Block\Html\Header\Logo $block
+ * @var Logo $block
  */
 $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt()
 ?>

@@ -1,14 +1,17 @@
 <?php
 /**
+ * Hyvä Themes - https://hyva.io
  * Copyright © Wigman Interactive. All rights reserved.
  * This product is licensed per Magento production install
  */
 
 declare(strict_types=1);
 
+use Magento\Customer\Block\Form\Login\Info;
+
 // phpcs:disable Generic.Files.LineLength.TooLong
 
-/** @var \Magento\Customer\Block\Form\Login\Info $block */
+/** @var Info $block */
 ?>
 <?php if ($block->getRegistration()->isAllowed()): ?>
     <div class="block-new-customer card w-full md:w-1/2 my-8 mx-4">

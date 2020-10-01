@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
  */
--->
+ -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="catalog_product_opengraph" />
     <body>
@@ -28,8 +29,8 @@
                     <block name="product.info"
                            template="Magento_Catalog::product/view/product-info.phtml">
                         <arguments>
-                            <argument name="product_view_model" xsi:type="object">Wigman\Tailwind\ViewModel\ProductPage</argument>
-                            <argument name="attributes_view_model" xsi:type="object">Wigman\Tailwind\ViewModel\ProductAttributes</argument>
+                            <argument name="product_view_model" xsi:type="object">Hyva\Theme\ViewModel\ProductPage</argument>
+                            <argument name="attributes_view_model" xsi:type="object">Hyva\Theme\ViewModel\ProductAttributes</argument>
                             <argument name="attributes" xsi:type="array">
                                 <item name="sku" xsi:type="array">
                                     <item name="call" xsi:type="string">getSku</item>

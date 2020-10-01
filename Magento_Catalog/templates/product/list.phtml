@@ -1,23 +1,18 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
  */
+
+use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Framework\Escaper;
 
-?>
-<?php
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 
-/**
- * Product list template
- *
- * @var $block \Magento\Catalog\Block\Product\ListProduct
- */
-
+/** @var $block ListProduct */
 /** @var $escaper Escaper */
-?>
-<?php
+
 $productCollection = $block->getLoadedProductCollection();
 ?>
 <?php if (!$productCollection->count()) :?>

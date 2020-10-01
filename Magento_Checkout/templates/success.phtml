@@ -1,12 +1,15 @@
 <?php
 /**
+ * Hyvä Themes - https://hyva.io
  * Copyright © Wigman Interactive. All rights reserved.
  * This product is licensed per Magento production install
  */
 
+use Magento\Checkout\Block\Onepage\Success;
+
 declare(strict_types=1);
 
-/** @var $block \Magento\Checkout\Block\Onepage\Success */
+/** @var $block Success */
 ?>
 <div class="checkout-success container py-4 px-6">
     <?php if ($block->getOrderId()): ?>

@@ -1,18 +1,20 @@
 <?php
 /**
+ * Hyvä Themes - https://hyva.io
  * Copyright © Wigman Interactive. All rights reserved.
  * This product is licensed per Magento production install
  */
 
 declare(strict_types=1);
 
-// phpcs:disable Magento2.Templates.ThisInTemplate
-
 use Magento\Catalog\Helper\Data;
 use Magento\LayeredNavigation\Block\Navigation\FilterRenderer;
 
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
 /**@var $block FilterRenderer */
 $catalogHelper = $this->helper(Data::class);
+
 /** @var array $filterItems */
 ?>
 <?php foreach ($filterItems as $filterItem): ?>

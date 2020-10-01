@@ -1,12 +1,13 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
  */
 
-/** @var \Magento\Newsletter\Block\Subscribe $block */
-/** @var FormKey $formKeyViewModel */
-$formKeyViewModel = $block->getFormKeyViewModel();
+use Magento\Newsletter\Block\Subscribe;
+
+/** @var Subscribe $block */
 ?>
 <div class="lg:w-1/4 md:w-1/2 w-full px-4">
     <form class="form subscribe"
@@ -16,7 +17,7 @@ $formKeyViewModel = $block->getFormKeyViewModel();
         <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3 uppercase"><?= $block->escapeHtml(__('Newsletter')) ?></h2>
         <div class="flex xl:flex-no-wrap md:flex-no-wrap lg:flex-wrap flex-wrap justify-center md:justify-start">
             <input name="email" type="email" required id="newsletter" class="input input-light" placeholder="<?= $block->escapeHtmlAttr(__('Enter your email address')) ?>" type="text">
-            <input type="hidden" name="form_key" value="<?= $formKeyViewModel->getFormKey() ?>" />
+            <?= $block->getBlockHtml('formkey') ?>
             <button class="lg:mt-2 xl:mt-0 flex-shrink-0 inline-flex text-white btn btn-primary"><?= $block->escapeHtmlAttr(__('Subscribe')) ?></button>
         </div>
         <p class="text-gray-500 text-sm mt-2 md:text-left text-center">No Spam, promised!

@@ -1,11 +1,19 @@
 <?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+
 declare(strict_types=1);
 
 use Magento\Framework\View\Element\Template;
+use Magento\Search\Helper\Data as SearchHelper;
 
 /** @var Template $block */
-/** @var $helper \Magento\Search\Helper\Data */
-$helper = $this->helper(\Magento\Search\Helper\Data::class);
+/** @var SearchHelper $helper */
+
+$helper = $this->helper(SearchHelper::class);
 ?>
 <div class="container mx-auto py-2 text-black">
     <form class="form minisearch" id="search_mini_form" action="<?= $block->escapeUrl($helper->getResultUrl()) ?>" method="get">
