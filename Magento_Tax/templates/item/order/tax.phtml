@@ -1,0 +1,49 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Squiz.PHP.GlobalKeyword.NotAllowed
+
+/** @var $block \Magento\Tax\Block\Sales\Order\Tax
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$_order = $block->getOrder();
+$_source = $block->getSource();
+$_fullInfo = $this->helper(\Magento\Tax\Helper\Data::class)->getCalculatedTaxes($_source);
+global $taxIter;
+$taxIter++;
+?>
+<?php if ($_fullInfo && $block->displayFullSummary()) : ?>
+    <?php foreach ($_fullInfo as $info) : ?>
+        <?php
+        $percent = $info['percent'];
+        $amount = $info['tax_amount'];
+        $baseAmount = $info['base_tax_amount'];
+        $title = $info['title'];
+        ?>
+        <div>
+            <?= $escaper->escapeHtml($title) ?>
+            <?php if ($percent !== null) : ?>
+                (<?= (float)$percent ?>%)
+            <?php endif; ?>
+        </div>
+        <div>
+            <?= /* @noEscape */
+            $_order->formatPrice($amount) ?>
+        </div>
+    <?php endforeach; ?>
+<?php else : ?>
+    <div>
+        <?= $escaper->escapeHtml(__('Tax')) ?>
+    </div>
+    <div>
+        <?= /* @noEscape */
+        $_order->formatPrice($_source->getTaxAmount()) ?>
+    </div>
+<?php endif; ?>

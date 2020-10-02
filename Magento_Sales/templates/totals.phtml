@@ -1,0 +1,32 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+/**
+ * @var $block \Magento\Sales\Block\Order\Totals
+ * @var \Magento\Framework\Escaper $escaper
+ * @see \Magento\Sales\Block\Order\Totals
+ */
+?>
+<?php foreach ($block->getTotals() as $_code => $_total) : ?>
+    <?php if ($_total->getBlockName()) : ?>
+        <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+    <?php else :?>
+        <div<?= /* @noEscape */ $block->getLabelProperties() ?> scope="row">
+            <?php if ($_total->getStrong()) : ?>
+                <strong><?= $escaper->escapeHtml($_total->getLabel()) ?></strong>
+            <?php else : ?>
+                <?= $block->escapeHtml($_total->getLabel()) ?>
+            <?php endif ?>
+        </div>
+        <div <?= /* @noEscape */ $block->getValueProperties() ?> data-th="<?= $escaper->escapeHtmlAttr($_total->getLabel()) ?>">
+            <?php if ($_total->getStrong()) : ?>
+                <strong><?= /* @noEscape */ $block->formatValue($_total) ?></strong>
+            <?php else : ?>
+                <?= /* @noEscape */ $block->formatValue($_total) ?>
+            <?php endif?>
+        </div>
+    <?php endif; ?>
+<?php endforeach?>

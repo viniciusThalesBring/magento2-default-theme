@@ -8,66 +8,60 @@
 declare(strict_types=1);
 
 use Magento\Customer\Block\Form\Login;
+use Magento\Framework\Escaper;
 
+/** @var $escaper Escaper */
 /** @var Login $block */
 ?>
-<div class="w-full md:w-1/2 card my-8 mx-4">
-    <div class="block-title w-full">
-        <h2 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900" role="heading"
-            aria-level="2"><?= $block->escapeHtml(__('Registered Customers')) ?></h2>
-    </div>
+<div class="w-full md:w-1/2 card mr-4">
     <div aria-labelledby="block-customer-login-heading">
         <form class="form form-login"
-              action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
+              action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
               method="post"
               id="login-form">
             <?= $block->getBlockHtml('formkey') ?>
             <fieldset class="fieldset login">
-                <div class="field note">
-                    <?= $block->escapeHtml(
+                <legend><?= $escaper->escapeHtml(__('Login')) ?></legend>
+                <div class="text-secondary-darker mb-8">
+                    <?= $escaper->escapeHtml(
                         __('If you have an account, sign in with your email address.')
                     ) ?>
                 </div>
                 <div class="field email required">
-                    <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                    <label class="label" for="email"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
                     <div class="control">
                         <input name="login[username]"
-                               class="input input-light"
-                               value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>"
+                               class="form-input"
+                               value="<?= $escaper->escapeHtmlAttr($block->getUsername()) ?>"
                             <?php if ($block->isAutocompleteDisabled()): ?>
                                 autocomplete="off"
                             <?php endif; ?>
                                id="email"
                                type="email"
-                               class="input-text"
-                               title="<?= $block->escapeHtmlAttr(__('Email')) ?>"/>
+                               title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"/>
                     </div>
                 </div>
                 <div class="field password required">
-                    <label for="pass" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+                    <label for="pass" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
                     <div class="control">
                         <input name="login[password]"
-                               class="input input-light"
+                               class="form-input"
                                type="password"
                             <?php if ($block->isAutocompleteDisabled()): ?>
                                 autocomplete="off"
                             <?php endif; ?>
                                id="pass"
-                               title="<?= $block->escapeHtmlAttr(__('Password')) ?>"/>
+                               title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"/>
                     </div>
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
-                <div class="actions-toolbar">
-                    <div class="mt-2">
-                        <button type="submit" class="btn btn-primary" name="send" id="send2">
-                            <span><?= $block->escapeHtml(__('Sign In')) ?></span></button>
-                    </div>
-                    <div class="mt-4">
-                        <a class="btn btn-secondary" href="<?= $block->escapeUrl(
+                <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
+                        <button type="submit" class="btn btn-primary" name="send">
+                            <span><?= $escaper->escapeHtml(__('Sign In')) ?></span></button>
+                        <a class="underline text-secondary" href="<?= $escaper->escapeUrl(
                             $block->getForgotPasswordUrl()
-                        ) ?>"><span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span>
+                        ) ?>"><span><?= $escaper->escapeHtml(__('Forgot Your Password?')) ?></span>
                         </a>
-                    </div>
                 </div>
             </fieldset>
         </form>

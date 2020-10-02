@@ -1,0 +1,31 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+
+declare(strict_types=1);
+?>
+
+<div class="block <?= $block->escapeHtmlAttr($block->getBlockCss()) ?> filter-option border border-background py-4 px-8" x-data="{ open: true }">
+    <div class="title <?= $block->escapeHtmlAttr($block->getBlockCss()) ?>-title flex justify-between items-center cursor-pointer hover:text-secondary-darker"
+         @click="open = !open">
+        <span class="title text-lg">
+            <?= $block->escapeHtml(__($block->getData('block_title'))) ?>
+        </span>
+        <span class="py-1 px-1 rounded border border-background">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"
+                 class="transition-transform transform duration-300 ease-in-out"
+                 :class="open ? 'rotate-180' : ''">
+                <path d="M19 9L12 16L5 9" stroke="#4A5568" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+        </span>
+    </div>
+    <div class="content <?= $block->escapeHtmlAttr($block->getBlockCss()) ?>-content" x-show="open"
+         id="<?= $block->escapeHtmlAttr($block->getBlockCss()) ?>">
+        <?= $block->getChildHtml() ?>
+    </div>
+</div>

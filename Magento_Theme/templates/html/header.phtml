@@ -31,7 +31,7 @@ use Magento\Framework\View\Element\Template;
 >
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
 
-        <label for="menu-toggle" class="cursor-pointer md:hidden block"
+        <label for="menu-toggle" class="cursor-pointer md:hidden block order-2 sm:order-1"
                @click="menuOpen = !menuOpen"
                :class="{ 'transition transform-180': menuOpen }"
         >
@@ -60,7 +60,7 @@ use Magento\Framework\View\Element\Template;
             </nav>
         </div>
 
-        <div class="order-1 md:order-2">
+        <div class="order-1 md:order-2 w-full sm:w-auto pb-2 sm:pb-0">
             <?= $block->getChildHtml('logo'); ?>
         </div>
 

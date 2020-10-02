@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Customer\Block\Widget\Company;
+use Magento\Customer\Helper\Address as AddressHelper;
+use Magento\Framework\Escaper;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Escaper $escaper */
+/** @var Company $block */
+?>
+<div class="field company <?= $block->isRequired() ? 'required' : '' ?>">
+    <label for="company" class="label">
+        <span>
+            <?= $escaper->escapeHtml(__('Company')) ?>
+        </span>
+    </label>
+    <div class="control">
+            <?php
+            $_validationClass = $escaper->escapeHtmlAttr(
+                $this->helper(AddressHelper::class)
+                     ->getAttributeValidationClass('company')
+            );
+            ?>
+        <input type="text"
+               name="company"
+               id="company"
+               required
+               value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
+               title="<?= $escaper->escapeHtmlAttr(__('Company')) ?>"
+               class="form-input <?= $_validationClass ?: '' ?>"
+         >
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+/**
+ * @var $block \Magento\Sales\Block\Order\Info
+ * @var \Magento\Framework\Escaper $escaper
+ */ ?>
+<?php $_order = $block->getOrder() ?>
+<div class="block block-order-details-view">
+    <div class="text-lg mb-4"><?= $escaper->escapeHtml(__('Order Information')) ?></div>
+    <div class="md:flex md:flex-wrap">
+        <?php if (!$_order->getIsVirtual()) : ?>
+            <div class="md:w-1/2">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Address')) ?></p>
+                <div class="box-content">
+                    <address><?= /* @noEscape */
+                        $block->getFormattedAddress($_order->getShippingAddress()) ?></address>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Method')) ?></p>
+                <div class="box-content">
+                    <?php if ($_order->getShippingDescription()) : ?>
+                        <?= $escaper->escapeHtml($_order->getShippingDescription()) ?>
+                    <?php else : ?>
+                        <?= $escaper->escapeHtml(__('No shipping information available')) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="md:w-1/2">
+            <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Billing Address')) ?></p>
+            <div class="box-content">
+                <address><?= /* @noEscape */
+                    $block->getFormattedAddress($_order->getBillingAddress()) ?></address>
+            </div>
+        </div>
+        <div class="md:w-1/2">
+            <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Payment Method')) ?></p>
+            <div class="box-content">
+                <?= $block->getPaymentInfoHtml() ?>
+            </div>
+        </div>
+    </div>
+</div>

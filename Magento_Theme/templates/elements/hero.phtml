@@ -11,20 +11,24 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 
-$image = "https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=75";
-$title = "Magento meets Tailwind";
-$content = "";
-$link = $block->getBaseUrl() . "products.html";
-$cta = "Check our Products >";
+$image1X = "https://images.unsplash.com/photo-1454111079122-eb76eb2d5754?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjExMzk2fQ&auto=format&fit=crop&w=1000&q=75";
+$image2X = "https://images.unsplash.com/photo-1454111079122-eb76eb2d5754?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjExMzk2fQ&auto=format&fit=crop&w=1024&q=75";
+$title = "Hyvä Themes";
+$content = "We're making Magento Templates great again.";
+$link = "https://hyva.io/";
+$cta = "Read more >";
 
-$imageStyle = "background-image: url($image);";
+$imageStyle = "background-image: url($image1X); background-image: -webkit-image-set(url($image1X) 1x, url($image2X) 2x);";
 ?>
 
-<section class="text-gray-700 body-font">
-    <section class="w-full mx-auto flex pt-12 md:pt-0 items-center bg-cover bg-right h-64 min-h-50 md:min-h-50" style="<?= $imageStyle ?>">
+<section class="text-gray-700 body-font -mt-8">
+    <section class="w-full mx-auto flex pt-8 md:pt-0 items-center bg-cover bg-right h-64 min-h-50 md:min-h-50 max-h-75" style="<?= $imageStyle ?>">
         <div class="container mx-auto">
-            <div class="flex flex-col w-full lg:w-1/2 justify-center items-start px-6 tracking-wide">
-                <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"><?= $block->escapeHtml($title) ?></h1>
+            <div class="flex flex-col w-full lg:w-2/3 justify-center items-start px-6 tracking-wide">
+                <h1 class="title-font text-4xl sm:text-5xl mb-4 font-medium text-white" style="text-shadow: 2px 2px 5px black"><?= $block->escapeHtml($title) ?></h1>
+                <?php if($content) : ?>
+                    <p class="text-2xl sm:text-3xl mb-4 font-medium text-white" style="text-shadow: 2px 2px 5px black"><?= $content ?></p>
+                <?php endif; ?>
                 <a class="btn btn-primary border border-primary" href="<?= $link ?>">
                     <?= $block->escapeHtml($cta) ?>
                 </a>

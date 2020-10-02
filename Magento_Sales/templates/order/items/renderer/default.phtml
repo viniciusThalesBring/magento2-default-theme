@@ -1,0 +1,78 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Wigman Interactive. All rights reserved.
+ * This product is licensed per Magento production install
+ */
+
+/** @var  $block \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$item = $block->getItem();
+?>
+<div class="lg:grid lg:grid-cols-5 py-4">
+    <div class="p-2 col-span-2">
+        <span class="grid-cols-2"><?= $escaper->escapeHtml($item->getName()) ?></span>
+        <div class="item-options col-span-2 lg:col-span-1 grid grid-cols-3 mt-2">
+            <div class="text-sm"><?= $escaper->escapeHtml(__('Sku')) ?>:</div>
+            <div class="text-sm col-span-2"><?= /* @noEscape */
+                $block->prepareSku($block->getSku()) ?>
+            </div>
+            <?php if ($_options = $block->getItemOptions()) : ?>
+                <?php foreach ($_options as $_option) : ?>
+                    <div class="text-sm mt-1"><?= $escaper->escapeHtml($_option['label']) ?>:</div>
+                    <?php if (!$block->getPrintStatus()) : ?>
+                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                        <div
+                            class="col-span-2 mt-1 text-sm<?= (isset($_formatedOptionValue['full_view']) ? ' tooltip wrapper' : '') ?>">
+                            <?php if (isset($_formatedOptionValue['full_view'])) : ?>
+                                <?= $escaper->escapeHtml($_formatedOptionValue['full_view']) ?>
+                            <?php else : ?>
+                                <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['a', 'img']) ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php else : ?>
+                        <div><?= $escaper->escapeHtml(
+                                (isset($_option['print_value']) ? $_option['print_value'] : $_option['value'])
+                            ) ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+            <?php if ($addtInfoBlock) : ?>
+                <?= $addtInfoBlock->setItem($item)->toHtml() ?>
+            <?php endif; ?>
+            <?= $escaper->escapeHtml($item->getDescription()) ?>
+        </div>
+    </div>
+    <div class="p-2 flex justify-between lg:block">
+        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Price')) ?></p>
+        <?= $block->getItemPriceHtml() ?>
+    </div>
+    <div class="p-2 flex justify-between lg:block">
+        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Qty')) ?></p>
+        <div class="text-right lg:text-left">
+            <?php if ($block->getItem()->getQtyOrdered() > 0) : ?>
+                <span class="title"><?= $escaper->escapeHtml(__('Ordered')) ?>:</span>
+                <span class="content"><?= (float)$block->getItem()->getQtyOrdered() ?></span>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyShipped() > 0) : ?>
+                <span class="title"><?= $escaper->escapeHtml(__('Shipped')) ?>:</span>
+                <span class="content"><?= (float)$block->getItem()->getQtyShipped() ?></span>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyCanceled() > 0) : ?>
+                <span class="title"><?= $escaper->escapeHtml(__('Canceled')) ?>:</span>
+                <span class="content"><?= (float)$block->getItem()->getQtyCanceled() ?></span>
+            <?php endif; ?>
+            <?php if ($block->getItem()->getQtyRefunded() > 0) : ?>
+                <span class="title"><?= $escaper->escapeHtml(__('Refunded')) ?>:</span>
+                <span class="content"><?= (float)$block->getItem()->getQtyRefunded() ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="p-2 text-right flex justify-between lg:block">
+        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
+        <?= $block->getItemRowTotalHtml() ?>
+    </div>
+</div>

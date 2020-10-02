@@ -14,7 +14,7 @@ use Magento\Theme\Block\Html\Header\Logo;
  */
 $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt()
 ?>
-<a class="flex items-center tracking-wide no-underline hover:no-underline font-medium font-title text-gray-800 text-xl"
+<a class="flex items-center justify-center tracking-wide no-underline hover:no-underline font-medium font-title text-gray-800 text-xl"
    href="<?= $block->escapeUrl($block->getUrl('')) ?>"
    title="<?= $block->escapeHtmlAttr($storeName) ?>"
    aria-label="store logo">
