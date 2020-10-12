@@ -26,10 +26,6 @@ form legend + br {
     @apply hidden
 }
 
-form input.form-input {
-    @apply w-full block text-black
-}
-
 fieldset ~ fieldset {
     @apply mt-8;
 }

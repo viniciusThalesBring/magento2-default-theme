@@ -14,15 +14,17 @@ use Magento\Theme\Block\Html\Header\Logo;
  */
 $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt()
 ?>
-<a class="block w-12 sm:w-auto sm:flex items-center justify-center tracking-wide overflow-hidden sm:overflow-auto no-underline hover:no-underline font-medium font-title text-gray-800 text-xl"
-   href="<?= $block->escapeUrl($block->getUrl('')) ?>"
-   title="<?= $block->escapeHtmlAttr($storeName) ?>"
-   aria-label="store logo">
-    <img src="<?= $block->escapeUrl($block->getLogoSrc()) ?>" class="max-w-none sm:max-w-full"
-         title="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
-         alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
-        <?= $block->getLogoWidth() ? 'width="' . $block->escapeHtmlAttr($block->getLogoWidth()) . '"' : 'width="200"' ?>
-        <?= $block->getLogoHeight() ? 'height="' . $block->escapeHtmlAttr($block->getLogoHeight()) . '"' : 'height="150"' ?>
-    />
-    <?= $block->escapeHtml($storeName) ?>
-</a>
+<div class="order-1 md:order-1 w-full sm:w-auto pb-2 sm:pb-0">
+    <a class="flex items-center justify-center tracking-wide no-underline hover:no-underline font-medium font-title text-gray-800 text-xl"
+       href="<?= $block->escapeUrl($block->getUrl('')) ?>"
+       title="<?= $block->escapeHtmlAttr($storeName) ?>"
+       aria-label="store logo">
+        <img src="<?= $block->escapeUrl($block->getLogoSrc()) ?>"
+             title="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+             alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+            <?= $block->getLogoWidth() ? 'width="' . $block->escapeHtmlAttr($block->getLogoWidth()) . '"' : 'width="200"' ?>
+            <?= $block->getLogoHeight() ? 'height="' . $block->escapeHtmlAttr($block->getLogoHeight()) . '"' : 'height="150"' ?>
+        />
+        <?= $block->escapeHtml($storeName) ?>
+    </a>
+</div>

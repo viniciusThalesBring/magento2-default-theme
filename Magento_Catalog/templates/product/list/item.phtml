@@ -55,6 +55,7 @@ if (!$product) return; ?>
            class="product photo product-item-photo"
            tabindex="-1">
             <img class="hover:shadow-sm"
+                 loading="lazy"
                  src="<?= $productImage->getImageUrl() ?>"
                  width="<?= $productImage->getWidth() ?>"
                  height="<?= $productImage->getHeight() ?>"

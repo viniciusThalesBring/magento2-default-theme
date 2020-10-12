@@ -106,6 +106,7 @@ module.exports = {
             '25': '25vh',
             '50': '50vh',
             '75': '75vh',
+            'screen': '100vh',
             'full': '100%',
         },
         maxHeight: {
@@ -113,6 +114,7 @@ module.exports = {
             '25': '25vh',
             '50': '50vh',
             '75': '75vh',
+            'screen': '100vh',
             'full': '100%',
         }
     },

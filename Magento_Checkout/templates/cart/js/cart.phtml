@@ -17,11 +17,18 @@ $viewModelCart = $block->getData('viewModelCart');
     const signInToken = getConfigFromLocalStorage(activeSource.token);
 
     <?php /* customer not logged in */ ?>
-    const getCartQuery = `query {cart (cart_id: "${cartId}") {<?= /* @noEscape */ $viewModelCart->getCartGraphQlQuery(
-    ) ?>}}`;
+    const getCartQuery = <?= /** @noEscape */ json_encode(
+        '{cart (cart_id: "%cartId") {' .
+        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
+        '}}'
+    ); ?>.replace('%cartId',cartId);
 
     <?php /* customer is logged in */ ?>
-    const getCustomerCartQuery = `query {customerCart {<?= /* @noEscape */ $viewModelCart->getCartGraphQlQuery() ?>}}`;
+    const getCustomerCartQuery = <?= /** @noEscape */ json_encode(
+        '{customerCart {' .
+        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
+        '}}'
+    ); ?>
 
     const cartQuery = (signInToken && getCustomerCartQuery) || getCartQuery;
 
@@ -34,11 +41,15 @@ $viewModelCart = $block->getData('viewModelCart');
             isTouchDevice: false,
             getCart() {
                 if (cartId) {
-                    fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql?query=' + encodeURIComponent(
-                        this.cartQuery
-                    ), {
-                        method: 'GET',
-                        headers: {'Content-Type': 'application/json'},
+                    fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            query: cartQuery
+                        })
                     })
                         .then(response => response.json())
                         .then(

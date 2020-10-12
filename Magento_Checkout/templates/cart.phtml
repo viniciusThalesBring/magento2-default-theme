@@ -8,14 +8,14 @@ use Magento\Framework\Escaper;
 ?>
 <?= $block->getChildHtml('cart_main_js') ?>
 <div class="container">
-    <section class="relative"
-             style="min-height: 200px;"
+    <section class="relative min-h-50"
+             :class="{ 'min-h-50 sm:min-h-75 lg:min-h-50': cartEmpty }"
              x-data="initCart()"
              x-init="getCart(); isTouchEnabled();"
     >
         <?= $block->getChildHtml('loading') ?>
         <?= $block->getChildHtml('items') ?>
-        <div class="md:grid grid-cols-2">
+        <div class="grid-cols-2" x-show="!isLoading && !cartEmpty">
             <div>
                 <?= $block->getChildHtml('coupon') ?>
             </div>
@@ -23,7 +23,9 @@ use Magento\Framework\Escaper;
                 <?= $block->getChildHtml('totals') ?>
             </div>
         </div>
+        <div x-show="!isLoading && !cartEmpty">
         <?= $block->getChildHtml('checkout.cart.methods.bottom') ?>
+        </div>
         <?= $block->getChildHtml('empty') ?>
     </section>
 </div>

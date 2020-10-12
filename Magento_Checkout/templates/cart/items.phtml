@@ -37,7 +37,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                         </a>
                     </div>
                     <div class="w-9/12">
-                        <a class="" x-html="item.product.name" :title="item.product.name"
+                        <a class="font-semibold text-base" x-html="item.product.name" :title="item.product.name"
                            :href="'<?= $escaper->escapeUrl(
                                $block->getBaseUrl()
                            ) ?>' + item.product.url_key + '.html'"></a>
@@ -123,7 +123,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                             <input type="number" :name="'qty' + item.id" x-model.number="item.quantity"
                                    :value="item.quantity" class="w-16 p-2 border border-background text-center" max="99"
                                    min="1"
-                                   x-on:change.debounce="mutateItemQty(item.id, $event.target.value);"/>
+                                   x-on:change.debounce.1000="mutateItemQty(item.id, $event.target.value);"/>
                         </div>
                     </div>
                     <div class="lg:text-center">

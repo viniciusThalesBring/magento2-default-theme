@@ -88,7 +88,7 @@ $graphqlQuery = $query ?: "
             minHeight: function minHeight() {
                 return 'min-height: ' + ((this.loading && '491px') || 0);
             },
-            query: `<?= $graphqlQuery ?>`,
+            query: <?= /** @noEscape */ json_encode($graphqlQuery) ?>,
             getProducts: function getProducts($nextTick) {
                 var $this = this;
                 fetch('<?= $block->escapeUrl($block->getBaseUrl()) ?>graphql?query=' + encodeURIComponent(
