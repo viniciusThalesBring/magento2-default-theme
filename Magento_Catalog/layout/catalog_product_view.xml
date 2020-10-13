@@ -56,6 +56,18 @@
                                     <item name="label" xsi:type="string">default</item>
                                     <item name="css_class" xsi:type="string">gender</item>
                                 </item>
+                                <item name="material" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">material</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">material</item>
+                                </item>
+                                <item name="style_general" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">style_general</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">style_general</item>
+                                </item>
                             </argument>
                         </arguments>
 
@@ -74,6 +86,13 @@
                         <arguments>
                             <argument name="gallery_options" xsi:type="object">Magento\Catalog\Block\Product\View\GalleryOptions</argument>
                             <argument name="imageHelper" xsi:type="object">Magento\Catalog\Helper\Image</argument>
+                        </arguments>
+                    </block>
+
+                    <block name="description"
+                           template="Magento_Catalog::product/view/description.phtml">
+                        <arguments>
+                            <argument name="product_view_model" xsi:type="object">Hyva\Theme\ViewModel\ProductPage</argument>
                         </arguments>
                     </block>
 

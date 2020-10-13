@@ -26,29 +26,25 @@ $product = $productViewModel->getProduct();
     <h2 class="text-sm title-font text-gray-500 tracking-widest">
         <?= $productBrand ?></h2>
     <?php } ?>
-    <h1 class="text-gray-900 text-3xl title-font font-medium mb-4"><?= $product->getName() ?></h1>
-    <div class="flex mb-4">
-        <a class="flex-grow text-primary border-b-2 border-primary py-2 text-lg px-1">Description</a>
-        <a
-            class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Reviews</a>
-        <a
-            class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Details</a>
-    </div>
+
+    <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">
+        <?= $product->getName() ?>
+    </h1>
+
     <?php if ($shortDescription = $productViewModel->getShortDescription()) { ?>
-    <div class="product-description leading-relaxed mb-4"><?= /* @noEscape */ $shortDescription ?></div>
+    <div class="product-description leading-relaxed mb-4 prose"><?= /* @noEscape */ $shortDescription ?></div>
     <? } ?>
+
     <div>
     <?php foreach ($block->getAttributes() as $attributeConfig ) {
         $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig);
     ?>
         <?php if ($value = $attribute['value']) { ?>
     <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?= $attribute['value'] ?: "" ?>">
-        <span class="text-gray-500"><?= $attribute['label'] ?></span>
-        <span class="ml-auto text-gray-900"><?= $value ?></span>
+        <span class="text-gray-500 text-left w-1/2"><?= $attribute['label'] ?></span>
+        <span class="ml-2 text-gray-900 text-left w-1/2"><?= $value ?></span>
     </div>
-        <?php
-            $firstAttribute = false;
-        } ?>
+        <?php } ?>
     <?php } ?>
     </div>
     <div class="flex sticky" style="top:6em;">
