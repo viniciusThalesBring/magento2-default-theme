@@ -24,7 +24,7 @@ $siteKey = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/pu
         if (!this.hasCaptchaToken) {
             this.errors = 1;
 
-            $this = this;
+            var $this = this;
             grecaptcha.ready(function () {
                 grecaptcha.execute('<?= $escaper->escapeJs(
                     $siteKey
