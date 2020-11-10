@@ -19,60 +19,66 @@ $viewModelCart = $block->getData('viewModelCart');
 
     <?= $block->getChildHtml('js_localstorage_config') ?>
 
-    const cartId = getConfigFromLocalStorage(activeSource.cartId);
-    const signInToken = getConfigFromLocalStorage(activeSource.token);
-
-    <?php /* customer not logged in */ ?>
-    const getCartQuery = <?= /** @noEscape */ json_encode(
-        '{cart (cart_id: "%cartId") {' .
-        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
-        '}}'
-    ); ?>.replace('%cartId',cartId);
-
-    <?php /* customer is logged in */ ?>
-    const getCustomerCartQuery = <?= /** @noEscape */ json_encode(
-        '{customerCart {' .
-        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
-        '}}'
-    ); ?>
-
-    const cartQuery = (signInToken && getCustomerCartQuery) || getCartQuery;
-
     function initCart() {
         return {
+            cartId: getConfigFromLocalStorage(activeSource.cartId),
             cartData: [],
             cartEmpty: true,
             isLoading: true,
-            cartQuery: cartQuery,
             isTouchDevice: false,
+            showCouponForm: false,
+            getCartId: function getCartId() {
+                this.cartId = getConfigFromLocalStorage(activeSource.cartId);
+                return this.cartId;
+            },
+            getSignInToken: function getSignInToken() {
+                return getConfigFromLocalStorage(activeSource.token);
+            },
+            getCartQuery: function getCartQuery(cartId) {
+                return <?= /** @noEscape */ json_encode(
+                    '{cart (cart_id: "%cartId") {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
+                ); ?>.replace('%cartId', cartId)
+            },
+            getCustomerCartQuery: function getCustomerCartQuery() {
+                return <?= /** @noEscape */ json_encode(
+                    '{customerCart {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
+                ); ?>
+            },
             getCart() {
-                if (cartId) {
-                    fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
+                var $this = this;
+                fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         credentials: 'include',
                         body: JSON.stringify({
-                            query: cartQuery
+                            query: ($this.getSignInToken() && $this.getCustomerCartQuery()) || this.getCartQuery(this.getCartId())
                         })
-                    })
-                        .then(response => response.json())
-                        .then(
-                            data => {
-                                if (data && data.errors) {
-                                    this.initErrorMessages(data.errors);
-                                } else {
-                                    this.cartData = (data && data.data && (data.data.customerCart || data.data.cart)) || [];
-                                    this.updateCartDataDependencies();
-                                }
-                            }
-                        ).finally(() => {
-                        this.isLoading = false
-                    });
-                }else {
+                    }
+                ).then(function (response) {
+                        return response.json()
+                    }
+                ).then(function (data) {
+                    if (data && data.errors) {
+                        $this.initErrorMessages(data.errors);
+                    } else {
+                        $this.cartData = (data && data.data && (data.data.customerCart || data.data.cart)) || [];
+                        $this.updateCartDataDependencies();
+                    }
+                    $this.isLoading = false;
+                });
+            },
+            getCartByLocalStorage() {
+                if (this.getCartId()) {
+                    this.getCart();
+                }
+            },
+            getCartByCustomerSectionData() {
+                if (this.getCartId()) {
+                    this.getCart();
+                } else {
                     this.cartEmpty = true;
-                    this.isLoading = false;
                 }
             },
             formatPrice(price) {
@@ -90,9 +96,10 @@ $viewModelCart = $block->getData('viewModelCart');
                 this.showCouponForm = this.cartData.applied_coupons;
                 if (this.cartData && this.cartData.items && Object.keys(this.cartData.items).length) {
                     this.cartEmpty = false;
+                } else {
+                    this.cartEmpty = true;
                 }
             },
-            showCouponForm: false,
             dispatchCouponMutationRequest: function () {
                 if (!this.cartData.applied_coupons && document.getElementById('coupon_code').value == '') {
                     dispatchMessages([{
@@ -105,104 +112,107 @@ $viewModelCart = $block->getData('viewModelCart');
             },
             mutateCouponCode() {
                 this.isLoading = true;
+                var $this = this;
 
-                const couponCode = document.getElementById('coupon_code').value;
-                const couponQuery = couponCode ? `mutation {<?= /** @noEscape */ $viewModelCart->getCouponAddQuery(
+                var couponCode = document.getElementById('coupon_code').value;
+                var couponQuery = couponCode ? `mutation {<?= /** @noEscape */ $viewModelCart->getCouponAddQuery(
                 ) ?>}` : `mutation {<?= /** @noEscape */ $viewModelCart->getCouponRemoveQuery() ?>}`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify({query: couponQuery})
-                })
-                    .then(response => response.json())
-                    .then(
-                        data => {
-                            this.clearErrorMessages();
-                            if (data && data.errors) {
-                                this.initErrorMessages(data.errors);
-                                this.getCart();
-                            } else {
-                                this.cartData = (data && data.data && ((data.data.removeCouponFromCart && (data.data.removeCouponFromCart.cart)) || (data.data.applyCouponToCart && (data.data.applyCouponToCart.cart)))) || [];
-                                this.updateCartDataDependencies();
-                                document.getElementById('coupon_code').value = '';
-                            }
-                        }
-                    ).finally(() => {
-                    this.isLoading = false
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({query: couponQuery})
+                    }
+                ).then(function (response) {
+                        return response.json()
+                    }
+                ).then(function (data) {
+                    $this.clearErrorMessages();
+                    if (data && data.errors) {
+                        $this.initErrorMessages(data.errors);
+                        $this.getCart();
+                    } else {
+                        $this.cartData = (data && data.data && ((data.data.removeCouponFromCart && (data.data.removeCouponFromCart.cart)) || (data.data.applyCouponToCart && (data.data.applyCouponToCart.cart)))) || [];
+                        $this.updateCartDataDependencies();
+                        document.getElementById('coupon_code').value = '';
+                    }
+                    $this.isLoading = false;
                 });
             },
             clearErrorMessages() {
                 dispatchMessages([]);
             },
             initErrorMessages(errors) {
-                let messages = [];
-                for (const error in Object.keys(errors)) {
+                var messages = [];
+                for (var error in Object.keys(errors)) {
                     messages.push({type: 'error', text: errors[error].message});
                 }
                 dispatchMessages(messages)
             },
             mutateItemQty: function (itemId, qty) {
-                this.isLoading = true;
+                var $this = this;
+                $this.isLoading = true;
 
-                const cartItemUpdateQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemUpdateQuery(
-                ) ?>}`;
+                var cartItemUpdateQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemUpdateQuery() ?>}`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify({query: cartItemUpdateQuery})
-                })
-                    .then(response => response.json())
-                    .then(
-                        data => {
-                            this.clearErrorMessages();
-                            if (data.errors) {
-                                this.initErrorMessages(data.errors);
-                                this.getCart();
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({query: cartItemUpdateQuery.replace('%cartId', this.getCartId)})
+                    }
+                ).then(function (response) {
+                        return response.json()
+                    }
+                ).then(function (data) {
+                    $this.clearErrorMessages();
+                    if (data.errors) {
+                        this.initErrorMessages(data.errors);
+                        this.getCart();
 
-                            } else {
-                                this.cartData = (data && data.data && (data.data.updateCartItems && (data.data.updateCartItems.cart))) || [];
-                                this.updateCartDataDependencies();
-                            }
-                        }
-                    ).finally(() => {
-                    this.isLoading = false
+                    } else {
+                        $this.cartData = (data && data.data && (data.data.updateCartItems && (data.data.updateCartItems.cart))) || [];
+                        $this.updateCartDataDependencies();
+                    }
+                    $this.isLoading = false;
+                    $this.reloadCustomerData();
                 });
             },
             mutateItemRemove: function (itemId) {
-                this.isLoading = true;
-
-                const cartItemRemoveQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemRemoveQuery(
-                ) ?>}`;
+                var $this = this;
+                $this.isLoading = true;
+                var cartItemRemoveQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemRemoveQuery() ?>}`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify({query: cartItemRemoveQuery})
-                })
-                    .then(response => response.json())
-                    .then(
-                        data => {
-                            this.clearErrorMessages();
-                            if (data.errors) {
-                                this.initErrorMessages(data.errors);
-                                this.getCart();
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({query: cartItemRemoveQuery})
+                    }
+                ).then(function (response) {
+                        return response.json()
+                    }
+                ).then(function (data) {
+                    $this.clearErrorMessages();
+                    if (data.errors) {
+                        $this.initErrorMessages(data.errors);
+                        $this.getCart();
 
-                            } else {
-                                this.cartData = (data && data.data && (data.data.removeItemFromCart && (data.data.removeItemFromCart.cart))) || [];
-                                this.updateCartDataDependencies();
-                            }
-                        }
-                    ).finally(() => {
-                    this.isLoading = false
+                    } else {
+                        $this.cartData = (data && data.data && (data.data.removeItemFromCart && (data.data.removeItemFromCart.cart))) || [];
+                        $this.updateCartDataDependencies();
+                    }
+                    $this.isLoading = false;
+                    $this.reloadCustomerData();
                 });
+            },
+            reloadCustomerData: function () {
+                var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                window.dispatchEvent(reloadCustomerDataEvent);
             }
         }
     }
