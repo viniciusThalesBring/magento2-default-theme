@@ -1,0 +1,37 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+/* @var $block \Magento\Sales\Block\Order\Creditmemo */
+$order = $block->getOrder();
+?>
+<div class="md:flex md:justify-between items-center mb-3">
+    <div class="text-center md:text-left">
+        <div class="text-2xl"><?= $escaper->escapeHtml(__('Order # %1', $order->getRealOrderId())) ?></div>
+        <?= $block->getChildHtml('order.date') ?>
+    </div>
+    <?= $block->getChildHtml('sales.creditmemo.buttons') ?>
+</div>
+<div class="order-details-items creditmemo bg-container-lighter">
+    <div class="-mx-4">
+        <?= $block->getChildHtml('order_top_items') ?>
+    </div>
+    <div class="p-4 card">
+        <?= $block->getChildHtml('order.comments') ?>
+        <div class="mb-4">
+            <?= $block->getChildHtml('sales.order.info') ?>
+        </div>
+        <?= $block->getChildHtml('creditmemo_items') ?>
+        <div class="actions-toolbar">
+            <div class="secondary">
+                <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action back">
+                    <span><?= $block->escapeHtml($block->getBackTitle()) ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

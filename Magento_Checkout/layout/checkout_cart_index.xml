@@ -30,13 +30,13 @@
                                   xsi:type="object">Hyva\Theme\ViewModel\Cart\GraphQlQueries
                         </argument>
                     </arguments>
-                    <block name="js_localstorage_config" template="Magento_Checkout::cart/js/localStorageConfig.phtml">
+                    <block name="js_localstorage_config" template="Hyva_Theme::js/localStorageConfig.phtml">
                         <arguments>
                             <argument name="render_in_script_tag" xsi:type="boolean">false</argument>
                         </arguments>
                     </block>
                 </block>
-                <block name="loading" template="Magento_Checkout::cart/loading.phtml"/>
+                <block name="loading" template="Hyva_Theme::ui/loading.phtml"/>
                 <block name="items" template="Magento_Checkout::cart/items.phtml">
                     <arguments>
                         <argument name="viewModelItemOutput"

@@ -36,6 +36,11 @@ $siteKey = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/pu
                         $this.hasCaptchaToken = 1;
                         $this.submitForm();
                     }
+                    else {
+                        $this.errors = 1;
+                        $this.setErrorMessages(['Your form does not have the required fields for recaptcha to work.']);
+                        $this.displayErrorMessage = true;
+                    }
                 });
             });
         }

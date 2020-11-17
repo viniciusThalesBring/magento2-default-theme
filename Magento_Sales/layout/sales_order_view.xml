@@ -15,16 +15,22 @@
     <update handle="sales_order_info_links"/>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Sales\Block\Order\View" name="sales.order.view" cacheable="false"
-                   after="sales.order.info.links">
-                <container name="order_top_items">
-                    <block class="Magento\Sales\Block\Order\Info" name="order.date"
-                           template="Magento_Sales::order/order_date.phtml"/>
-                    <block class="Magento\Sales\Block\Order\View" name="order.comments"
-                           template="Magento_Sales::order/order_comments.phtml" before="sales.order.info.links"/>
-                </container>
+            <block class="Magento\Sales\Block\Order\View" name="sales.order.view" cacheable="false">
+                <block class="Magento\Sales\Block\Order\Info" name="order.date"
+                       template="Magento_Sales::order/order_date.phtml"/>
+                <block class="Magento\Sales\Block\Order\Info\Buttons" name="sales.order.buttons"/>
+                <container name="order_top_items"></container>
+                <block class="Magento\Sales\Block\Order\View" name="order.comments"
+                       template="Magento_Sales::order/order_comments.phtml" />
+                <block class="Magento\Sales\Block\Order\Info" name="sales.order.info">
+                </block>
                 <block class="Magento\Sales\Block\Order\Items" name="order_items"
                        template="Magento_Sales::order/items.phtml">
+                    <block class="Magento\Shipping\Block\Tracking\Link" name="track-all-link" template="Magento_Shipping::tracking/link.phtml">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Track All Shipments</argument>
+                        </arguments>
+                    </block>
                     <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers"
                            as="renderer.list"/>
                     <block class="Magento\Theme\Block\Html\Pager" name="sales_order_item_pager"/>
@@ -34,9 +40,6 @@
                                template="Magento_Tax::order/tax.phtml"/>
                     </block>
                 </block>
-                <block class="Magento\Sales\Block\Order\Info" name="sales.order.info"/>
-                <block class="Magento\Sales\Block\Order\Info\Buttons" name="sales.order.info.buttons"
-                       cacheable="false"/>
             </block>
         </referenceContainer>
         <block class="Magento\Framework\View\Element\Template" name="additional.product.info"

@@ -10,16 +10,20 @@
 
 /** @var \Magento\Sales\Block\Order\Items $block */
 /** @var \Magento\Framework\Escaper $escaper */
+
+$cols = $block->getData('is_context_shipment') ? 3 : 5;
 ?>
-<div class="order-items card">
+<div class="order-items">
     <?php if ($block->isPagerDisplayed()) : ?>
         <?= $block->getPagerHtml() ?>
     <?php endif ?>
-    <div class="hidden lg:grid grid-cols-5 text-sm text-secondary ">
+    <div class="hidden lg:grid grid-cols-<?= $escaper->escapeHtmlAttr($cols) ?> text-sm text-secondary ">
         <div class="p-2 col-span-2"><?= $escaper->escapeHtml(__('Product Name')) ?></div>
-        <div class="p-2"><?= $escaper->escapeHtml(__('Price')) ?></div>
+        <?php if (!$block->getData('is_context_shipment')): ?>
+            <div class="p-2"><?= $escaper->escapeHtml(__('Price')) ?></div><?php endif; ?>
         <div class="p-2"><?= $escaper->escapeHtml(__('Qty')) ?></div>
-        <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div>
+        <?php if (!$block->getData('is_context_shipment')): ?>
+            <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div><?php endif; ?>
     </div>
     <?php $items = $block->getItems(); ?>
     <?php $giftMessage = '' ?>

@@ -10,35 +10,43 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 $item = $block->getItem();
+$cols = $block->getData('is_context_shipment') ? 3 : ($block->getData('is_context_creditmemo') ? 7 : 5);
 ?>
-<div class="lg:grid lg:grid-cols-5 py-4">
+<div class="lg:grid grid-cols-<?= $escaper->escapeHtmlAttr($cols) ?> py-2">
     <div class="p-2 col-span-2">
-        <span class="grid-cols-2"><?= $escaper->escapeHtml($item->getName()) ?></span>
-        <div class="item-options col-span-2 lg:col-span-1 grid grid-cols-3 mt-2">
-            <div class="text-sm"><?= $escaper->escapeHtml(__('Sku')) ?>:</div>
-            <div class="text-sm col-span-2"><?= /* @noEscape */
-                $block->prepareSku($block->getSku()) ?>
+        <span class="font-semibold"><?= $escaper->escapeHtml($item->getName()) ?></span>
+        <div class="item-options mt-2">
+            <div class="text-sm flex">
+                <span><?= $escaper->escapeHtml(__('Sku')) ?>:</span>
+                <span class="text-sm ml-1"><?= /* @noEscape */
+                    $block->prepareSku($block->getSku()) ?></span>
             </div>
-            <?php if ($_options = $block->getItemOptions()) : ?>
-                <?php foreach ($_options as $_option) : ?>
-                    <div class="text-sm mt-1"><?= $escaper->escapeHtml($_option['label']) ?>:</div>
-                    <?php if (!$block->getPrintStatus()) : ?>
-                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                        <div
-                            class="col-span-2 mt-1 text-sm<?= (isset($_formatedOptionValue['full_view']) ? ' tooltip wrapper' : '') ?>">
-                            <?php if (isset($_formatedOptionValue['full_view'])) : ?>
-                                <?= $escaper->escapeHtml($_formatedOptionValue['full_view']) ?>
-                            <?php else : ?>
+            <?php if ($options = $block->getItemOptions()) : ?>
+                <?php foreach ($options as $option) : ?>
+                    <div class="text-sm flex mt-1">
+                        <span><?= $escaper->escapeHtml($option['label']) ?>:</span>
+                        <?php if (!$block->getPrintStatus()) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($option) ?>
+                            <span class="ml-1">
                                 <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['a', 'img']) ?>
-                            <?php endif; ?>
-                        </div>
-                    <?php else : ?>
-                        <div><?= $escaper->escapeHtml(
-                                (isset($_option['print_value']) ? $_option['print_value'] : $_option['value'])
-                            ) ?>
-                        </div>
-                    <?php endif; ?>
+                        </span>
+                        <?php else : ?>
+                            <span class="ml-1"><?= $escaper->escapeHtml(
+                                    (isset($option['print_value']) ? $option['print_value'] : $option['value'])
+                                ) ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
                 <?php endforeach; ?>
+            <?php endif; ?>
+            <?php /* downloadable */ ?>
+            <?php if ($links = $block->getLinks()) : ?>
+                <div class="item options my-2">
+                    <p><?= $block->escapeHtml($block->getLinksTitle()) ?></p>
+                    <?php foreach ($links->getPurchasedItems() as $link) : ?>
+                        <p class="ml-1"><?= $block->escapeHtml($link->getLinkTitle()) ?></p>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
             <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
             <?php if ($addtInfoBlock) : ?>
@@ -47,33 +55,71 @@ $item = $block->getItem();
             <?= $escaper->escapeHtml($item->getDescription()) ?>
         </div>
     </div>
+    <?php if (!$block->getData('is_context_shipment')): ?>
+        <div class="p-2 flex justify-between lg:block">
+            <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Price')) ?></p>
+            <?= $block->getItemPriceHtml() ?>
+        </div>
+    <?php endif; ?>
     <div class="p-2 flex justify-between lg:block">
-        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Price')) ?></p>
-        <?= $block->getItemPriceHtml() ?>
-    </div>
-    <div class="p-2 flex justify-between lg:block">
-        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Qty')) ?></p>
+        <p class="lg:hidden font-medium">
+            <?php if ($block->getData('is_context_invoice')): ?><?= $escaper->escapeHtml(
+                __('Qty Invoiced')
+            ) ?>
+            <?php elseif ($block->getData('is_context_shipment')): ?><?= $escaper->escapeHtml(
+                __('Qty Shipped')
+            ) ?>
+            <?php else : ?><?= $escaper->escapeHtml(__('Qty')) ?><?php endif; ?></p>
         <div class="text-right lg:text-left">
-            <?php if ($block->getItem()->getQtyOrdered() > 0) : ?>
-                <span class="title"><?= $escaper->escapeHtml(__('Ordered')) ?>:</span>
-                <span class="content"><?= (float)$block->getItem()->getQtyOrdered() ?></span>
+            <?php if ($block->getData('is_context_invoice') || $block->getData('is_context_creditmemo')): ?>
+                <span class="content"><?= (float)$block->getItem()->getQty() ?></span>
             <?php endif; ?>
-            <?php if ($block->getItem()->getQtyShipped() > 0) : ?>
-                <span class="title"><?= $escaper->escapeHtml(__('Shipped')) ?>:</span>
-                <span class="content"><?= (float)$block->getItem()->getQtyShipped() ?></span>
+            <?php if ($block->getData('is_context_shipment')) : ?>
+                <span class="content"><?= (float)$block->getItem()->getQty() ?></span>
             <?php endif; ?>
-            <?php if ($block->getItem()->getQtyCanceled() > 0) : ?>
-                <span class="title"><?= $escaper->escapeHtml(__('Canceled')) ?>:</span>
-                <span class="content"><?= (float)$block->getItem()->getQtyCanceled() ?></span>
-            <?php endif; ?>
-            <?php if ($block->getItem()->getQtyRefunded() > 0) : ?>
-                <span class="title"><?= $escaper->escapeHtml(__('Refunded')) ?>:</span>
-                <span class="content"><?= (float)$block->getItem()->getQtyRefunded() ?></span>
+            <?php if ($block->getData('is_context_order')): ?>
+                <?php if ($block->getItem()->getQtyOrdered() > 0) : ?>
+                    <p>
+                        <span class="title"><?= $escaper->escapeHtml(__('Ordered')) ?>:</span>
+                        <span class="content"><?= (float)$block->getItem()->getQtyOrdered() ?></span>
+                    </p>
+                <?php endif; ?>
+                <?php if ($block->getItem()->getQtyShipped() > 0) : ?>
+                    <p>
+                        <span class="title"><?= $escaper->escapeHtml(__('Shipped')) ?>:</span>
+                        <span class="content"><?= (float)$block->getItem()->getQtyShipped() ?></span>
+                    </p>
+                <?php endif; ?>
+                <?php if ($block->getItem()->getQtyCanceled() > 0) : ?>
+                    <p>
+                        <span class="title"><?= $escaper->escapeHtml(__('Canceled')) ?>:</span>
+                        <span class="content"><?= (float)$block->getItem()->getQtyCanceled() ?></span>
+                    </p>
+                <?php endif; ?>
+                <?php if ($block->getItem()->getQtyRefunded() > 0) : ?>
+                    <p>
+                        <span class="title"><?= $escaper->escapeHtml(__('Refunded')) ?>:</span>
+                        <span class="content"><?= (float)$block->getItem()->getQtyRefunded() ?></span>
+                    </p>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
-    <div class="p-2 text-right flex justify-between lg:block">
-        <p class="lg:hidden"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
-        <?= $block->getItemRowTotalHtml() ?>
-    </div>
+    <?php if (!$block->getData('is_context_shipment')) : ?>
+        <div class="p-2 text-right flex justify-between lg:block">
+            <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Subtotal')) ?></p>
+            <?= $block->getItemRowTotalHtml() ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($block->getData('is_context_creditmemo')) : ?>
+        <div class="p-2 text-right flex justify-between lg:block">
+            <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Discount Amount')) ?></p>
+            <?= /* @noEscape */
+            $block->getOrder()->formatPrice($item->getDiscountAmount()) ?>
+        </div>
+        <div class="p-2 text-right flex justify-between lg:block">
+            <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Row Total')) ?></p>
+            <?= $block->getItemRowTotalAfterDiscountHtml() ?>
+        </div>
+    <?php endif; ?>
 </div>

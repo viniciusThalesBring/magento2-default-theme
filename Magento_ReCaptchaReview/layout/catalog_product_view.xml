@@ -24,7 +24,7 @@
                    template="Magento_ReCaptchaFrontendUi::recaptcha.phtml"
                    ifconfig="recaptcha_frontend/type_for/product_review">
                 <arguments>
-                    <argument name="recaptcha_for" xsi:type="string">review</argument>
+                    <argument name="recaptcha_for" xsi:type="string">product_review</argument>
                 </arguments>
             </block>
         </referenceContainer>

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
 use Magento\Framework\Escaper;
 use Magento\Review\Block\Form;
 
@@ -14,7 +20,7 @@ $formId = 'review_form';
             <?= $escaper->escapeHtml(__('Write Your Own Review')) ?>
         </div>
         <?php if ($block->getAllowWriteReviewFlag()): ?>
-            <form class="review-form" id="<?= $escaper->escapeHtmlAttr($formId) ?>" @submit.prevent="submitForm()">
+            <form class="review-form" id="<?= $escaper->escapeHtmlAttr($formId) ?>" @submit.prevent="submitForm()" action="">
                 <?= $block->getChildHtml('form_fields_before') ?>
                 <fieldset>
                     <legend class="text-xs">
@@ -268,10 +274,10 @@ $formId = 'review_form';
                         review: null,
                         setErrorMessages: function setErrorMessages(messages) {
                             this.errorMessages = [messages]
+                            this.displayErrorMessage = this.errorMessages.length
                         },
                         submitForm: function () {
                             var $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-
                             this.validate();
 
                             <?= $block->getChildHtml('recaptcha_validation'); ?>
