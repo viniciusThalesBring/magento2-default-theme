@@ -16,10 +16,10 @@ use Magento\Catalog\Model\Product\Option;
 /** @var ProductPage $productViewModel */
 $productViewModel = $block->getProductViewModel();
 
-$_options = $block->decorateArray($block->getOptions());
+$options = $block->decorateArray($block->getOptions());
 
 ?>
-<?php if (count($_options)) :?>
+<?php if (count($options)) :?>
     <script>
         function initOptions() {
             return {
@@ -135,8 +135,8 @@ $_options = $block->decorateArray($block->getOptions());
          x-init="refs = $refs; $nextTick(() => { calculateOptionPrices() })"
          @update-product-final-price.window="productFinalPrice = event.detail; calculateOptionPrices()"
          class="mb-6">
-    <?php foreach ($_options as $_option) :?>
-        <?= $block->getOptionHtml($_option) ?>
+    <?php foreach ($options as $option) :?>
+        <?= $block->getOptionHtml($option) ?>
     <?php endforeach; ?>
     </div>
 <?php endif; ?>

@@ -44,14 +44,14 @@ $option = $block->getOption();
                    x-on:input="updateCustomOptionValue($dispatch, '<?= $escaper->escapeHtmlAttr($option->getId()) ?>', $event.target)"
             />
         <?php elseif ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_AREA) :?>
-            <?php $_textAreaValidate = null;
+            <?php $textAreaValidate = null;
             if ($option->getIsRequire()) {
-                $_textAreaValidate['required'] = true;
+                $textAreaValidate['required'] = true;
             }
             if ($option->getMaxCharacters()) {
-                $_textAreaValidate['maxlength'] = $option->getMaxCharacters();
+                $textAreaValidate['maxlength'] = $option->getMaxCharacters();
             }
-            $_textAreaValidate['validate-no-utf8mb4-characters'] = true;
+            $textAreaValidate['validate-no-utf8mb4-characters'] = true;
             ?>
             <textarea id="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>_text"
                       class="product-custom-option form-textarea"
