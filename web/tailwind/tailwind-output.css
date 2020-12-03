@@ -2819,6 +2819,10 @@ body {
   align-items: flex-start;
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
 .items-center {
   align-items: center;
 }
@@ -3042,6 +3046,11 @@ body {
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .my-3 {
@@ -3686,6 +3695,10 @@ body {
   text-decoration: underline;
 }
 
+.line-through {
+  text-decoration: line-through;
+}
+
 .no-underline {
   text-decoration: none;
 }
@@ -3729,6 +3742,10 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.w-0 {
+  width: 0;
 }
 
 .w-3 {

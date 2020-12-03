@@ -1,0 +1,44 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Api\Data\ProductCustomOptionInterface;
+use Magento\Catalog\Block\Product\View\Options\Type\Date;
+
+/* TODO: implement custom select elements */
+?>
+<?php /* @var $block Date */ ?>
+<?php $option = $block->getOption() ?>
+<?php $optionId = $block->escapeHtmlAttr($option->getId()) ?>
+<?php $class = ($option->getIsRequire()) ? ' required' : ''; ?>
+<div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
+    <label class="label text-gray-500 text-left w-1/2" for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>_text">
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
+        <?php if($option->getIsRequire()): ?>
+            <span class="sup text-sm">*</span>
+        <?php endif; ?>
+        <span x-html="getFormattedOptionPrice(<?= $escaper->escapeHtmlAttr($option->getId()) ?>) || ''">
+            <?= $escaper->escapeHtml($block->getFormattedPrice()) ?>
+        </span>
+    </label>
+    <div>
+        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME
+            || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE) :?>
+
+            <?= $block->getDateHtml() ?>
+
+        <?php endif; ?>
+
+        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME
+            || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_TIME) :?>
+            <?= $block->getTimeHtml() ?>
+        <?php endif; ?>
+
+    </div>
+</div>

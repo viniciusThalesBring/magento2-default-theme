@@ -126,7 +126,7 @@ use Magento\Framework\View\Element\Template;
                                     <template x-for="option in item.options">
                                         <div class="pt-2">
                                             <p class="font-semibold" x-text="option.label + ':'"></p>
-                                            <p class="text-ciHighlight" x-text="option.value"></p>
+                                            <p class="text-secondary" x-html="option.value"></p>
                                         </div>
                                     </template>
                                     <p><span x-html="item.product_price"></span></p>

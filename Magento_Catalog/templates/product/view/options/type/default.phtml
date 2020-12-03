@@ -1,0 +1,21 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Block\Product\View\Options\Type\DefaultType;
+
+/** @var $block DefaultType */
+?>
+<?php $option = $block->getOption() ?>
+<div class="field">
+    <label class="label"><span><?= $block->escapeHtml($option->getTitle()) ?></span></label>
+    <?php if($option->getIsRequire()): ?>
+        <span class="sup text-sm">*</span>
+    <?php endif; ?>
+</div>

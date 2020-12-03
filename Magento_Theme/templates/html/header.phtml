@@ -61,8 +61,8 @@ use Magento\Framework\View\Element\Template;
                     <circle cx="10.5" cy="18.5" r="1.5"></circle>
                     <circle cx="17.5" cy="18.5" r="1.5"></circle>
                 </svg>
-                <span x-show="cart.summary_count" x-text="cart.summary_count" x-cloak
-                      class="absolute top-0 right-0 -mt-5 -mr-4 leading-none text-xs font-semibold inline-block py-1 px-2 uppercase transform -translate-x-1 translate-y-1/2 rounded-full text-center text-white bg-primary h-5"
+                <span x-text="cart.summary_count"
+                      class="hidden absolute top-0 right-0 -mt-5 -mr-4 leading-none text-xs font-semibold py-1 px-2 uppercase transform -translate-x-1 translate-y-1/2 rounded-full text-center text-white bg-primary h-5"
                       :class="{
                         'hidden': !cart.summary_count,
                         'block': cart.summary_count }"

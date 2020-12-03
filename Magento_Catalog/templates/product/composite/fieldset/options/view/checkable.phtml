@@ -1,0 +1,95 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable;
+use Magento\Catalog\Model\Product\Option;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
+/**
+ * @var $block Checkable
+ * @var $escaper Escaper
+ * @var SecureHtmlRenderer $secureRenderer
+ */
+$option = $block->getOption();
+if ($option): ?>
+    <?php
+    $configValue = $block->getPreconfiguredValue($option);
+    $optionType = $option->getType();
+    $arraySign = $optionType === Option::OPTION_TYPE_CHECKBOX ? '[]' : '';
+    $count = 1;
+    ?>
+
+<div class="options-list nested" id="options-<?= $escaper->escapeHtmlAttr($option->getId()) ?>-list">
+    <?php if ($optionType === Option::OPTION_TYPE_RADIO && !$option->getIsRequire()):?>
+    <div class="field choice">
+        <input type="radio"
+               id="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
+               class="radio product-custom-option"
+               name="options[<?= $escaper->escapeHtmlAttr($option->getId()) ?>]"
+               value=""
+               checked="checked"
+               x-on:change="updateCustomOptionValue($dispatch, '<?= $escaper->escapeHtmlAttr($option->getId()) ?>', $event.target)"
+        />
+        <label class="label text-left"
+               for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
+        >
+            <span><?= $escaper->escapeHtml(__('None'))  ?></span>
+        </label>
+    </div>
+<?php endif; ?>
+    <?php foreach ($option->getValues() as $value): ?>
+        <?php
+
+        $checked = '';
+        $count++;
+        if ($arraySign) {
+            $checked = is_array($configValue) && in_array($value->getOptionTypeId(), $configValue) ? 'checked' : '';
+        } else {
+            $checked = $configValue == $value->getOptionTypeId() ? 'checked' : '';
+        }
+        $dataSelector = 'options[' . $option->getId() . ']';
+        if ($arraySign) {
+            $dataSelector .= '[' . $value->getOptionTypeId() . ']';
+        }
+
+        $optionId = $option->getId() . '_' . $value->getOptionTypeId();
+        ?>
+
+        <div class="field choice">
+            <input type="<?= $escaper->escapeHtmlAttr($optionType) ?>"
+                   class="<?= $optionType === Option::OPTION_TYPE_RADIO
+                       ? 'form-radio'
+                       : 'form-checkbox' ?>
+                       product-custom-option
+                        <?= $block->getSkipJsReloadPrice() ? '' : 'opConfig.reloadPrice()' ?>"
+                   name="options[<?= $escaper->escapeHtmlAttr($option->getId()) ?>]<?= /* @noEscape */ $arraySign ?>"
+                   id="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($value->getOptionTypeId()) ?>"
+                   <?= $block->escapeHtml($checked) ?>
+                   <?= ($option->getIsRequire()) ? 'required' : '' ?>
+                   data-price-amount="<?= $escaper->escapeHtmlAttr($block->getCurrencyByStore($value)) ?>"
+                   data-price-type="<?= $value->getPriceType() ?>"
+                   data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-on:change="updateCustomOptionValue($dispatch, '<?= $escaper->escapeHtmlAttr($optionId) ?>', $event.target)"
+            />
+            <label class="label text-left"
+                   for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+            >
+                <span><?= $escaper->escapeHtml($value->getTitle()) ?></span>
+                <span x-html="getFormattedOptionPrice('<?= $escaper->escapeHtmlAttr($optionId) ?>') || ''">
+                    <?= /* @noEscape */ $block->formatPrice($value) ?>
+                </span>
+            </label>
+        </div>
+    <?php endforeach; ?>
+    </div>
+<?php endif; ?>
