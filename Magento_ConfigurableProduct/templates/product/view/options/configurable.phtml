@@ -96,7 +96,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                         this.optionConfig.images[this.productIndex] :
                         Object.values(this.optionConfig.images)[0];
 
-                    window.dispatchEvent(
+                    value && window.dispatchEvent(
                         new CustomEvent(
                             "update-gallery",
                             { detail: value }
