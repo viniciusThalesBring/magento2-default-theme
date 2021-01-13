@@ -6,6 +6,7 @@
     "dependencies": {
         "@tailwindcss/typography": "^0.2.0",
         "autoprefixer": "^9.8.0",
+        "browser-sync": "^2.26.13",
         "csso-cli": "^3.0.0",
         "postcss-cli": "^7.1.1",
         "postcss-custom-properties": "^9.1.1",
@@ -23,7 +24,8 @@
         "minify": "npx csso tailwind-output.css --output ../css/styles.css",
         "build-dev": "NODE_ENV=development npm run build && cp tailwind-output.css ../css/styles.css && npm run output-success",
         "build-prod": "NODE_ENV=production npm run build && npm run minify && npm run output-success",
-        "output-success": "echo \"\\033[0;32mDone!\\033[0m\""
+        "output-success": "echo \"\\033[0;32mDone!\\033[0m\"",
+        "watch": "browser-sync start --config ./browser-sync.config.js"
     },
     "author": "Willem Wigman",
     "license": "ISC",
