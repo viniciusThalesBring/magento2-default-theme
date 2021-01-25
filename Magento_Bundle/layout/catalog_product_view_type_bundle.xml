@@ -53,8 +53,9 @@
 
         <move element="product.info.quantity" destination="bundle.summary"/>
         <move element="product.info.addtocart" destination="bundle.summary"/>
-        <move element="product.info.form" destination="bundle.summary"/>
         <move element="product.price.tier" destination="bundle.summary"/>
+        <move element="product.info.form" destination="bundle.summary"/>
+        <move element="addtocart.shortcut.buttons" destination="bundle.summary"/>
 
         <referenceBlock name="product.info">
             <block class="Magento\Catalog\Pricing\Render" name="product.info.price">
@@ -69,6 +70,8 @@
         <referenceBlock name="product.info.form.options">
             <container name="bundle.product.options.wrapper" htmlTag="div" htmlClass="bundle-options-wrapper"/>
         </referenceBlock>
+
+
 
     </body>
 </page>

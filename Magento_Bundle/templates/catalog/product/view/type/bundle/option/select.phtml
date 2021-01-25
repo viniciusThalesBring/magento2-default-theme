@@ -15,8 +15,8 @@ use Magento\Framework\Escaper;
 /** @var $escaper Escaper */
 
 $option = $block->getOption();
-$selections  = $option->getSelections();
-$default     = $option->getDefaultSelection();
+$selections = $option->getSelections();
+$default = $option->getDefaultSelection();
 list($defaultQty, $canChangeQty) = $block->getDefaultValues();
 
 $optionId = $option->getId();
@@ -57,7 +57,9 @@ $activeSelectOptions = [];
                     array_push($activeSelectOptions, $selectionId);
                     echo 'selected = "selected"';
                 } ?>
-                <?php if (!$selection->isSaleable()) { echo ' disabled="disabled"'; } ?>
+                <?php if (!$selection->isSaleable()): ?>
+                    disabled="disabled"
+                <?php endif; ?>
                 data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
                 x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
             >

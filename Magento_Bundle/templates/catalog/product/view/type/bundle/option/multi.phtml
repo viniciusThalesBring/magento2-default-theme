@@ -15,12 +15,12 @@ use Magento\Framework\Escaper;
 /** @var $escaper Escaper */
 
 $option = $block->getOption();
-$selections  = $option->getSelections();
+$selections = $option->getSelections();
 
 $optionId = $option->getId();
 $selectedOptions = [];
 
-$default     = $option->getDefaultSelection();
+$default = $option->getDefaultSelection();
 list($defaultQty, $canChangeQty) = $block->getDefaultValues();
 ?>
 <?php if ($block->showSingle()): ?>

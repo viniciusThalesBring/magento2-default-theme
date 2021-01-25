@@ -26,7 +26,7 @@ use Magento\Framework\View\Element\Template;
                           1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
         />
     </svg>
-    <span><?= $block->getData('is_cart_configure') ?
+    <span class="hidden sm:block md:hidden lg:block"><?= $block->getData('is_cart_configure') ?
             $escaper->escapeHtml(__('Update item')) :
             $escaper->escapeHtml(__('Add to Cart')) ?>
     </span>

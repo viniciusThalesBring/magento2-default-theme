@@ -88,24 +88,6 @@ $product = $productViewModel->getProduct();
         <?php if ($product->isSaleable()): ?>
             <?= $block->getChildHtml("product.info.quantity") ?>
             <?= $block->getChildHtml("product.info.addtocart") ?>
-<!--
-            <button type="submit"
-                    form="product_addtocart_form"
-                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
-                    class="btn btn-primary"
-            >
-                <svg class="w-6 h-6 border-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707
-                          1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                </svg>
-                <span class="hidden sm:block md:hidden lg:block"><?= $block->getData('submit_route_data') ?
-                        $escaper->escapeHtml(__('Update item')) :
-                        $escaper->escapeHtml(__('Add to Cart')) ?>
-                </span>
-            </button>
--->
         <?php endif; ?>
         <script defer>
             function initWishlist() {
@@ -177,14 +159,15 @@ $product = $productViewModel->getProduct();
                 </path>
             </svg>
         </button>
-        <?php if ($product->isSaleable()) : ?>
-            <div>
-                <?= $block->getChildHtml('addtocart.shortcut.buttons', true) ?>
-            </div>
-        <?php endif; ?>
-        </div>
 
+        </div>
     </div>
+
+    <?php if ($product->isSaleable()): ?>
+        <div class="flex mt-4 ml-auto justify-end">
+            <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($tierPriceBlock = $block->getChildHtml("product.price.tier")): ?>
     <div class="py-4 my-2 tier-price-container">

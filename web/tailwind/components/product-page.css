@@ -1,9 +1,51 @@
 
-.product.media {
-    @apply w-full h-auto;
-    @screen md {
-        .product.media {
-            @apply w-1/2;
+.price-final_price {
+    .price-from,
+    .price-to {
+
+        @apply  text-gray-900 block mb-1;
+
+        .price-label {
+            @apply font-medium;
         }
+        .price-wrapper {
+            @apply font-semibold text-gray-800;
+        }
+
+        .old-price {
+
+            .price-label,
+            .price-wrapper {
+                @apply inline font-normal text-gray-600;
+            }
+        }
+    }
+
+}
+
+.page-product-bundle {
+    .price-final_price {
+        .price-from,
+        .price-to {
+
+            @apply  text-gray-700 block mb-4;
+
+            .price-label {
+                @apply block text-xl font-medium;
+            }
+            .price-wrapper {
+                @apply block font-semibold text-4xl text-gray-800 leading-tight;
+            }
+
+            .old-price {
+                @apply block text-gray-700 text-lg font-normal;
+
+                .price-label,
+                .price-wrapper {
+                    @apply inline text-base;
+                }
+            }
+        }
+
     }
 }

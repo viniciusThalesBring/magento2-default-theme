@@ -15,8 +15,8 @@ use Magento\Framework\Escaper;
 /** @var $escaper Escaper */
 
 $option = $block->getOption();
-$selections  = $option->getSelections();
-$default     = $option->getDefaultSelection();
+$selections = $option->getSelections();
+$default = $option->getDefaultSelection();
 
 $optionId = $option->getId();
 ?>
@@ -39,15 +39,17 @@ $optionId = $option->getId();
     <?php foreach ($selections as $selection): ?>
         <?php $selectionId = $selection->getSelectionId(); ?>
         <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
-        <div class="field choice mt-1 flex items-center gap-x-2">
+        <div class="field choice mt-1 flex items-center gap-x-2 my-1">
             <input class="bundle-option-<?= (int)$optionId ?>
                 form-checkbox"
                    id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                   name="bundle_option[<?= (int) $optionId ?>][<?= (int) $selectionId ?>]"
+                   name="bundle_option[<?= (int)$optionId ?>][<?= (int)$selectionId ?>]"
                    form="product_addtocart_form"
                    type="checkbox"
                    <?php if ($block->isSelected($selection)) { echo ' checked="checked"'; } ?>
-                   <?php if (!$selection->isSaleable()) { echo ' disabled="disabled"'; } ?>
+                   <?php if (!$selection->isSaleable()): ?>
+                       disabled="disabled"
+                   <?php endif; ?>
                    value="<?= (int)$selectionId ?>"
                    x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
                    x-on:change="calculateTotalPrice($dispatch)"
@@ -55,10 +57,9 @@ $optionId = $option->getId();
             <label class="label"
                    for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>">
                 <span><?= /* @noEscape */ $block->getSelectionQtyTitlePrice($selection) ?></span>
-                <br/>
-                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
             </label>
         </div>
+        <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
     <?php endforeach; ?>
     <div id="bundle-option-<?= (int)$optionId ?>-container"></div>
 <?php endif; ?>
