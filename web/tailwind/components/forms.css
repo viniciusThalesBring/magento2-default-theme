@@ -1,0 +1,13 @@
+/**
+ * different styles can be found at https://tailwindcss-forms.vercel.app/
+ **/
+.form-input,
+.form-email,
+.form-select,
+.form-textarea {
+    @apply border-gray-300 rounded-md shadow-sm;
+
+    &:focus {
+        @apply border-primary-lighter ring ring-primary ring-opacity-50;
+    }
+}

@@ -266,7 +266,7 @@ $graphqlQuery = $query ?: "
                 </div>
             <?php endif; ?>
             <div class="relative w-full overflow-x-hidden">
-                <div class="relative flex flex-no-wrap w-full overflow-auto transition-all js_slides snap"
+                <div class="relative flex flex-nowrap w-full overflow-auto transition-all js_slides snap"
                      @scroll.debounce="calcActive"
                 >
                     <template x-for="product in products">

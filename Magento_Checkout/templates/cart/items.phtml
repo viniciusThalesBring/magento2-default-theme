@@ -22,7 +22,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
 
 ?>
 <template x-if="cartData.items && cartData.items.length">
-    <div class="table-row-items border-b border-primary-lighter">
+    <div class="table-row-items border-b border-container">
         <div
             class="hidden lg:grid lg:grid-cols-7 xl:grid-cols-8 text-sm text-primary-lighter border-b border-container">
             <div class="p-2 lg:col-span-4 xl:col-span-5"><?= $escaper->escapeHtml(__('Product Name')) ?></div>
@@ -34,7 +34,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
             <div
                 class="table-row-item flex flex-row flex-wrap lg:grid lg:grid-cols-7 xl:grid-cols-8
                     py-4 justify-end md:justify-start">
-                <div class="p-2 w-full lg:w-auto lg:col-span-4 xl:col-span-5 flex flex-no-wrap flex-row">
+                <div class="p-2 w-full lg:w-auto lg:col-span-4 xl:col-span-5 flex flex-nowrap flex-row">
                     <div class="w-3/12 mr-2 md:mr-1 px-1">
                         <a class=""
                            :href="'<?= $escaper->escapeUrl(
@@ -114,7 +114,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                         <p class="lg:hidden md:text-left">
                             <?= $escaper->escapeHtml(__('Unit Price')) ?>
                         </p>
-                        <span class="block md:text-right lg:text-center lg:whitespace-no-wrap
+                        <span class="block md:text-right lg:text-center lg:whitespace-nowrap
                                 <?php if (!$displayPriceTaxBoth): ?>p-2 <?php endif; ?>
                                ">
                             <span x-html="formatPrice(item.prices.price_incl_tax.value)"></span>
@@ -131,8 +131,8 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                 </p>
                             <?php endif; ?>
                             <span
-                                class="block text-left md:text-right lg:text-center lg:whitespace-no-wrap">
-                                <span class="block text-left md:text-right lg:text-center lg:whitespace-no-wrap p-2"
+                                class="block text-left md:text-right lg:text-center lg:whitespace-nowrap">
+                                <span class="block text-left md:text-right lg:text-center lg:whitespace-nowrap p-2"
                                       x-html="formatPrice(item.prices.price.value)">
                                 </span>
                                 <?php if ($displayPriceTaxBoth): ?>
@@ -215,7 +215,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                 <p class="lg:hidden text-right md:text-left">
                                     <?= $escaper->escapeHtml(__('Subtotal')) ?>
                                 </p>
-                                <span class="block md:text-right lg:text-center lg:whitespace-no-wrap
+                                <span class="block md:text-right lg:text-center lg:whitespace-nowrap
                                         <?php if (!$displayPriceTaxBoth): ?>p-2 <?php endif; ?>
                                       ">
                                     <span x-html="formatPrice(item.prices.row_total_incl_tax.value)"></span>
@@ -235,7 +235,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                     </p>
                                 <?php endif; ?>
                                 <span
-                                    class="block text-left md:text-right lg:text-center lg:whitespace-no-wrap
+                                    class="block text-left md:text-right lg:text-center lg:whitespace-nowrap
                                         <?php if (!$displayPriceTaxBoth): ?>p-2 <?php else: ?>pb-2 <?php endif; ?>
                                     ">
                                     <span x-html="formatPrice(item.prices.row_total.value)"></span>

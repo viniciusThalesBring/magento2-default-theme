@@ -13,7 +13,7 @@
     @apply py-2;
     @apply px-4;
     @apply cursor-pointer;
-    @apply whitespace-no-wrap;
+    @apply whitespace-nowrap;
 
 }
 

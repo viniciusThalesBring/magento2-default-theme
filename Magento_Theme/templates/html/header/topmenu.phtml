@@ -172,7 +172,7 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                             <?php foreach ($menuItem['childData'] as $subMenuItem): ?>
                                 <a href="<?= (string) $subMenuItem['url'] ?>"
                                    title="<?= (string) $subMenuItem['name'] ?>"
-                                   class="block w-full px-3 py-1 my-1 whitespace-no-wrap first:mt-0 hover:underline"
+                                   class="block w-full px-3 py-1 my-1 whitespace-nowrap first:mt-0 hover:underline"
                                 >
                                     <span class="text-base text-gray-700">
                                         <?= (string) $subMenuItem['name'] ?>
