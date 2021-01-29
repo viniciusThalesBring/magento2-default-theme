@@ -18,12 +18,6 @@
                    name="catalog.compare.list"
                    template="Magento_Catalog::product/compare/list.phtml"
                 cacheable="false">
-                <block name="catalog.compare.list.compare_init"
-                       as="compare_init"
-                       template="Magento_Catalog::product/compare/init.phtml"/>
-                <block name="category.products.list.wishlist_init"
-                       as="wishlist_init"
-                       template="Magento_Wishlist::init.phtml"/>
             </block>
         </referenceContainer>
     </body>
