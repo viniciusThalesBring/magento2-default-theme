@@ -30,7 +30,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 /** @var Product $product */
 $product = $currentProduct->get();
 
-if (!$product->getId() || !$productAlertViewModel->showPriceAlert($product)) {
+if (!$product->getId() || !$productAlertViewModel->showStockAlert($product)) {
     return;
 }
 
