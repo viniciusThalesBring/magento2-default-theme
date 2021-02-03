@@ -189,28 +189,7 @@ $showAddToCompare = $compareViewModel->showOnProductPage();
                         }).then(function (response) {
                             if (response.redirected) {
                                 window.location.href = response.url;
-                            } else if (response.ok) {
-                                return response.json();
-                            } else {
-                                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
-                                    [{
-                                        type: "warning",
-                                        text: "<?= $escaper->escapeHtml(__('Could not add item to compare.')) ?>"
-                                    }], 5000
-                                );
                             }
-                        }).then(function (response) {
-                            if (!response) { return; }
-                            typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
-                                [{
-                                    type: (response.success) ? "success" : "error",
-                                    text: (response.success)
-                                        ? "<?= $escaper->escapeHtml(__("You added product %1 to the comparison list", __("Product"))) ?>"
-                                        : response.error_message
-                                }], 5000
-                            );
-                            let reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
-                            window.dispatchEvent(reloadCustomerDataEvent);
                         }).catch(function (error) {
                             typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                                 [{
