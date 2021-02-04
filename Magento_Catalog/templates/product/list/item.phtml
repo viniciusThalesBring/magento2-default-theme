@@ -24,7 +24,7 @@ use Magento\Framework\Escaper;
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ProductPage $productViewModel */
-$productViewModel = $block->getData('product_view_model');
+$productViewModel = $viewModels->require(ProductPage::class);
 
 /** @var CatalogOutputHelper $catalogOutputHelper */
 $catalogOutputHelper = $this->helper(CatalogOutputHelper::class);

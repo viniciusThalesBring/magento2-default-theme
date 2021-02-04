@@ -25,9 +25,9 @@ $compareViewModel = $viewModels->require(ProductCompare::class);
 /** @var Wishlist $wishlistViewModel */
 $wishlistViewModel = $viewModels->require(Wishlist::class);
 /** @var ProductPage $productViewModel */
-$productViewModel = $block->getProductViewModel();
+$productViewModel = $viewModels->require(ProductPage::class);
 /** @var ProductAttributes $attributesViewModel */
-$attributesViewModel = $block->getAttributesViewModel();
+$attributesViewModel = $viewModels->require(ProductAttributes::class);
 /** @var Product $product */
 $product = $productViewModel->getProduct();
 
@@ -138,7 +138,9 @@ $showAddToCompare = $compareViewModel->showOnProductPage();
                                 [{
                                     type: (response.success) ? "success" : "error",
                                     text: (response.success)
-                                        ? "<?= $escaper->escapeHtml(__("%1 has been added to your Wish List.", __("Product"))) ?>"
+                                        ? "<?= $escaper->escapeHtml(
+                                            __("%1 has been added to your Wish List.", __("Product"))
+                                        ) ?>"
                                         : response.error_message
                                 }], 5000
                             );
