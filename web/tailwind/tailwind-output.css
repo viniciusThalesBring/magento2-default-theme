@@ -1234,6 +1234,25 @@ section#messages a {
           line-height: 1.5rem;
         }
 
+.modal {
+  /*
+   * TODO: add tailwind classes used for the cart and modal styles
+   * Makeing the modal and offcanvs styles theme specific and mor adjustable
+   */
+}
+
+.backdrop {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.25;
+  display: flex;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
 .snap {
   -ms-scroll-snap-type: x mandatory;
   scroll-snap-type: x mandatory;
@@ -2674,6 +2693,11 @@ body {
 
 .shadow-xl {
   --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
