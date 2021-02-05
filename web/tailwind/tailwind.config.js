@@ -1,4 +1,4 @@
-const {colors} = require('tailwindcss/defaultTheme')
+const { colors, spacing } = require("tailwindcss/defaultTheme");
 
 module.exports = {
     theme: {
@@ -125,6 +125,15 @@ module.exports = {
             // => @media (min-width: 1024px) { ... }
             'xl': '1280px',
             // => @media (min-width: 1280px) { ... }
+        },
+        minWidth: {
+            0: "0",
+            40: spacing["40"],
+            48: spacing["48"],
+            "1/4": "25%",
+            "1/2": "50%",
+            "3/4": "75%",
+            full: "100%",
         },
         minHeight: {
             '0': '0',
