@@ -47,10 +47,12 @@ function initPrint() {
 
 function initCompare() {
     return {
-        removeFromCompare: function(productId) {
+        removeFromCompare: function(productId, productName) {
             const formKey = document.querySelector('input[name=form_key]').value;
             const postUrl = BASE_URL + 'catalog/product_compare/remove/';
-            const confirmMessage = "<?= $escaper->escapeHtml(__('Are you sure you want to remove this item from your Compare Products list?')) ?>";
+            const confirmMessage = "<?= $escaper->escapeHtml(
+                __('Are you sure you want to remove this item from your Compare Products list?')
+            ) ?>";
             if (!window.confirm(confirmMessage)) {
                 return;
             }
@@ -82,7 +84,9 @@ function initCompare() {
                     [{
                         type: (response.success) ? "success" : "error",
                         text: (response.success)
-                            ? "<?= $escaper->escapeHtml(__("You removed product %1 from the comparison list", __("Product"))) ?>"
+                            ? "<?= $escaper->escapeHtml(
+                                __("You removed product %1 from the comparison list")
+                            ) ?>".replace('%1', productName)
                             : response.error_message
                     }], 5000
                 );
@@ -164,7 +168,8 @@ function initWishlist() {
                 <path stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2
+                    0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
                 </path>
             </svg>
             <span><?= $escaper->escapeHtml(__('Print This Page')) ?></span>
@@ -188,7 +193,10 @@ function initWishlist() {
                                 <a href="<?= $escaper->escapeUrl($block->getProductUrl($product)) ?>"
                                     class="block mb-3"
                                     title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>">
-                                    <?= $block->getImage($product, 'product_comparison_list')->toHtml() ?>
+                                    <?= $block->getImage(
+                                        $product,
+                                        'product_comparison_list'
+                                    )->setTemplate('Magento_Catalog::product/image.phtml')->toHtml() ?>
                                 </a>
                                 <strong>
                                     <a href="<?= $escaper->escapeUrl($block->getProductUrl($product)) ?>"
@@ -200,7 +208,8 @@ function initWishlist() {
                                 <div class="flex mt-auto pt-3 items-center">
                                     <?php if ($product->isSaleable()): ?>
                                         <form data-role="tocart-form"
-                                            action="<?= $escaper->escapeUrl($compareHelper->getAddToCartUrl($product)) ?>"
+                                            action="<?= $escaper
+                                                ->escapeUrl($compareHelper->getAddToCartUrl($product)) ?>"
                                             method="post"
                                             class="mr-auto">
                                             <?= $block->getBlockHtml('formkey') ?>
@@ -208,10 +217,19 @@ function initWishlist() {
                                                     class="w-auto mr-auto btn btn-primary justify-center text-sm px-2"
                                                     aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
                                             >
-                                                <svg class="h-6 w-6 border-current inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                                <svg class="h-6 w-6 border-current inline"
+                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293
+                                                          2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100
+                                                          4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                                    />
                                                 </svg>
-                                                <span class="sr-only"><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                                <span class="sr-only">
+                                                    <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                                                </span>
                                             </button>
                                         </form>
                                     <?php endif; ?>
@@ -219,20 +237,32 @@ function initWishlist() {
                                         <button x-data="initWishlist()"
                                             @click.prevent="addToWishlist(<?= (int)$product->getId() ?>)"
                                             aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
-                                            class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex flex-shrink-0 items-center justify-center text-gray-500 hover:text-red-600 ml-2">
-                                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                                            class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex
+                                            flex-shrink-0 items-center justify-center text-gray-500 hover:text-red-600
+                                            ml-2"
+                                        >
+                                            <svg fill="currentColor" stroke-linecap="round"
+                                                 stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
                                                 viewBox="0 0 24 24">
-                                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5
+                                                    0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0
+                                                    000-7.78z"
+                                                />
                                             </svg>
                                         </button>
                                     <?php endif; ?>
                                     <button x-data="initCompare()"
-                                        @click.prevent="removeFromCompare(<?= (int)$product->getId() ?>)"
+                                        @click.prevent="removeFromCompare(<?= (int)$product->getId() ?>, '<?= $escaper
+                                            ->escapeJs($product->getName()) ?>')"
                                         aria-label="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>"
-                                        class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex flex-shrink-0 items-center justify-center text-gray-500 hover:text-black ml-2"
+                                        class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex flex-shrink-0
+                                        items-center justify-center text-gray-500 hover:text-black ml-2"
                                         title="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  stroke-width="2" d="M6 18L18 6M6 6l12 12"
+                                            />
                                         </svg>
                                     </button>
                                 </div>
@@ -263,7 +293,11 @@ function initWishlist() {
                                 <?php if ($index++ === 0): ?>
                                     <th scope="row" class="border border-gray-300 py-2 px-3 text-left align-top">
                                         <span>
-                                            <?= $escaper->escapeHtml($attribute->getStoreLabel() ?: __($attribute->getFrontendLabel())) ?>
+                                            <?= $escaper
+                                                ->escapeHtml(
+                                                    $attribute->getStoreLabel() ?:
+                                                        __($attribute->getFrontendLabel())
+                                                ) ?>
                                         </span>
                                     </th>
                                 <?php endif; ?>
