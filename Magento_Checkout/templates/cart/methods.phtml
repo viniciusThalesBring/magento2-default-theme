@@ -12,7 +12,7 @@
 ?>
 <?php $methods = $block->getMethods('methods') ?: $block->getMethods('top_methods') ?>
 <template x-if="cartData && cartData.available_payment_methods && cartData.available_payment_methods.length">
-    <div class="flex justify-center lg:justify-end">
+    <div class="flex flex-wrap items-baseline justify-center lg:justify-end space-x-4 space-y-2">
         <?php foreach ($methods as $method): ?>
             <?php $methodHtml = $block->getMethodHtml($method); ?>
             <?php if (trim($methodHtml) !== ''): ?><?= /* @noEscape */
