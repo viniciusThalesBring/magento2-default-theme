@@ -40,17 +40,15 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                 <div class="p-2 w-full lg:w-auto lg:col-span-4 xl:col-span-5 flex flex-nowrap flex-row">
                     <div class="w-3/12 mr-2 md:mr-1 px-1">
                         <a class=""
-                           :href="'<?= $escaper->escapeUrl(
-                               $block->getBaseUrl()
-                           ) ?>' + item.product.url_key + '.html'" :title="item.product.small_image.label">
+                           :href="window.BASE_URL + item.product.url_key + (item.product.url_suffix || '')"
+                           :title="item.product.small_image.label"
+                        >
                             <img :src="item.product.small_image.url" :alt="item.product.small_image.label"/>
                         </a>
                     </div>
                     <div class="w-9/12">
                         <a class="font-semibold text-lg" x-html="item.product.name" :title="item.product.name"
-                           :href="'<?= $escaper->escapeUrl(
-                               $block->getBaseUrl()
-                           ) ?>' + item.product.url_key + '.html'"></a>
+                           :href="window.BASE_URL + item.product.url_key + (item.product.url_suffix || '')"></a>
                         <div class="item-options col-span-2 sm:grid grid-cols-4 mt-2 pb-2">
                             <div class="text-sm col-span-1 font-semibold inline-block">
                                 <?= $escaper->escapeHtml(__('Sku')) ?>:
@@ -117,7 +115,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                 </template>
                             </div>
                         </template>
-                        <p>
+                        <p x-show="item.product_type !== 'grouped'">
                             <a class="mt-2 underline text-sm inline-block text-primary-dark"
                               :href="'<?= $escaper->escapeUrl($block->getUrl('checkout/cart/configure')) ?>id/' +
                                item.id + '/product_id/' + item.product.id">
