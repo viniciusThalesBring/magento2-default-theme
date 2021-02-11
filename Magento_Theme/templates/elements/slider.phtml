@@ -9,7 +9,10 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ProductCompare;
 use Hyva\Theme\ViewModel\Store;
+use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -19,6 +22,15 @@ use Magento\Framework\View\Element\Template;
 
 /** @var $viewModelStore Store */
 $viewModelStore = $viewModels->require(Store::class);
+
+/** @var Wishlist $wishlistViewModel */
+$wishlistViewModel = $viewModels->require(Wishlist::class);
+
+/** @var ProductCompare $compareViewModel */
+$compareViewModel = $viewModels->require(ProductCompare::class);
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
 
 /** @var Escaper $escaper */
 /** @var Template $block */
@@ -204,6 +216,31 @@ $graphqlQuery = $query ?: "
                     );
                 });
             },
+            addToCompare: function (productId) {
+                const formKey = document.querySelector('input[name=form_key]').value;
+                const postUrl = BASE_URL + 'catalog/product_compare/add/';
+
+                fetch(postUrl, {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                    "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
+                }).then(function (response) {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                }).catch(function (error) {
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: "error",
+                            text: error
+                        }], 5000
+                    );
+                });
+            },
             getSlider: function getSlider() {
                 return this.$el.querySelector('.js_slides');
             },
@@ -307,26 +344,33 @@ $graphqlQuery = $query ?: "
                                     product.price_range.minimum_price.final_price.value,
                                     product.price_range.minimum_price.final_price.currency
                                    )"></p>
-                                <p class="flex flex-wrap inline p-3">
+                                <p class="flex flex-wrap gap-2 inline p-3">
                                     <a class="justify-center w-auto mr-auto btn btn-primary"
                                        :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
                                             product.url_key + (product.url_suffix || '')">
                                         <span class="inline"><?= $escaper->escapeHtml(__('View Product')) ?></span>
                                     </a>
-                                    <button
-                                        aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')) ?>"
-                                        @click.prevent="addToWishlist(product.id)"
-                                        class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
-                                        text-gray-500 bg-gray-200 border-0 rounded-full hover:text-red-600">
-                                        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                             stroke-width="2" class="w-5 h-5"
-                                             viewBox="0 0 24 24">
-                                            <path
-                                                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78
-                                                 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z">
-                                            </path>
-                                        </svg>
-                                    </button>
+                                    <span class="inline-flex gap-2">
+                                        <?php if ($compareViewModel->showInProductList()): ?>
+                                        <button @click.prevent="addToCompare(product.id)"
+                                                aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+                                                class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex
+                                                    items-center justify-center text-gray-500 hover:text-yellow-500"
+                                        >
+                                            <?= $heroicons->scaleHtml("w-5 h-5") ?>
+                                        </button>
+                                        <?php endif; ?>
+                                        <?php if ($wishlistViewModel->isEnabled()): ?>
+                                        <button
+                                            aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')) ?>"
+                                            @click.prevent="addToWishlist(product.id)"
+                                            class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
+                                            text-gray-500 bg-gray-200 border-0 rounded-full hover:text-red-600"
+                                        >
+                                            <?= $heroicons->heartHtml("w-5 h-5", 25, 25) ?>
+                                        </button>
+                                        <?php endif; ?>
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -350,17 +394,10 @@ $graphqlQuery = $query ?: "
                         :class="{ 'invisible' : active === 0 }"
                         @click="getSlider().scrollLeft =
                             (getSlider().scrollWidth / products.length) * (active-pageSize)">
-                        <svg viewBox="0 0 1024 1024">
-                            <path class="path1"
-                                  d="M716.8 1024c6.552 0 13.102-2.499 18.101-7.499 9.998-9.997 9.998-26.206
-                                  0-36.203l-442.698-442.698 442.698-442.699c9.998-9.997 9.998-26.206
-                                  0-36.203s-26.206-9.998-36.203 0l-460.8 460.8c-9.998 9.997-9.998 26.206
-                                  0 36.203l460.8 460.8c5 5 11.55 7.499 18.102 7.499z">
-                            </path>
-                        </svg>
+                        <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <template x-for="(product, index) in products" :key="index">
-                        <span class="block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
+                        <span class="flex-shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
                                 :class="{
                                     'bg-opacity-100': active === index,
                                     'hidden': (pageSize !== 1 && !!(index % pageSize))
@@ -375,14 +412,7 @@ $graphqlQuery = $query ?: "
                         :class="{  'invisible' : active === products.length-pageSize }"
                         @click="getSlider().scrollLeft =
                             (getSlider().scrollWidth / products.length) * (active+pageSize)">
-                        <svg id="lnr-chevron-right" viewBox="0 0 1024 1024">
-                            <path class="path1"
-                                  d="M256 1024c-6.552 0-13.102-2.499-18.101-7.499-9.998-9.997-9.998-26.206
-                                  0-36.203l442.698-442.698-442.698-442.699c-9.998-9.997-9.998-26.206
-                                  0-36.203s26.206-9.998 36.203 0l460.8 460.8c9.998 9.997 9.998 26.206 0
-                                  36.203l-460.8 460.8c-5 5-11.55 7.499-18.102 7.499z">
-                            </path>
-                        </svg>
+                        <?= $heroicons->chevronRightHtml("w-5 h-5", 25, 25) ?>
                     </button>
                 </div>
             </template>

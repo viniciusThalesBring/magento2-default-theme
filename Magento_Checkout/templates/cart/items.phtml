@@ -38,7 +38,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                 class="table-row-item flex flex-row flex-wrap lg:grid lg:grid-cols-7 xl:grid-cols-8
                     py-4 justify-end md:justify-start">
                 <div class="p-2 w-full lg:w-auto lg:col-span-4 xl:col-span-5 flex flex-nowrap flex-row">
-                    <div class="w-3/12 mr-2 md:mr-1 px-1">
+                    <div class="w-3/12 mr-2 md:mr-4 px-1">
                         <a class=""
                            :href="window.BASE_URL + item.product.url_key + (item.product.url_suffix || '')"
                            :title="item.product.small_image.label"
@@ -179,33 +179,15 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                             <?= $escaper->escapeHtml(__('Qty')) ?>
                         </p>
                         <div class="block text-left flex items-center">
-                            <input type="text" :name="'qty' + item.id" x-model.number="item.quantity"
-                                   :value="item.quantity" class="w-16 p-2 border border-background text-center" max="99"
-                                   min="1"
-                                   x-on:change.debounce.1000="mutateItemQty(item.id, $event.target.value);"/>
-                            <div class="flex flex-col-reverse ml-1">
-                                <button :disabled="item.quantity <= 1"
-                                        x-on:click="item.quantity--;"
-                                        x-on:click.debounce.1000="mutateItemQty(item.id, item.quantity)"
-                                        class="h-6 w-6 pt-px disabled:opacity-70">
-                                    <svg class="h-6 w-6 fill-current text-gray-darkest hover:text-black">
-                                        <path fill-rule="evenodd"
-                                              clip-rule="evenodd"
-                                              d="M11.5 23C17.8513 23 23 17.8513 23 11.5C23 5.14873 17.8513 0 11.5 0C5.14873 0 0 5.14873 0 11.5C0 17.8513 5.14873 23 11.5 23ZM18.3418 9.89917L5.04228 9.82814L5.08479 12.7647L18.3843 12.8357L18.3418 9.89917Z"
-                                              fill="#646464"/>
-                                    </svg>
-                                </button>
-                                <button x-on:click="item.quantity++;"
-                                        x-on:click.debounce.1000="mutateItemQty(item.id, item.quantity)"
-                                        class="h-6 w-6 pb-px">
-                                    <svg class="h-6 w-6 fill-current text-gray-darkest hover:text-black">
-                                        <path fill-rule="evenodd"
-                                              clip-rule="evenodd"
-                                              d="M11.5 23C17.8513 23 23 17.8513 23 11.5C23 5.14873 17.8513 0 11.5 0C5.14873 0 0 5.14873 0 11.5C0 17.8513 5.14873 23 11.5 23ZM13.2399 4.76051L13.2118 9.87177L18.3418 9.89917L18.3843 12.8357L13.1956 12.808L13.1678 17.8615L10.1867 17.9034L10.2148 12.7921L5.08479 12.7647L5.04228 9.82814L10.231 9.85585L10.2588 4.8024L13.2399 4.76051Z"
-                                              fill="#646464"/>
-                                    </svg>
-                                </button>
-                            </div>
+                            <input type="number"
+                                :name="'qty' + item.id"
+                                x-model.number="item.quantity"
+                                :value="item.quantity"
+                                class="form-input px-2 py-2 w-20 text-center"
+                                max="99"
+                                min="1"
+                                x-on:change.debounce.1000="mutateItemQty(item.id, $event.target.value);"
+                            />
                         </div>
                     </div>
                     <div class="lg:text-center">
