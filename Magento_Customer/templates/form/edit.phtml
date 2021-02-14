@@ -130,7 +130,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
             </div>
         </template>
         <p class="my-4 text-red" :class="passwordsMatching ? 'invisible' : 'visible'">
-            <?= $escaper->escapeHtml('Please make sure you enter the same password in both fields.') ?>
+            <?= $escaper->escapeHtml(__('Please make sure you enter the same password in both fields.')) ?>
         </p>
     </fieldset>
     <?= $block->getChildHtml('form_additional_info') ?>
