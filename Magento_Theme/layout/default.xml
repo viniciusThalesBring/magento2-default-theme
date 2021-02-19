@@ -28,7 +28,7 @@
                     </arguments>
                 </block>
                 <block name="header-search" template="Magento_Theme::html/header/search-form.phtml"/>
-                <block name="cart-drawer" template="Magento_Theme::html/cart/cart-drawer.phtml"/>
+                <block name="cart-drawer" template="Magento_Theme::html/cart/cart-drawer.phtml" ifconfig="checkout/sidebar/display"/>
 <!--
                 <block name="topmenu_static" as="topmenu" template="Magento_Theme::html/header/topmenu_static.phtml"/>
 -->
