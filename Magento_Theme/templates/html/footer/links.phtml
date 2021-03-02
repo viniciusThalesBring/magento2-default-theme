@@ -18,9 +18,6 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var UrlBuilder $urlBuilder */
-$urlBuilder = $viewModels->require(UrlBuilder::class);
-
 /** @var Customer $customer */
 $customer = $viewModels->require(Customer::class)
 ?>
@@ -37,21 +34,21 @@ $customer = $viewModels->require(Customer::class)
                         </a>
                     </li>
                     <li class="mt-4">
-                        <a href="<?= $escaper->escapeUrl($urlBuilder->getUrl('customer/account')) ?>"
+                        <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
                            class="text-base leading-6">
                             <?= $escaper->escapeHtml(__('My Account')) ?>
                         </a>
                     </li>
                     <?php if (!$customer->customerLoggedIn()): ?>
                     <li class="mt-4">
-                        <a href="<?= $escaper->escapeUrl($urlBuilder->getUrl('sales/guest/form')) ?>"
+                        <a href="<?= $escaper->escapeUrl($block->getUrl('sales/guest/form')) ?>"
                            class="text-base leading-6">
                             <?= $escaper->escapeHtml(__('Orders and Returns')) ?>
                         </a>
                     </li>
                     <?php endif; ?>
                     <li class="mt-4">
-                        <a href="<?= $escaper->escapeUrl($urlBuilder->getUrl('contact')) ?>"
+                        <a href="<?= $escaper->escapeUrl($block->getUrl('contact')) ?>"
                            class="text-base leading-6">
                             <?= $escaper->escapeHtml(__('Contact')) ?>
                         </a>
