@@ -87,6 +87,7 @@ module.exports = {
                 48: spacing["48"],
             },
             minHeight: {
+                14: spacing["14"],
                 '25': '25vh',
                 '50': '50vh',
                 '75': '75vh',
