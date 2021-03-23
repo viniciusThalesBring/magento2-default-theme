@@ -42,6 +42,12 @@
 
         </referenceContainer>
 
+        <referenceBlock name="product.price.render.default">
+            <arguments>
+                <argument name="is_product_list" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
+
         <referenceBlock name="page.main.title" remove="true" />
     </body>
 </page>

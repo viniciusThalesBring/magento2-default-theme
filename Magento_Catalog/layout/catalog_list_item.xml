@@ -13,8 +13,9 @@
         <block class="Magento\Catalog\Block\Product\AbstractProduct" name="product_list_item"
                template="Magento_Catalog::product/list/item.phtml">
             <container name="category.product.list.additional" as="additional" />
+
             <block class="Magento\Framework\View\Element\RendererList" name="category.product.type.details.renderers" as="details.renderers">
-                <block class="Magento\Framework\View\Element\Template" name="category.product.type.details.renderers.default" as="default"/>
+                <block name="category.product.type.details.renderers.default" as="default"/>
             </block>
         </block>
     </body>
