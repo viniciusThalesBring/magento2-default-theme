@@ -19,6 +19,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
 <?php if ($product->isSaleable() && count($attributes)):?>
 
     <?= $block->getChildHtml('options_configurable_js') ?>
+
     <div x-data="initConfigurableOptions('<?= (int) $productId ?>', <?= /* @noEscape */ $block->getJsonConfig() ?>)"
          x-init="findAllowedAttributeOptions();"
          @private-content-loaded.window="onGetCartData($event.detail.data)"

@@ -43,6 +43,7 @@
         </referenceContainer>
 
         <referenceBlock name="product.price.render.default">
+            <!-- In core Magento this happens in \Magento\Catalog\Block\Product\ListProduct::getPriceRender -->
             <arguments>
                 <argument name="is_product_list" xsi:type="boolean">true</argument>
             </arguments>
