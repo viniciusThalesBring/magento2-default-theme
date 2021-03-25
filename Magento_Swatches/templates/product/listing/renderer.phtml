@@ -29,103 +29,109 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
             );
             const swatchOptionsComponent = initSwatchOptions(<?= /* @noEscape */ $block->getJsonSwatchConfig() ?>);
 
-            return {
-                ...configurableOptionsComponent,
-                ...swatchOptionsComponent,
-                mediaCallback: "<?= $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
-                changeOption: function changeOption (optionId, value, skipUpdateGallery) {
-                    this.selectedValues[optionId] = value;
-                    this.findSimpleIndex();
-                    this.findAllowedAttributeOptions();
-                    this.updatePrices();
-                    !skipUpdateGallery && this.updateGallery();
-                },
-                updateGallery: function updateGallery () {
-                    if (!this.productIndex) {
-                        return;
-                    }
-
-                    fetch(`${this.mediaCallback}?product_id=${this.productIndex}&isAjax=true`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        }
-                    ).then(response => {
-                            return response.json()
-                        }
-                    ).then(data=> {
-                        if (data.errors) {
-                            // non critical failure only console logged
-                            console.warn(data.errors);
-                        } else {
-                            const image = data && data.medium;
-
-                            image && window.dispatchEvent(
-                                new CustomEvent(
-                                    "update-gallery-<?= (int) $productId ?>",
-                                    { detail: image }
-                                )
-                            );
-                        }
-                    }).catch(error => { console.warn(error) });
-                },
-                preselectQuerystringItems() {
-                    // pre-select option like ?size=167
-                    const urlQueryParams = new URLSearchParams(window.location.search.replace('?',''));
-                    Object.values(this.optionConfig.attributes).map(attribute => {
-                        // Don't update images on load, since PLPs already set the main image to the selected options
-                        const skipUpdateGallery = true;
-                        urlQueryParams.get(attribute.code) &&
-                        this.changeOption(attribute.id, urlQueryParams.get(attribute.code), skipUpdateGallery);
-                    });
-                },
-                mouseDown: false,
-                startX: 0,
-                maxScroll: 0,
-                scrollLeft: null,
-                slider: null,
-                scrollEvents: {
-                    ['@mousedown'](e){
-                        this.slider = e.target.closest('.snap');
-                        if(!this.slider){
+            return Object.assign(
+                configurableOptionsComponent,
+                swatchOptionsComponent,
+                {
+                    mediaCallback: "<?= $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
+                    changeOption: function changeOption(optionId, value, skipUpdateGallery) {
+                        this.selectedValues[optionId] = value;
+                        this.findSimpleIndex();
+                        this.findAllowedAttributeOptions();
+                        this.updatePrices();
+                        !skipUpdateGallery && this.updateGallery();
+                    },
+                    updateGallery: function updateGallery() {
+                        if (!this.productIndex) {
                             return;
                         }
-                        this.maxScroll = this.slider.scrollWidth - this.slider.offsetWidth;
-                        this.startX = e.pageX - this.slider.offsetLeft;
-                        this.scrollLeft = this.slider.scrollLeft;
-                        this.mouseDown = true;
-                    },
-                    ['@mouseout.self'](){
-                        this.mouseDown = false;
-                    },
-                    ['@mouseup'](){
-                        this.mouseDown = false;
-                    },
-                    ['@mousemove'](e){
-                        e.preventDefault();
-                        if(!this.mouseDown) { return; }
-                        const x = e.pageX - this.slider.offsetLeft;
-                        const scroll = x - this.startX;
-                        const scrollLeft = this.scrollLeft - scroll;
 
-                        if (scrollLeft > this.maxScroll) {
-                            this.slider.scrollLeft = this.maxScroll;
-                            return
-                        }
-                        this.slider.scrollLeft = this.scrollLeft - scroll;
+                        fetch(`${this.mediaCallback}?product_id=${this.productIndex}&isAjax=true`, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            }
+                        ).then(response => {
+                                return response.json()
+                            }
+                        ).then(data => {
+                            if (data.errors) {
+                                // non critical failure only console logged
+                                console.warn(data.errors);
+                            } else {
+                                const image = data && data.medium;
+
+                                image && window.dispatchEvent(
+                                    new CustomEvent(
+                                        "update-gallery-<?= (int)$productId ?>",
+                                        {detail: image}
+                                    )
+                                );
+                            }
+                        }).catch(error => {
+                            console.warn(error)
+                        });
                     },
-                    ['@onselectstart'](){
-                        return false;
+                    preselectQuerystringItems() {
+                        // pre-select option like ?size=167
+                        const urlQueryParams = new URLSearchParams(window.location.search.replace('?', ''));
+                        Object.values(this.optionConfig.attributes).map(attribute => {
+                            // Don't update images on load, since PLPs already set the main image to the selected options
+                            const skipUpdateGallery = true;
+                            urlQueryParams.get(attribute.code) &&
+                            this.changeOption(attribute.id, urlQueryParams.get(attribute.code), skipUpdateGallery);
+                        });
+                    },
+                    mouseDown: false,
+                    startX: 0,
+                    maxScroll: 0,
+                    scrollLeft: null,
+                    slider: null,
+                    scrollEvents: {
+                        ['@mousedown'](e) {
+                            this.slider = e.target.closest('.snap');
+                            if (!this.slider) {
+                                return;
+                            }
+                            this.maxScroll = this.slider.scrollWidth - this.slider.offsetWidth;
+                            this.startX = e.pageX - this.slider.offsetLeft;
+                            this.scrollLeft = this.slider.scrollLeft;
+                            this.mouseDown = true;
+                        },
+                        ['@mouseout.self']() {
+                            this.mouseDown = false;
+                        },
+                        ['@mouseup']() {
+                            this.mouseDown = false;
+                        },
+                        ['@mousemove'](e) {
+                            e.preventDefault();
+                            if (!this.mouseDown) {
+                                return;
+                            }
+                            const x = e.pageX - this.slider.offsetLeft;
+                            const scroll = x - this.startX;
+                            const scrollLeft = this.scrollLeft - scroll;
+
+                            if (scrollLeft > this.maxScroll) {
+                                this.slider.scrollLeft = this.maxScroll;
+                                return
+                            }
+                            this.slider.scrollLeft = this.scrollLeft - scroll;
+                        },
+                        ['@onselectstart']() {
+                            return false;
+                        }
+                    },
+                    resizeEvent() {
+                        Array.from(this.$el.querySelectorAll('.snap')).forEach(slider => {
+                            slider.scrollLeft = 0;
+                        })
                     }
-                },
-                resizeEvent(){
-                    Array.from(this.$el.querySelectorAll('.snap')).forEach(slider => {
-                        slider.scrollLeft = 0;
-                    })
                 }
-            };
+            );
         }
 
     </script>

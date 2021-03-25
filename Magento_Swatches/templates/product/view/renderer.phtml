@@ -39,10 +39,10 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                 <?= /* @noEscape */ $block->getJsonSwatchConfig() ?>
             );
 
-            return {
-                ...configurableOptionsComponent,
-                ...swatchOptionsComponent
-            };
+            return Object.assign(
+                configurableOptionsComponent,
+                swatchOptionsComponent
+            );
         }
     </script>
 
