@@ -1178,68 +1178,76 @@ section#messages a {
     text-decoration: underline
   }
 
-.price-final_price .price-from, .price-final_price .price-to {
-    display: block;
-    margin-bottom: 0.25rem;
-    --tw-text-opacity: 1;
-    color: rgba(17, 24, 39, var(--tw-text-opacity));
+.price-container {
+  display: block
+}
+
+.price-container .price {
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 
-.price-final_price .price-from .price-label, .price-final_price .price-to .price-label {
-      font-weight: 500;
-    }
+.price-container .price-label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
 
-.price-final_price .price-from .price-wrapper, .price-final_price .price-to .price-wrapper {
-      font-weight: 600;
-      --tw-text-opacity: 1;
-      color: rgba(31, 41, 55, var(--tw-text-opacity));
-    }
+.special-price .price-container .price-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 
-.price-final_price .price-from .old-price .price-label, .price-final_price .price-from .old-price .price-wrapper, .price-final_price .price-to .old-price .price-label, .price-final_price .price-to .old-price .price-wrapper {
-        display: inline;
-        font-weight: 400;
-        --tw-text-opacity: 1;
-        color: rgba(75, 85, 99, var(--tw-text-opacity));
-      }
+.old-price .price-container {
+  --tw-text-opacity: 1;
+  color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
 
-.page-product-bundle .price-final_price .price-from, .page-product-bundle .price-final_price .price-to {
-      display: block;
-      margin-bottom: 1rem;
-      --tw-text-opacity: 1;
-      color: rgba(55, 65, 81, var(--tw-text-opacity));
-    }
+.old-price .price-container .price {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 
-.page-product-bundle .price-final_price .price-from .price-label, .page-product-bundle .price-final_price .price-to .price-label {
+.page-product-bundle .price-final_price .price-from .price-container, .page-product-bundle .price-final_price .price-to .price-container {
         display: block;
-        font-weight: 500;
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-      }
-
-.page-product-bundle .price-final_price .price-from .price-wrapper, .page-product-bundle .price-final_price .price-to .price-wrapper {
-        display: block;
-        font-weight: 600;
-        font-size: 2.25rem;
-        line-height: 2.5rem;
-        line-height: 1.25;
-        --tw-text-opacity: 1;
-        color: rgba(31, 41, 55, var(--tw-text-opacity));
-      }
-
-.page-product-bundle .price-final_price .price-from .old-price, .page-product-bundle .price-final_price .price-to .old-price {
-        display: block;
-        font-weight: 400;
-        font-size: 1.125rem;
-        line-height: 1.75rem;
+        margin-bottom: 1rem;
         --tw-text-opacity: 1;
         color: rgba(55, 65, 81, var(--tw-text-opacity))
       }
 
-.page-product-bundle .price-final_price .price-from .old-price .price-label, .page-product-bundle .price-final_price .price-from .old-price .price-wrapper, .page-product-bundle .price-final_price .price-to .old-price .price-label, .page-product-bundle .price-final_price .price-to .old-price .price-wrapper {
-          display: inline;
-          font-size: 1rem;
-          line-height: 1.5rem;
+.page-product-bundle .price-final_price .price-from .price-container .price-label, .page-product-bundle .price-final_price .price-to .price-container .price-label {
+          display: block;
+          font-weight: 500;
+          font-size: 1.125rem;
+          line-height: 1.75rem;
         }
+
+.page-product-bundle .price-final_price .price-from .price-container .price, .page-product-bundle .price-final_price .price-to .price-container .price {
+          display: block;
+          font-weight: 600;
+          font-size: 1.5rem;
+          line-height: 2rem;
+          line-height: 1.25;
+          --tw-text-opacity: 1;
+          color: rgba(31, 41, 55, var(--tw-text-opacity));
+        }
+
+.page-product-bundle .price-final_price .price-from .old-price .price-container .price, .page-product-bundle .price-final_price .price-from .old-price .price-container .price-label, .page-product-bundle .price-final_price .price-to .old-price .price-container .price, .page-product-bundle .price-final_price .price-to .old-price .price-container .price-label {
+            display: inline;
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            --tw-text-opacity: 1;
+            color: rgba(107, 114, 128, var(--tw-text-opacity));
+          }
 
 .modal {
   /*
