@@ -7,6 +7,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\SwatchRenderer;
 use Magento\Framework\Escaper;
 use Magento\Swatches\Block\Product\Renderer\Configurable;
 use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableViewModel;
@@ -18,10 +19,14 @@ use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableView
 /** @var ConfigurableViewModel $configurableViewModel */
 $configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
 
+/** @var SwatchRenderer $swatchRendererViewModel */
+$swatchRendererViewModel = $viewModels->require(SwatchRenderer::class);
+
 $product = $block->getProduct();
 $productId = $product->getId();
 
 $attributes = $block->decorateArray($block->getAllowAttributes());
+
 ?>
 ​
 <?php if ($product->isSaleable() && count($attributes)): ?>
@@ -57,10 +62,11 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
         <div>
             <?php foreach ($attributes as $attribute): ?>
                 <?php $attributeId = $attribute->getAttributeId(); ?>
-                <?php $productAttribute = $attribute->getProductAttribute(); ?>
+                <?php $productAttribute = $attribute->getProductAttribute();  ?>
+
+                <?php if ($swatchRendererViewModel->isSwatchAttribute($productAttribute)): ?>
             <div class="swatch-attribute border-t last:border-b border-container
-                <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
-            >
+                    <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>">
                 <div class="flex border-gray-300 py-1 min-h-14 w-full items-center">
 
                     <label class="label text-gray-700 text-left w-1/2"
@@ -115,16 +121,50 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                     </div>
                 </div>
             </div>
+                <?php else: ?>
+            <div class="flex border-t last:border-b  border-gray-300 py-2 w-full items-center">
+
+                <label class="label text-gray-700 text-left w-1/2"
+                       for="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+                >
+                    <span>
+                        <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
+                    </span>
+                </label>
+                <div class="ml-2 text-gray-900 text-left w-1/2">
+                    <select name="super_attribute[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>]"
+                            id="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+                            class="form-select super-attribute-select"
+                            x-on:change="changeOption(<?= (int) $attribute->getAttributeId() ?>, event.target.value)"
+                            required="required">
+                        <option value="">
+                            <?= $escaper->escapeHtml(__('Choose an Option...')) ?>
+                        </option>
+                        <template
+                            x-for="(item, index) in getAllowedAttributeOptions(<?= (int) $attribute->getAttributeId() ?>)"
+                            :key="item.id"
+                        >
+                            <option
+                                :value="item.id"
+                                x-html="item.label"
+                                :selected="selectedValues[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>] ===
+                        item.id">
+                            </option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
-        <template x-if="activeTooltipItem">
+        <template x-if="activeTooltipItem && getSwatchConfig(activeTooltipItem.attribute, activeTooltipItem.item)">
             <div class="absolute"
                  :style="getTooltipPosition()"
             >
                 <div class="shadow-lg">
                     <div class="absolute top-0 left-0 z-10 min-w-20 p-2 -mt-6 text-sm leading-tight text-black transform
                 -translate-x-1/2 -translate-y-full bg-white rounded-lg shadow-lg text-center">
-                    <template x-if="!isTextSwatch(activeTooltipItem.attribute, activeTooltipItem.item)">
+                    <template x-if="isVisualSwatch(activeTooltipItem.attribute, activeTooltipItem.item)">
                         <div class="inline-block border border-container shadow-sm"
                              :style="getTooltipImageStyle(activeTooltipItem.attribute, activeTooltipItem.item)"
                         ></div>
