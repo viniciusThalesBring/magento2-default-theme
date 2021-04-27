@@ -109,9 +109,6 @@ $options = $block->decorateArray($block->getOptions());
                         case 'file':
                             active = !!target.value;
                         break;
-                        case 'checkbox':
-                            active = target.checked;
-                        break;
                         case 'radio':
                             document.querySelectorAll('input[name="'+target.name+'"]').forEach(input => {
                                 // unset sibling radio buttons
@@ -124,6 +121,21 @@ $options = $block->decorateArray($block->getOptions());
                                     }
                                 );
                             })
+                        case 'checkbox':
+                            const requiredOptions = document
+                                .querySelectorAll('input[name="'+target.name+'"][data-required]');
+                            const checkedOptionsQty = Array.from(requiredOptions)
+                                .filter(option => option.checked).length;
+
+                            requiredOptions.forEach(input => {
+                                if(checkedOptionsQty) {
+                                    input.required = false;
+                                    input.setCustomValidity('');
+                                } else {
+                                    input.required = false;
+                                    input.setCustomValidity(input.dataset.validationMessage);
+                                }
+                            });
                             active = target.checked;
                         break;
                     }
