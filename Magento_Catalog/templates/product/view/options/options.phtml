@@ -109,8 +109,22 @@ $options = $block->decorateArray($block->getOptions());
                         case 'file':
                             active = !!target.value;
                         break;
+                        case 'hidden':
+                            // when we're configuring an item in the cart that already has an attachment
+                            // this is only needed on page-initialization
+                            active = (target.value === 'save_old')
+                        break;
+                        case 'select-one':
+                        case 'select-multiple':
+                            Array.from(target.options).forEach(option => {
+                                customOptionId = option.dataset.optionId;
+                                active = option.selected;
+                                $dispatch('update-custom-option-active', { customOptionId, active });
+                            });
+                            return;
+                        break;
                         case 'radio':
-                            document.querySelectorAll('input[name="'+target.name+'"]').forEach(input => {
+                            target.checked && document.querySelectorAll('input[name="'+target.name+'"]').forEach(input => {
                                 // unset sibling radio buttons
                                 input.dataset &&
                                 input.dataset.optionId &&
@@ -121,6 +135,8 @@ $options = $block->decorateArray($block->getOptions());
                                     }
                                 );
                             })
+                        // DO NOT BREAK
+                        // Checkbox case should also run for Radio
                         case 'checkbox':
                             const requiredOptions = document
                                 .querySelectorAll('input[name="'+target.name+'"][data-required]');
