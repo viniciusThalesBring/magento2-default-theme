@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
+use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\BasePrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
@@ -37,7 +38,7 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
 
 ?>
 <script>
-    function initPrice<?= (int) $product->getId() ?>() {
+    function initPrice<?= (int)$product->getId() ?>() {
         return {
             activeProductsPriceData: false,
             initialFinalPrice: <?= (float)$finalPrice ?>,
