@@ -22,15 +22,28 @@ if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
 
 <script>
     function initCookieBanner() {
+        const isUserAllowedSaveCookieName = '<?= /* @noEscape */  Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>';
+
+        const isAllowedSaveCookie = () => {
+            const allowedCookies = hyva.getCookie(isUserAllowedSaveCookieName);
+            const allowedCookieWebsites = allowedCookies
+                ? JSON.parse(unescape(allowedCookies))
+                : [];
+
+            return allowedCookieWebsites[CURRENT_WEBSITE_ID] !== undefined
+                ? !! allowedCookieWebsites[CURRENT_WEBSITE_ID]
+                : false;
+        };
+
         return {
             showCookieBanner: false,
-            cookieName: '<?= /* @noEscape */ \Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>',
+            cookieName: isUserAllowedSaveCookieName,
             cookieValue: '<?= /* @noEscape */ $cookieHelper->getAcceptedSaveCookiesWebsiteIds() ?>',
             cookieLifetime: '<?= /* @noEscape */ $cookieHelper->getCookieRestrictionLifetime() ?>',
             noCookiesUrl: '<?= $escaper->escapeJs($block->getUrl('cookie/index/noCookies')) ?>',
 
             checkAcceptCookies() {
-                this.showCookieBanner = (hyva.getCookie(this.cookieName) === null);
+                this.showCookieBanner = ! isAllowedSaveCookie();
             },
             setAcceptCookies() {
                 let cookieExpires = this.cookieLifetime /  60 / 60 / 24;
