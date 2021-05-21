@@ -6,6 +6,196 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.3...master
+
+## [1.1.3] - 2021-05-07
+_Version 1.1.3 of the Hyva_Theme module is required for this update_
+
+### Added
+- none
+
+### Changed
+- **Pass product instance to price view model instead of relying on internal state**
+
+  This improves reusability of templates and allows changing the order in which they are rendered.
+
+### Removed
+- none
+
+
+## [1.1.2] - 2021-05-03
+_Version 1.1.2 of the Hyva_Theme module is required for this update_
+
+### Added
+- **Added `clear-messages` event to the messages-component**
+  
+  Messages from the messages component can now be cleared with an event that removes all messages in `Magento_Theme/templates/messages.phtml`  
+
+  Can be used as `window.dispatchEvent(new CustomEvent('clear-messages'));`
+
+- **Select template for custom-options**
+
+  Custom options of the type `dropdown` and `multiple` are now rendered by a .pthml file, instead of using `\Magento\Catalog\Block\Product\View\Options\Type\Select\Multiple::_toHtml`
+  A new viewModel and method were created for this: `\Hyva\Theme\ViewModel\CustomOption::getOptionHtml`
+
+  This viewModel renders `Magento_Catalog/templates/product/composte/fieldset/options/view/multiple.phtml` (new) or `Magento_Catalog/templates/product/composite/fieldset/options/view/checkable.phtml` (existing).
+
+- **Custom options are added for Bundled products**
+
+  Turns out, when `dynamic pricing` is disabled, bundled products can have custom options. Who knew? We didn't.
+  So now, bundled products contain custom options.
+  
+  This means that mostly extra logic was added to pricing at `Magento_Bundle/templates/catalog/product/view/price.phtml`
+
+  Also the container `product_info_bundle_options_top` was *re-added* from core Magento and `product_info_bundle_options_bottom` was newly created.
+
+### Changed
+- **Added robots.txt file back to layout**
+
+  See `Magento_Sitemap/layout/robots_index_index.xml`
+
+  Thanks to Rik Willems (RedKiwi) for contributing.
+
+- **Fix hardcoded required company field on customer account**
+
+  See `Magento_Customer/templates/widget/company.phtml`
+  
+  Thanks to Aad Mathijssen (Isaac) for contributing.
+
+- **Fix hardcoded required region field on customer account**
+
+  See `Magento_Customer/templates/address/edit.phtml`
+
+  Thanks to Aad Mathijssen (Isaac) for contributing.
+
+- **Replaced removeEventListener with `{ once: true }` on addEventListener**
+
+  See `Magento_ReCaptchaFrontendUi/templates/js/script_loader.phtml`:
+  `document.body.addEventListener("input", loadRecaptchaScript, { once: true });`
+
+  Thanks to Javier Villanueva (Media Lounge) for contributing.
+
+- **FIX: reload customerData in cart after applying coupon code** 
+
+  See `Magento_Checkout/templates/cart/js/cart.phtml`
+
+- **Fix: don't show PLP Swatches for attributes with getUsedInProductListing disabled**
+
+  See `Magento_Swatches/templates/product/listing/renderer.phtml`
+
+- **Swatch display improvements**
+    - set height and width on all non-text swatches
+    - use swatch value and fall back to swatch label
+    - hide image container in tooltip if no image/color available
+    - add whitespace-nowrap to swatch and tooltip text
+  
+  See commit [`2ebc7a5c`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/2ebc7a5c41b2c888cbbf551dd42907763ae24c43)
+
+- **Added .editorconfig for unified whitespace handling
+
+  See `.editorconfig`
+  
+  Thanks to Sean van Zuidam (Mooore) for reporting.
+
+- **Added initActive event to gallery that activates the main image**
+
+  Previously, the first image in the image list would show as initial image.
+  Now, the `main image` is activated on load.
+  
+  See `Magento_Catalog/templates/product/view/gallery.phtml`
+
+  Thanks to Rik Willems (RedKiwi) for contributing.
+
+- **Fix price calculation for bundled tier prices**
+
+  Previously, the tierPrice price-reduction was calculated, instead of adding the result price.
+
+  See `Magento_Bundle/templates/catalog/product/view/price.phtml`
+
+  Thanks to Gautier Masdupuy (Diglin) for reporting.
+
+- **Change item qty change event to input event in cart**
+
+  Previously, cart item quantity changes in the cart were triggered `onBlur`, this was changed to `onInput`.
+  This results in quicker feedback. Changes are still debounced with 1 second:
+  `x-on:input.debounce.1000="mutateItemQty(item.id, $event.target.value);"`
+
+- **Quality improvements on the cart page**
+    - Direct customerData retrieval from localStorage was removed and replace with the `private-content-loaded` event only.
+    - Replaced $this instances combined with `function(){}` for ES6 arrow functions and `this`
+    - Added error feedback to `fetch()` methods, report errors to console and show general error message to visitors
+    - Report 
+
+- **Fix adding multiple select options to wishlist**
+  
+  Selected product options (custom, configurable, bundle and grouped) of the type `select-multiple` are now properly sent to the wishlist.
+
+  See `Magento_Catalog/templates/product/view/addtowishlist.phtml`
+
+  Thanks to Gautier Masdupuy (Diglin) for reporting.
+
+- **Fix price calculation for bundled options**
+
+  A bug was introduced in 1.1.1 that removed x-ref from bundle-option input fields, replacing then with   
+  `document.querySelector(option[data-option-id="${optionId}-${selectionId}"]`
+
+  Two issues occured:
+  - not all inputs had the `data-option-id` attribute
+  - not all inputs are of the type `option`
+
+  The querySelector was changed to `[data-option-id="${optionId}-${selectionId}"]` and the attribute was added to the missing option types
+
+  See `Magento_Bundle/templates/catalog/product/view/type/bundle/options.phtml` and `Magento_Bundle/templates/catalog/product/view/type/bundle/option/*.phtml`
+
+- **Only validate 1 option for custom option checkboxes**
+  
+  Thanks to Hrvoje Jurišić (Favicode) for reporting.
+
+- **Calculate product final price when configuring a product in cart with custom options**
+
+  Previously, when editing a product in the cart, the product final price was only updated after changing custom options.
+  Now, already selected options are properly selected when loading the configure cart-product page.
+
+  See `initSelectedOptions` in `Magento_Catalog/templates/product/view/options/options.phtml`
+
+- **Fix uploading new custom option file**
+
+  Previously when editing a product in the cart with an uploaded custom-option-file, a new file would not be uploaded.
+  Now, the value `save_new` is properly set on the hidden file-field.
+  
+  See `Magento_Catalog/templates/product/view/options/type/file.phtml`
+
+- **Styling of bundled options was improved on smaller viewports**
+  
+  Mostly: input fields would break out of the containing columns because of the browsers default min-width value of `<fieldset>`
+  
+  See `Magento_Catalog/templates/product/view/options/wrapper/bottom.phtml`, `Magento_Bundle/templates/catalog/product/view/summary.phtml` and `Magento_Bundle/templates/catalog/product/view/type/bundle/options.phtml`
+
+- **Escaping of additional attributes was removed to allow html to be rendered**
+
+  Thanks to Vinai Kopp for contributing.
+
+- **PDP prices are overhauled to respect all tax-settings**
+
+  Tax display was inconsistent, mostly when selecting `catalog prices include tax` and `display product page prices excluding tax`.
+
+  Price retrieval was refactored into a viewModel in `Hyva_Theme`: `\Hyva\Theme\ViewModel\ProductPrice`.
+  This applies to:
+  - Product price
+  - custom options
+  - tier prices
+  - bundle options
+
+  See commit [`61b3f1a0`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/61b3f1a0fd557657d4de4103340772dff3893d5e)
+
+### Removed
+- `Hyva_Theme/templates/js/localStorageConfig.phtml`
+
+  The file `localStorageConfig.phtml` was removed, since it is an anti-pattern to retrieve customerData from localStorage directly.
+  Instead the `private-content-loaded` event should be used. Please refer to the documentation for more information on the `private-content-loaded` mechanism.
+
+[1.1.2]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.1...1.1.2
+
 ## [1.1.1] - 2021-04-08
 ### Added
 - none
@@ -22,6 +212,8 @@ Please refer to [1.1.1] for all diff changes
 
 ### Removed
 - none
+
+[1.1.1]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.0...1.1.1
 
 ## [1.1.0] - 2021-04-02
 ### Added
@@ -264,6 +456,8 @@ Please refer to [1.1.1] for all diff changes
   { addTowishList(productId) { ... } }
   ``` 
 
+[1.1.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.0.0...1.1.0
+
 ## [1.0.0] - 2021-02-15
 ### Added
 - Initial Release added
@@ -274,13 +468,11 @@ Please refer to [1.1.1] for all diff changes
 ### Removed
 - none
 
+[1.0.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/0.2.0...1.0.0
+
 # Beta releases
 #### [0.2.0] - 2021-02-03
 #### [0.1.0] - 202-12-09
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.1...master
-[1.1.1]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.0...1.1.1
-[1.1.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.0.0...1.1.0
-[1.0.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/0.2.0...1.0.0
 [0.2.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/0.1.0...0.2.0
 [0.1.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/tags/0.1.0
