@@ -75,6 +75,20 @@ use Magento\Framework\View\Element\Template;
                 this.findAllowedAttributeOptions();
                 this.updatePrices();
                 this.updateGallery();
+                window.dispatchEvent(
+                    new CustomEvent(
+                        'configurable-selection-changed',
+                        {
+                            detail: {
+                                productId: this.productId,
+                                optionId: this.optionId,
+                                value: this.value,
+                                productIndex: this.productIndex,
+                                selectedValues: this.selectedValues
+                            }
+                        }
+                    )
+                );
             },
             calculateIsMinimalPrice(){
                 return (
