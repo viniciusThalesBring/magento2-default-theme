@@ -56,7 +56,7 @@ $slideContentTemplateHtml = $block->getChildHtml('slider.item.template') ?: '';
                     },
                 })
                     .then((response) =>  response.json())
-                    .then((data) => this.items = (<?= /** @noEscape */ $queryDataProcessorJsFunction ?>)(this, data))
+                    .then((data) => this.items = (<?= /** @noEscape */ $queryDataProcessorJsFunction ?>)(data, this))
                     .finally(() => {
                         this.loading = false;
                         $nextTick(() => this.calcPageSize());
