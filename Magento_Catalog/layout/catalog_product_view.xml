@@ -162,7 +162,7 @@
                     <block class="Magento\Catalog\Block\Product\View\Details"
                            name="product.info.details"
                            template="Magento_Catalog::product/view/sections/product-sections.phtml">
-                        <block name="product.section.title.renderer" template="Magento_Catalog::product/view/sections/product-section-title.phtml"/>
+                        <block name="product.section.title.renderer" template="Magento_Catalog::product/view/sections/default-section-title.phtml"/>
 
                         <block name="description"
                                template="Magento_Catalog::product/view/sections/description.phtml"
