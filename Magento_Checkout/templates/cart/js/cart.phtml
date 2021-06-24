@@ -6,7 +6,9 @@
  * See https://hyva.io/license
  */
 
+use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Store as StoreViewModel;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Escaper;
 use Hyva\Theme\ViewModel\Cart\GraphQlQueries;
@@ -15,10 +17,12 @@ use Hyva\Theme\ViewModel\Cart\GraphQlQueries;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-/** @var $viewModelCart GraphQlQueries */
+/** @var GraphQlQueries $viewModelCart */
 $viewModelCart = $viewModels->require(GraphQlQueries::class);
-/** @var $viewModelStore \Hyva\Theme\ViewModel\Store */
-$viewModelStore = $viewModels->require(\Hyva\Theme\ViewModel\Store::class);
+/** @var StoreViewModel $viewModelStore */
+$viewModelStore = $viewModels->require(StoreViewModel::class);
+/** @var GraphqlViewModel $viewModelGraphQl */
+$viewModelGraphQl = $viewModels->require(GraphqlViewModel::class);
 ?>
 <script>
     function initCart() {
@@ -31,14 +35,16 @@ $viewModelStore = $viewModels->require(\Hyva\Theme\ViewModel\Store::class);
             isTouchDevice: false,
             showCouponForm: false,
             getCartQuery(cartId) {
-                return <?= /** @noEscape */ json_encode(
+                return <?= /** @noEscape */ json_encode($viewModelGraphQl->query(
+                    'cart_query',
                     '{cart (cart_id: "%cartId") {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
-                ); ?>.replace('%cartId', cartId)
+                )); ?>.replace('%cartId', cartId)
             },
             getCustomerCartQuery() {
-                return <?= /** @noEscape */ json_encode(
+                return <?= /** @noEscape */ json_encode($viewModelGraphQl->query(
+                    'customer_cart_query',
                     '{customerCart {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
-                ); ?>
+                )); ?>
             },
             getCart() {
                 this.isLoading = true;
@@ -117,8 +123,15 @@ $viewModelStore = $viewModels->require(\Hyva\Theme\ViewModel\Store::class);
                 this.isLoading = true;
 
                 var couponCode = document.getElementById('coupon_code').value;
-                var couponQuery = couponCode ? `mutation {<?= /** @noEscape */ $viewModelCart->getCouponAddQuery(
-                ) ?>}` : `mutation {<?= /** @noEscape */ $viewModelCart->getCouponRemoveQuery() ?>}`;
+                var couponQuery = couponCode
+                    ? `<?= /** @noEscape */ $viewModelGraphQl->query(
+                        'cart_coupon_add_mutation',
+                        'mutation {' . $viewModelCart->getCouponAddQuery() . '}'
+                    ) ?>`
+                    : `<?= /** @noEscape */ $viewModelGraphQl->query(
+                        'cart_coupon_remove_mutation',
+                        'mutation {' . $viewModelCart->getCouponRemoveQuery() . '}'
+                    ) ?>`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
                         method: 'POST',
@@ -174,7 +187,10 @@ $viewModelStore = $viewModels->require(\Hyva\Theme\ViewModel\Store::class);
             mutateItemQty(itemId, qty) {
                 this.isLoading = true;
 
-                var cartItemUpdateQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemUpdateQuery() ?>}`;
+                var cartItemUpdateQuery = `<?= /** @noEscape */ $viewModelGraphQl->query(
+                    'cart_item_update_mutation',
+                    'mutation {' . $viewModelCart->getCartItemUpdateQuery() . '}'
+                ) ?>`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
                         method: 'POST',
@@ -216,7 +232,10 @@ $viewModelStore = $viewModels->require(\Hyva\Theme\ViewModel\Store::class);
             },
             mutateItemRemove(itemId) {
                 this.isLoading = true;
-                var cartItemRemoveQuery = `mutation {<?= /** @noEscape */ $viewModelCart->getCartItemRemoveQuery() ?>}`;
+                var cartItemRemoveQuery = `<?= /** @noEscape */ $viewModelGraphQl->query(
+                    'cart_item_remove_mutation',
+                    'mutation {' . $viewModelCart->getCartItemRemoveQuery() . '}'
+                )?>`;
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
                         method: 'POST',
