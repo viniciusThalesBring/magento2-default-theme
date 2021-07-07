@@ -63,7 +63,7 @@ $activeSelectOptions = [];
                 <?php endif; ?>
                 data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
             >
-                <?= /* @noEscape */ $block->getSelectionTitlePqtyHelperrice($selection, false) ?>
+                <?= /* @noEscape */ $block->getSelectionTitlePrice($selection, false) ?>
             </option>
         <?php endforeach; ?>
     </select>
