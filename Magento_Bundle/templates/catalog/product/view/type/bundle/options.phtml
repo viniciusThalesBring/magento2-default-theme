@@ -41,13 +41,6 @@ $finalPrice = $productPriceViewModel->getPriceValue(BasePrice::PRICE_CODE, $prod
     <div class="card flex w-full md:w-1/2 lg:w-2/3">
         <?php if (count($options)) : ?>
             <script>
-                const qtyHelper = (() => {
-                    return {
- 
-                    }
-                })();
-            </script>
-            <script>
                 function initBundleOptions() {
                     return {
                         optionConfig: <?= /* @noEscape */ $block->getJsonConfig() ?>,
