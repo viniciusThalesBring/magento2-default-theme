@@ -68,10 +68,11 @@ $viewModelGraphQl = $viewModels->require(GraphqlViewModel::class);
                 ).then((data) => {
                     if (data && data.errors) {
                         this.initErrorMessages(data.errors);
-                    } else {
-                        this.cartData = (data && data.data && (data.data.customerCart || data.data.cart)) || [];
-                        this.updateCartDataDependencies();
                     }
+
+                    this.cartData = (data && data.data && (data.data.customerCart || data.data.cart)) || {};
+                    this.updateCartDataDependencies();
+
                 }).catch(error => {
                     console.error(error);
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
@@ -83,6 +84,9 @@ $viewModelGraphQl = $viewModels->require(GraphqlViewModel::class);
                 }).finally(() => {
                     this.isLoading = false;
                 });
+            },
+            getCartItems() {
+                return (this.cartData && this.cartData.items || []).filter(cartItem => !!cartItem);
             },
             getCartByCustomerSectionData(data) {
                 if (data && data.cart && data.cart.cartId) {
@@ -182,7 +186,7 @@ $viewModelGraphQl = $viewModels->require(GraphqlViewModel::class);
                 for (var error in Object.keys(errors)) {
                     messages.push({type: 'error', text: errors[error].message});
                 }
-                dispatchMessages(messages)
+                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(messages, 10000);
             },
             mutateItemQty(itemId, qty) {
                 this.isLoading = true;

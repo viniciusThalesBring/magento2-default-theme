@@ -36,7 +36,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
             <div class="p-2 text-center"><?= $escaper->escapeHtml(__('Qty')) ?></div>
             <div class="p-2 text-right"><?= $escaper->escapeHtml(__('Subtotal')) ?></div>
         </div>
-        <template x-for="item in cartData.items">
+        <template x-for="item in getCartItems()">
             <div
                 class="table-row-item flex flex-row flex-wrap lg:grid lg:grid-cols-7 xl:grid-cols-8
                     py-4 justify-end md:justify-start">
