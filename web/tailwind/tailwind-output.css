@@ -1163,22 +1163,90 @@ select {
   top: 0px;
 }
 
-section#messages .message.error {
-      --tw-bg-opacity: 1;
-      background-color: rgba(239, 68, 68, var(--tw-bg-opacity));
-    }
+.page.messages .messages
+    section#messages {
+    width: 100%;
+  }
 
-section#messages .message.success {
-      --tw-bg-opacity: 1;
-      background-color: rgba(16, 185, 129, var(--tw-bg-opacity));
+@media (min-width: 640px) {
+    .page.messages .messages
+    section#messages {
+      max-width: 640px;
     }
+  }
 
-section#messages .message.warning, section#messages .message.notice {
-      --tw-bg-opacity: 1;
-      background-color: rgba(245, 158, 11, var(--tw-bg-opacity));
+@media (min-width: 768px) {
+    .page.messages .messages
+    section#messages {
+      max-width: 768px;
     }
+  }
 
-section#messages a {
+@media (min-width: 1024px) {
+    .page.messages .messages
+    section#messages {
+      max-width: 1024px;
+    }
+  }
+
+@media (min-width: 1280px) {
+    .page.messages .messages
+    section#messages {
+      max-width: 1280px;
+    }
+  }
+
+@media (min-width: 1536px) {
+    .page.messages .messages
+    section#messages {
+      max-width: 1536px;
+    }
+  }
+
+.page.messages .messages
+    section#messages {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+.message {
+  --tw-bg-opacity: 1;
+  background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
+  width: 100%;
+}
+
+.message.error {
+    --tw-bg-opacity: 1;
+    background-color: rgba(239, 68, 68, var(--tw-bg-opacity));
+  }
+
+.message.success {
+    --tw-bg-opacity: 1;
+    background-color: rgba(16, 185, 129, var(--tw-bg-opacity));
+  }
+
+.message.info, .message.warning, .message.notice {
+    --tw-bg-opacity: 1;
+    background-color: rgba(245, 158, 11, var(--tw-bg-opacity));
+  }
+
+.message a {
     text-decoration: underline
   }
 
@@ -1730,11 +1798,6 @@ body {
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
-}
-
-.bg-gray-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
 }
 
 .bg-gray-900 {
