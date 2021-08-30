@@ -10,11 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.1.7] - 2021-08-25
 
-## Added
+### Added
 
 - nothing
 
-## Changed
+### Changed
 
 - **Bugfix: Remove trailing space in customer prefix option values**
 
@@ -28,9 +28,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   See issue [#214](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/214)
 
-## Removed
+### Removed
 
 - nothing
+
+[1.1.7]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.6...1.1.7
+
 
 ## [1.1.6] - 2021-08-12
 _Version 1.1.6 of the Hyva_Theme module is required for this update_
