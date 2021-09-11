@@ -237,7 +237,7 @@ _Version 1.1.4 of the Hyva_Theme module is required for this update_
   
   The layout file at `Magento_Tax/layout/sales_order_item_price.xml` was added, which adds tax to sales items in customer account, when needed.
 
-- **Add-to-cart button on PDP has it's original ID back**
+- **Add-to-cart button on PDP has its original ID back**
   
   The add-to-cart button now contains `id="product-addtocart-button"` again, as it does in core Magento. This would help frontend testing frameworks in functioning.
   
@@ -343,7 +343,7 @@ _Version 1.1.4 of the Hyva_Theme module is required for this update_
   
   Thanks to Ravinder (redMonks/redChamps) for contributing
 
-- **Shopping assitance checkbox has been added to registration form**
+- **Shopping assistance checkbox has been added to registration form**
 
   See `Magento_Customer/templates/form/register.phtml` and `Magento_LoginAsCustomerAssistance/layout/customer_account_create.xml`
 
