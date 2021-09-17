@@ -22,12 +22,13 @@ $subtotalField = $viewModelTotalsOutput->getSubtotalField();
 $subtotalFieldShowBoth = $viewModelTotalsOutput->getSubtotalFieldDisplayBoth();
 $taxLabelAddition = $viewModelTotalsOutput->getTaxLabelAddition();
 ?>
-<template x-if="cartData.prices && Object.keys(cartData.prices).length">
-    <div class="pt-6 ml-auto w-full xl-w:2/3">
-        <div class="flex pt-6 pb-3 mb-2 border-b-2 border-gray-300 md:flex-row">
+<template x-if="cartData.prices">
+    <div class="pt-0 lg:pt-6 ml-auto w-full xl-w:2/3">
+        <div class="flex pb-3 mb-2 border-b-2 border-gray-300 flex-col">
             <h2 class="w-full text-2xl text-center text-gray-900 title-font font-base md:text-left">
                 <?= $escaper->escapeHtml(__('Summary')) ?>
             </h2>
+            <?= $block->getChildHtml('estimate_shipping') ?>
         </div>
         <?php if ($subtotalFieldShowBoth): ?>
             <template x-if="cartData.prices['subtotal_excluding_tax']">
@@ -95,7 +96,7 @@ $taxLabelAddition = $viewModelTotalsOutput->getTaxLabelAddition();
                 </template>
             </div>
         </template>
-        <template x-if="cartData.shipping_addresses">
+        <template x-if="getSelectedShippingMethod().carrier_code && cartData.prices['grand_total']">
             <div>
                 <template x-for="item in cartData.shipping_addresses">
                     <div>

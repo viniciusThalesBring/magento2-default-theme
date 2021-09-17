@@ -35,7 +35,9 @@
                 <block name="coupon" class="Magento\Checkout\Block\Cart\Coupon"
                        template="Magento_Checkout::cart/coupon/form.phtml"/>
                 <container name="additional.cart.information"/>
-                <block name="totals" template="Magento_Checkout::cart/totals.phtml"/>
+                <block name="totals" template="Magento_Checkout::cart/totals.phtml">
+                    <block name="estimate_shipping" template="Magento_Checkout::cart/estimate-shipping.phtml"/>
+                </block>
                 <block name="empty" template="Magento_Checkout::cart/noItems.phtml"/>
                 <block name="checkout.cart.methods.bottom" class="Magento\Checkout\Block\Cart"
                        template="Magento_Checkout::cart/methods.phtml">
