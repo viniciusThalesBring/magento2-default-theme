@@ -8,6 +8,7 @@
 
 declare(strict_types=1);
 
+use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\Items;
 use Hyva\Theme\ViewModel\Currency;
@@ -33,6 +34,9 @@ $compareViewModel = $viewModels->require(ProductCompare::class);
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var GraphqlViewModel $gqlViewModel */
+$gqlViewModel = $viewModels->require(GraphqlViewModel::class);
 
 /** @var Currency $currencyViewModel */
 $currencyViewModel = $viewModels->require(Currency::class);
@@ -112,7 +116,7 @@ $items = $linkedProduct ?
     }" :
     $productAttributes;
 
-$graphqlQuery = $query ?: "
+$graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
 {
   products(
     filter: {
@@ -128,7 +132,7 @@ $graphqlQuery = $query ?: "
         $items
     }
   }
-}";
+}", ['is_linked_product' => $linkedProduct, 'type' => $type]);
 ?>
 <script>
     function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
@@ -184,9 +188,9 @@ $graphqlQuery = $query ?: "
                             <?php endif; ?>
                         }
                     ).finally(() => {
-                        this.loading = false
-                        $nextTick(() => this.calcPageSize());
-                    });
+                    this.loading = false
+                    $nextTick(() => this.calcPageSize());
+                });
             },
             addToWishlist(productId) {
                 var formKey = document.querySelector('input[name=form_key]').value;
@@ -303,7 +307,7 @@ $graphqlQuery = $query ?: "
                     </h3>
                 </div>
             <?php endif; ?>
-            <div class="relative w-full overflow-x-hidden">
+            <div class="relative w-full overflow-x-hidden focus-within:ring-1 active:ring-0 ring-blue-500 ring-opacity-50">
                 <div class="relative flex flex-nowrap w-full overflow-auto transition-all js_slides snap"
                      @scroll.debounce="calcActive"
                 >
@@ -323,43 +327,43 @@ $graphqlQuery = $query ?: "
                                              loading="lazy"
                                              width="500"
                                              height="500"
-                                    />
+                                        />
                                     </span>
                                 </a>
 
                                 <p class="flex items-center justify-center px-1 pt-3 text-primary">
                                     <a class="truncate product-item-link"
-                                        :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
+                                       :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
                                             product.url_key + (product.url_suffix || '')"
-                                       >
+                                    >
                                         <span x-html="product.name"></span>
                                     </a>
                                 </p>
                                 <p class="pt-1 text-lg text-center text-gray-900"
                                    x-text="hyva.formatPrice(product.price_range.minimum_price.final_price.value)"></p>
-                                <p class="flex flex-wrap gap-2 inline p-3">
+                                <p class="flex flex-wrap gap-2 inline px-1 pt-3">
                                     <a class="justify-center w-auto mr-auto btn btn-primary"
                                        :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
                                             product.url_key + (product.url_suffix || '')">
                                         <span class="inline"><?= $escaper->escapeHtml(__('View Product')) ?></span>
                                     </a>
-                                    <span class="inline-flex gap-2">
+                                    <span class="inline-flex gap-2 ml-auto">
                                         <?php if ($compareViewModel->showInProductList()): ?>
-                                        <button @click.prevent="addToCompare(product.id)"
-                                                aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
-                                                class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex
+                                            <button @click.prevent="addToCompare(product.id)"
+                                                    aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+                                                    class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex
                                                     items-center justify-center text-gray-500 hover:text-yellow-500"
-                                        >
+                                            >
                                             <?= $heroicons->scaleHtml("w-5 h-5") ?>
                                         </button>
                                         <?php endif; ?>
                                         <?php if ($wishlistViewModel->isEnabled()): ?>
-                                        <button
-                                            aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')) ?>"
-                                            @click.prevent="addToWishlist(product.id)"
-                                            class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
+                                            <button
+                                                aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')) ?>"
+                                                @click.prevent="addToWishlist(product.id)"
+                                                class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
                                             text-gray-500 bg-gray-200 border-0 rounded-full hover:text-red-600"
-                                        >
+                                            >
                                             <?= $heroicons->heartHtml("w-5 h-5", 25, 25) ?>
                                         </button>
                                         <?php endif; ?>
@@ -383,6 +387,7 @@ $graphqlQuery = $query ?: "
                 <div class="flex items-center justify-center flex-1 p-4" x-cloak>
                     <button
                         aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
+                        tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active === 0 }"
                         @click="getSlider().scrollLeft =
@@ -391,16 +396,18 @@ $graphqlQuery = $query ?: "
                     </button>
                     <template x-for="(product, index) in products" :key="index">
                         <span class="flex-shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
-                                :class="{
+                              tabindex="-1"
+                              :class="{
                                     'bg-opacity-100': active === index,
                                     'hidden': (pageSize !== 1 && !!(index % pageSize))
                                     }"
-                                @click="getSlider().scrollLeft =
+                              @click="getSlider().scrollLeft =
                                     (getSlider().scrollWidth / products.length) * index; active=index;">
                         </span>
                     </template>
                     <button
                         aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
+                        tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active >= products.length-pageSize }"
                         @click="getSlider().scrollLeft =

@@ -105,7 +105,8 @@ module.exports = {
             borderWidth: ['last', 'hover', 'focus'],
             margin: ['last'],
             opacity: ['disabled'],
-            backgroundColor: ['even', 'odd']
+            backgroundColor: ['even', 'odd'],
+            ringWidth: ['active']
         }
     },
     plugins: [
@@ -118,8 +119,18 @@ module.exports = {
         //     safelist: [/^bg-opacity-/, /^-?[mp][trblxy]?-[4,8]$/, /^text-shadow/],
         // },
         content: [
+            // this theme's phtml files
             '../../**/*.phtml',
-            './src/**/*.phtml'
+            // parent theme in Vendor (if this is a child-theme)
+            //'../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml',
+            // app/code phtml files (if need tailwind classes from app/code modules)
+            //'../../../../../../../app/code/**/*.phtml',
+            // react app src files (if Hyvä Checkout is installed in app/code)
+            //'../../../../../../../app/code/**/src/**/*.jsx',
+            // react app src files in vendor (If Hyvä Checkout is installed in vendor)
+            //'../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/reactapp/src/**/*.jsx',
+            // widget block classes from app/code
+            //'../../../../../../../app/code/**/Block/Widget/**/*.php'
         ]
     }
 }

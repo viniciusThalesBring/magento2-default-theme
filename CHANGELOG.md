@@ -6,7 +6,388 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.3...master
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.7...main
+
+## [1.1.7] - 2021-08-25
+
+### Added
+
+- nothing
+
+### Changed
+
+- **Bugfix: Remove trailing space in customer prefix option values**
+
+  See [commit](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/c2c6009daaf6048e2725a0e2f98e5604f202bb76)
+
+  Thanks to Daniel Galla (IMI)!
+
+- **Bugfix: Allow authentication-popup to be resubmitted**
+
+  In the authentication popup (when guest checkout is disabled), once incorrect information is entered and the form is submitted, the submit button is “disabled” and re-submitting with the correct information is not possible.
+
+  See issue [#214](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/214)
+
+### Removed
+
+- nothing
+
+[1.1.7]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.6...1.1.7
+
+
+## [1.1.6] - 2021-08-12
+_Version 1.1.6 of the Hyva_Theme module is required for this update_
+
+### Critical
+- **Fix for: Subtotals break if address set without shipping method**
+
+  In some edge cases an address could be set on a quote item without a shipping method. This would break the cart total display.
+  If default behaviour to quote shipping address is changed, for instance by a third-party module, where an address is set on the quote by default, but no shipping method, this would break the cart instantly.
+  
+  A direct patch/diff for this issue can be downloaded from commit [`9a78264f` diff](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/9a78264f8726b3120e60e5f9222b36bb1fdeef63.diff)
+
+  See commit [`9a78264f`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/9a78264f8726b3120e60e5f9222b36bb1fdeef63).
+
+
+- **Page columns layout refactored from flex to grids**
+  
+  For a more solid handling of `2columns-right` and `3columns`, the page layout was refactored to CSS grids.
+  This means all pages now have 'containered' content by default, since the `.columns` div now has the tailwind `container` class applied.
+  
+  If you want to build custom pages that are full-width, you now need to define your own page-layout. This means when you're creating custom pages, you no longer need to add in containers on all blocks you add, making layouts more consistent.
+
+  The changes were made in `web/tailwind/components/structure.css` and require you to remove the extra wrapper container we previously introduced in `Magento_Theme/page_layout/override/base/2columns-left.xml`.
+  These changes can be viewed in commit [`54c7f6d5`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/54c7f6d5f2c0ed109e611eb4cb196e453794a31a).
+  
+  In existing projects, you might end up with double margins on containers after this change.
+  We would advise to either:
+  1. remove extra containers you added in your content
+  2. in case you don't want to update your existing content, keep the previous version of the files `Magento_Theme/page_layout/override/base/2columns-left.xml` and `web/tailwind/components/structure.css` in your child-theme.
+    
+
+### Added
+- **The current page is recalculated when toggling limiter in toolbar**
+
+  In `Magento_Catalog/templates/product/list/toolbar.phtml`, the active page is now recalculated when you switch the limiter in the toolbar. This change reflects an update in Magento core that was introduced in version 2.4.0.
+
+  See commit [`db90fc6a`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/db90fc6a9de433e560c7b23826390dc62e9a44e2)
+
+- **Regions now work as expected on customer account address forms**
+
+  See commit [`78f144fe`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/78f144fe7c7ae6130507095c8632403b834b911a)
+
+
+- **A lot of A11Y changed were made**
+    - Button focus styles are improved (using Tailwind `ring` classes)
+    - Removed nested `<nav>` and `<footer>` elements
+    - header search icon had empty ref, changed to button
+    - header search was missing submit button
+    - header customer account had no focus state
+    - PLP toolbar now has logical tab order
+    - Swatches are now visibly focusable
+    - "skip header" link was missing
+    - Sliders now have a focus-within border when focused
+    
+  See [Issue `#204`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/204), [Issue `#205`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/205) and related Merge requests.
+
+  Thanks to Clever Age for reporting.
+  
+  _NB: if you report other A11Y issues to us we'd be happy to address them_
+
+
+- **Cart error messages are improved**
+  
+  General error messages in the cart are now styled (because they are now rendered by the global messages component).
+  Cart-items that contain errors now show these errors in-line.
+  
+  This requires an update of the `hyva-themes/magento2-theme-module` to version 1.1.6.
+
+  See all commits in [Merge Request `!249`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/249).
+
+### Changed
+- **Fix for invalid aria-label on PDP swatches**
+
+  `aria-labelledby="radiogroup-label"` was removed on the swatch render container div.
+
+  See `Magento_Swatches/templates/product/view/renderer.phtml` and commit (`8970a96a`)[https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/8970a96adca6195012196b06550d11d50c7bd9a3]
+
+  Thanks to Hitesh Koshti (Ontapgroup) for contributing.
+
+
+- **Fix for activeSelectOptions on Bundled product Radio options**
+
+  Previously, when a radio option's quantity on a bundle product was set to user defined, the activeSelectOptions were improperly defined and the quantity input fields did not have their value or state properly set. The value got set to 0 and this negatively impacted the price calculation as well.
+  Additionally, if the radio bundle option is required, there was no change binding on the "None" field.
+
+  See `Magento_Bundle/templates/catalog/product/view/type/bundle/option/radio.phtml` and commit [`dd51fdfb`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/dd51fdfbdbb237851d917e0a3e4b69913cb83ffc)
+
+  Thanks to Josh Cairney (Swarming Tech) for contributing.
+
+
+- **Fixed issue where Cart items qty input fields have no label on cart page**
+
+  The cartItem quantity change input field now has a label for screenreaders
+
+  See `Magento_Checkout/templates/cart/items.phtml`
+  
+  Thanks to Hitesh Koshti (Ontapgroup) for contributing. 
+
+
+- **Customer Login legends are now consistently styled**
+
+  The form titles/legends for customer login and account registration are now consistently styled
+
+  Thanks to Hitesh Koshti (Ontapgroup) for contributing.
+
+
+- **Fix for bundled product Radio/Select if only one option present**
+
+  When either the radio or select is a single option the user defined checkbox did not take effect which disables the qty input.
+
+  See commit [`a3aaf192`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/a3aaf1929b4af173f604b0604b20bc4ae166fc14)
+
+  Thanks to Ryan Hissey (Aware Digital) for contributing.
+
+
+- **Bundled product qtyHelper method is now defined in parent component**
+
+  The `qtyHelper` methods that memorize bundle option quantities selected by vistitors is now no longer generated for all bundle option, but defined once in the `initBundleOptions` component.
+
+  See commit [`7d452495`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/7d45249514b04aabc26868218df4e257ccb30abc)
+
+  Thanks to Ryan Hissey (Aware Digital) for contributing.
+
+
+- **Cart display of totals and coupon are improved**
+
+  We've refactored how cart subtotals look.
+
+  See commit [`e4efe6cc`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/e4efe6ccd6298906995abf6abb17cda2b1102df4) or related issue with screenshots [`#195`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/195)
+
+
+- **Fix re-definition of `category.view.container` in layout xml**
+
+  In `Magento_Catalog/layout/catalog_category_view.xml`, the `category.view.container` is no longer redefined.
+
+  See commit [`3ce5c6c1`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/3ce5c6c1414d759ac263b9ddf18dc8030309ae17#3937fe081bbe3ab4df39105d411f910f6d2347b6)
+
+  Thanks to John Hughes (Fisheye) for contributing
+
+
+- **The `category.product.list.additional` has moved to `Magento_Catalog/layout/catalog_category_view.xml`**
+
+  Thanks to Nathan Day (Fisheye) for contributing
+
+
+- **The Checkout button in cart is no longer disabled on error**
+
+  The state of the cart can change by changing quantities in the cart.
+  Clicking "Proceed to Checkout" performs a serverside validation of the cart and will return back at the cart in case the cart is still invalid.
+
+  An example is "Minimum order amount". If the minimum is not met, it will show a warning. If you would increase the quantity of an item so that the minimum is met, the message disappears. Validation takes place again when you continue to checkout.
+
+  See commit [`1d5747d8`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/1d5747d8e5cf7ccc29cf465dd7b89e47e8fede14)
+
+
+- **The product sections renderer `trim on boolean` error is fixed**
+
+  The following error would occur:
+  TypeError: trim() expects parameter 1 to be string, bool given in `Magento_Catalog/templates/product/view/sections/product-sections.phtml`
+  
+  See commit [`e1459009`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/e14590093054b9cf0058f0c5df6cffee4bbccf9f)
+
+  Thanks to Victor Chiriac (Magecheck) for reporting
+
+### Removed
+- none
+
+[1.1.6]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.4...1.1.6
+
+
+## [1.1.5] - version number SKIPPED
+- 1.1.5 was skipped in order to stay in sync with `hyva-themes/magento2-theme-module`
+
+## [1.1.4] - 2021-06-16
+_Version 1.1.4 of the Hyva_Theme module is required for this update_
+
+### Added
+- **A Dispatch event that is triggered after accepting cookies**
+
+  After accepting cookies `window.dispatchEvent(new CustomEvent('user-allowed-save-cookie'));` is now being triggered.
+
+  In the Hyva_Theme module (v1.1.4) cookies are not stored until this event is triggered.
+
+  See `Magento_Cookie/templates/notices.phtml`
+
+  Thanks to Mirko Cesaro (Bitbull) for contributing
+
+- **Initial active gallery image now defaults to 0 if no main image set**
+  
+  If no main image is set, the initial active image is now set to `0`.
+  
+  See `Magento_Catalog/templates/product/view/gallery.phtml`
+
+  Thanks to Simon Sprankel (CustomGento) for contributing
+
+- **In customer account area, sales items are now showing child-items**
+  
+  See `Magento_Sales/templates/order/invoice/items.phtml`, `Magento_Sales/templates/order/items.phtml` and commit [`72751505`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/72751505ed80a86987adf9eca3834a2369f7295c)
+
+- **Customer account sales now show prices including tax**
+  
+  The layout file at `Magento_Tax/layout/sales_order_item_price.xml` was added, which adds tax to sales items in customer account, when needed.
+
+- **Add-to-cart button on PDP has its original ID back**
+  
+  The add-to-cart button now contains `id="product-addtocart-button"` again, as it does in core Magento. This would help frontend testing frameworks in functioning.
+  
+  See `Magento_Catalog/templates/product/view/addtocart.phtml`
+
+  Thanks to Laura Folco for contributing
+
+- **Switching configurable options now dispatches an event**
+  
+  The event `configurable-selection-changed` is now dispatched from `Magento_ConfigurableProduct/templates/product/view/type/options/js/configurable-options.phtml`
+
+  This allows you to hook into this event in 3rd party modules or custom code.
+
+  Thanks to Simon Sprankel (CustomGento) for contributing
+
+- **A generic slider template was added**
+  
+  `Magento_Theme/templates/elements/slider-generic.phtml` was added. Hyva_Theme module version 1.1.4 or higher is needed to use the generic slider.
+  
+  Please refer to `Rendering Sliders` in the Hyvä Documentation for full details on how to use the generic slider.
+
+- **Out of stock swatches are now shown**
+  
+  Out of stock swatches are now implemented on PLP and PDP.
+  Also, the phtml that renders swatches is consolidated to a single file: `Magento_Swatches/templates/product/swatch-item.phtml`
+  Same goes for swatch tooltips: `Magento_Swatches/templates/product/tooltip.phtml`
+  
+  See commit [`fd3f3aa3`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/fd3f3aa35baf415efb1ea885ff2ee71c6c5376ae)
+
+- **Email To Friend Button was added to PDP**
+
+  The EmailToFried/SendFriend button has been added to the Product Detail Page.
+
+  See commit [`a5211128 `](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/a521112806aaf7c88fa4c94b3ff21901dcd4a58f)
+
+
+### Changed
+- **Product List items are now cached in block_html cache**
+
+  This reduces cost for products with swatches, as they are loaded for
+  each product individually and not as part of the product collection.
+
+  See `Magento_Catalog/templates/product/list.phtml`
+  
+- **Top Menu now uses generic template block with viewmodel cache tags**
+
+  Now that the Navigation View Model uses getIdentities() we can set the cache_tags on the topmenu and properly cache the menu in Full Page Cache.
+  
+  See `Magento_Theme/templates/html/header/topmenu.phtml` and commit [`6736ae66`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/6736ae66dc13cee9f5d612f2c1342e40f80b28b1)
+
+
+- **PLP Titles have been reintroduced and Styled**
+  
+  We no longer remove the title in `Magento_Catalog/layout/catalog_category_view.xml`.
+
+  Beside that, the titles are restyled a bit overall.
+
+  Thanks to Rich Jones (Aware Digital) for contributing
+
+- **Swatch options now correctly return `label` before `value`**
+
+  See `Magento_Swatches/templates/product/js/swatch-options.phtml`
+
+  Thanks to Rich Jones (Aware Digital) for contributing
+
+- **Swatch labels are now properly closed with </label>**
+
+  See `Magento_Swatches/templates/product/view/renderer.phtml`
+
+  Thanks to Rich Jones (Aware Digital) for contributing
+
+- **Product Description is now rendering Directives properly**
+
+  `$productViewModel->productAttributeHtml()` is now used to render product descriptions. That means variables in `{{directives}}` are now rendered.
+  
+  See `Magento_Catalog/templates/product/view/description.phtml`
+
+- **An empty product description no longer renders the parent element on PDP**
+  
+  See `Magento_Catalog/templates/product/product-detail-page.phtml`
+
+  Thanks to Victor Chiriac (Mage Check) for contributing.
+
+- **Additional product data on PDP is now rendered with a renderer**
+
+  As in default Magento (Luma), additional data is now rendered with a renderer (`Magento_Catalog/templates/product/view/product-sections.phtml`) which allows you to change the display of these sections to a custom implementation.
+  This makes it a lot easier to implement a tabbed display or accordeon. It also enables you to render additional data from 3rd party modules using the standard Magento layout group:
+  ```
+  <block class="Magento\Catalog\Block\Product\View\Attributes" template="Magento_Catalog::product/view/description.phtml" group="detailed_info"/>
+  ```
+  
+  See 
+  - `Magento_Catalog/layout/catalog_product_view.xml` and files in `Magento_Catalog/templates/product/view/sections/`
+  - or all commits in [`Merge Request 201`](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/201)
+
+- **Customer account registration pages are no longer cached**
+
+  If any error occured during customer signup & customer was being redirected back to the registration form with error message. But the form data would not be preserved due to full-page caching.
+
+  `cacheable="false"` has now been added to the `customer_form_register` block.
+
+  See `Magento_Customer/layout/customer_account_create.xml`
+  
+  Thanks to Ravinder (redMonks/redChamps) for contributing
+
+- **Shopping assistance checkbox has been added to registration form**
+
+  See `Magento_Customer/templates/form/register.phtml` and `Magento_LoginAsCustomerAssistance/layout/customer_account_create.xml`
+
+  Thanks to Ravinder (redMonks/redChamps) for contributing
+
+- **Logo image size variables are now correct**
+  
+  In `Magento_Theme/layout/default.xml` the variables `logo_img_width` and `logo_img_height` were renamed to `logo_width` and `logo_height`
+  This changed in 2.3.5+ in Magento Core.
+  
+  Thanks to Guus Portegies (Cees en Co) for reporting
+
+- **The checkout url in de minicart/cart-drawer changed**
+
+  `checkout/index` was changed to `checkout`, which normally renders the same page/url. But, some 3rd party extensions (such as Mageplaza_OneStepCheckout) replace the `checkout` url to alter the path to a checkout page.
+  
+  See `Magento_Theme/templates/html/cart/cart-drawer.phtml`
+
+- **Empty cart continue shopping now links to homepage**
+
+  Previously, this linked back to the cart.
+
+  Thanks to Daniel Galla (iMi) for contributing
+
+### Removed
+- **Standard Quantity field is no longer shown on Grouped products**
+  
+  See `Magento_Catalog/templates/product/view/quantity.phtml`
+
+  Thanks to Rich Jones (Aware Digital) for contributing
+
+- **Pagination was removed from customer account order print**
+
+  See `Magento_Sales/layout/sales_order_print.xml`
+
+- **Aria labelledby has been removed from PLP swatch-items**
+
+  `aria-labelledby="radiogroup-label"` was causing LightHouse best practice warnings and thus has been removed.
+
+  See `Magento_Swatches/templates/product/listing/renderer.phtml`
+  
+  Thanks to Hitesh Koshti (On Tap) for contributing
+
+[1.1.4]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.3...1.1.4
 
 ## [1.1.3] - 2021-05-07
 _Version 1.1.3 of the Hyva_Theme module is required for this update_
@@ -22,6 +403,7 @@ _Version 1.1.3 of the Hyva_Theme module is required for this update_
 ### Removed
 - none
 
+[1.1.3]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.2...1.1.3
 
 ## [1.1.2] - 2021-05-03
 _Version 1.1.2 of the Hyva_Theme module is required for this update_

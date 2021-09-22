@@ -22,9 +22,10 @@ use Magento\Framework\Escaper;
     >
         <?= $block->getChildHtml('loading') ?>
         <?= $block->getChildHtml('items') ?>
-        <div class="grid lg:grid-cols-2" x-show="!isLoading && !cartEmpty">
+        <div class="grid lg:grid-cols-2 gap-8" x-show="!isLoading && !cartEmpty">
             <div>
                 <?= $block->getChildHtml('coupon') ?>
+                <?= $block->getChildHtml('additional.cart.information') ?>
             </div>
             <div>
                 <?= $block->getChildHtml('totals') ?>

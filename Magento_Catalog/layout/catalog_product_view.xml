@@ -15,7 +15,7 @@
         <attribute name="itemscope" value="itemscope"/>
         <referenceBlock name="page.main.title">
             <arguments>
-                <argument name="css_class" xsi:type="string">product lg:hidden</argument>
+                <argument name="css_class" xsi:type="string">product md:hidden text-3xl font-semibold text-center</argument>
                 <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
             </arguments>
         </referenceBlock>
@@ -99,6 +99,10 @@
 
                         <block name="product.info.addtocompare"  template="Magento_Catalog::product/view/addtocompare.phtml"/>
 
+                        <block name="product.info.emailtofriend"
+                               template="Magento_Catalog::product/view/emailtofriend.phtml"
+                        />
+
                         <block name="product.info.stockstatus"  template="Magento_Catalog::product/view/stock-status.phtml"/>
 
                         <block class="Magento\Catalog\Block\Product\Price"
@@ -141,17 +145,6 @@
                            as="product_options_wrapper_bottom"
                            template="Magento_Catalog::product/view/options/wrapper/bottom.phtml"/>
 
-                    <block name="description"
-                           template="Magento_Catalog::product/view/description.phtml">
-                    </block>
-
-                    <block
-                        class="Magento\Catalog\Block\Product\View\Attributes"
-                        name="product.attributes"
-                        as="additional"
-                        template="Magento_Catalog::product/view/attributes.phtml"
-                    />
-
                     <block name="upsell" class="Magento\Catalog\Block\Product\View"
                            template="Magento_Theme::elements/slider.phtml">
                         <arguments>
@@ -168,6 +161,34 @@
                             <argument name="type" xsi:type="string">related</argument>
                             <argument name="title" xsi:type="string" translate="true">Related Products</argument>
                         </arguments>
+                    </block>
+
+                    <block class="Magento\Catalog\Block\Product\View\Details"
+                           name="product.info.details"
+                           template="Magento_Catalog::product/view/sections/product-sections.phtml">
+                        <block name="product.section.title.renderer" template="Magento_Catalog::product/view/sections/default-section-title.phtml"/>
+
+                        <block name="description"
+                               template="Magento_Catalog::product/view/sections/description.phtml"
+                               group="detailed_info">
+                            <arguments>
+                                <argument name="title_template" xsi:type="string">Magento_Catalog::product/view/sections/description-section-title.phtml</argument>
+                                <argument name="sort_order" xsi:type="number">-20</argument>
+                            </arguments>
+                        </block>
+
+                        <block
+                            class="Magento\Catalog\Block\Product\View\Attributes"
+                            name="product.attributes"
+                            as="additional"
+                            template="Magento_Catalog::product/view/attributes.phtml"
+                            group="detailed_info">
+                            <arguments>
+                                <argument name="title" xsi:type="string" translate="true">More Information</argument>
+                                <argument name="sort_order" xsi:type="number">-10</argument>
+                            </arguments>
+                        </block>
+
                     </block>
                 </block>
 

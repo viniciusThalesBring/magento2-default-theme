@@ -18,4 +18,5 @@
             <argument name="logoPathResolver" xsi:type="object">Magento\Sales\ViewModel\Header\LogoPathResolver</argument>
         </arguments>
     </referenceBlock>
+    <referenceBlock name="sales_order_item_pager" remove="true"/>
 </page>

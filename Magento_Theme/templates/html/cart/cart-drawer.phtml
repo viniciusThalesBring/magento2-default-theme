@@ -187,8 +187,8 @@ use Magento\Framework\View\Element\Template;
                         <div class="w-full p-3 -m-3 space-x-4 transition duration-150 ease-in-out
                             rounded-lg hover:bg-gray-100">
                             <a @click.prevent.stop="$dispatch('toggle-authentication',
-                                {url: '<?= $escaper->escapeUrl($block->getUrl('checkout/index')) ?>'});"
-                                href="<?= $escaper->escapeUrl($block->getUrl('checkout/index')) ?>"
+                                {url: '<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>'});"
+                                href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
                                 class="inline-flex btn btn-primary">
                                 <?= $escaper->escapeHtml(__('Checkout')) ?>
                             </a>
