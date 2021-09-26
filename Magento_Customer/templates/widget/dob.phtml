@@ -332,14 +332,15 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 }, {})
 
                 const dateData = Intl.DateTimeFormat('en-US', options).formatToParts(date);
-                const day = dateData.find(item => item.type === 'day').value;
-                const month = dateData.find(item => item.type === 'month').value;
-                const year = dateData.find(item => item.type === 'year').value;
 
-                return this.template
-                    .replace(parsedFormat[0], month)
-                    .replace(parsedFormat[1], day)
-                    .replace(parsedFormat[2], year);
+                return parsedFormat.reduce((result, valueTemplate) => {
+                    const dateItem = dateData.find(item => item.type === Object.keys(this.map[valueTemplate])[0]);
+
+                    if (dateItem) {
+                        return result.replace(valueTemplate, dateItem.value);
+                    }
+                    return result;
+                }, this.template);
             }
         }
     }
