@@ -97,6 +97,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Previously the logo height and width set in the admin theme config where not applied.
   As long as there is no size configured on the theme, the previous dimensions set in layout XML are still used.
+  Because the related view models where added to Magento only in version 2.4.3, they where copied into the Hyva_Theme
+  module to provide forward compatiblity for older Magento versions.
 
   More details can be found in the [issue #221](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/221).
 
