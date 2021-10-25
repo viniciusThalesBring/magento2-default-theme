@@ -13,6 +13,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\ProductPage;
+use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -36,7 +37,13 @@ $gqlViewModel = $viewModels->require(GraphqlViewModel::class);
 
 /** @var ProductPage $viewModelProducts */
 $viewModelProducts = $viewModels->require(ProductPage::class);
-$currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getProduct()->getSku() : '';
+$currentProduct    = $viewModelProducts->getProduct();
+$currentProductSku = $currentProduct ? $currentProduct->getSku() : '';
+
+/** @var Image $productImage */
+$productImage = $currentProduct
+    ? $viewModelProducts->getImage($currentProduct, 'category_page_grid')
+    : null;
 
 /** @var Store $viewModelStore */
 $viewModelStore = $viewModels->require(Store::class);
@@ -50,10 +57,59 @@ $title = $title ?? __('Recently Viewed Products');
 ?>
 <script>
 
+    <?php /** This method returns the data structure to store in local storage if GraphQL is NOT queried. */ ?>
+    <?php /** It is declared in global scope to allow overriding should additional attributes be required. */ ?>
+    function getCurrentProductDataForRecentlyViewedList() {
+        <?php if (! $currentProduct): ?>
+        return {};
+        <?php else: ?>
+
+        function findUrlSuffix(url) {
+            let suffix = url.lastIndexOf('.') !== -1
+                ? url.substr(url.lastIndexOf('.'))
+                : '';
+            if (suffix.indexOf('?') !== -1) {
+                suffix = suffix.substring(0, suffix.indexOf('?'))
+            }
+            if (suffix.indexOf('#') !== -1) {
+                suffix = suffix.substring(0, suffix.indexOf('#'))
+            }
+            return suffix;
+        }
+
+        // Match GraphQL response structure
+        return {
+            id: <?= (int) $currentProduct->getId() ?>,
+            name: '<?= $escaper->escapeJs($currentProduct->getName()) ?>',
+            small_image: {
+                label: '<?= $escaper->escapeJs($productImage->getLabel()) ?>',
+                url: '<?= $escaper->escapeJs($escaper->escapeUrl($productImage->getImageUrl())) ?>'
+            },
+            url_key: '<?= $escaper->escapeJs($currentProduct->getUrlKey()) ?>',
+            url_suffix: findUrlSuffix('<?= $escaper->escapeJs($currentProduct->getUrlInStore()) ?>'),
+            visibility: <?= (int) $currentProduct->getVisibility() ?>,
+            status: <?= (int) $currentProduct->getStatus() ?>,
+            price_range: {
+                minimum_price: {
+                    regular_price: {
+                        value: <?= (float) $currentProduct->getPrice() ?>,
+                            currency: '<?= $escaper->escapeJs($viewModelCurrency->getCurrentCurrencyCode()) ?>'
+                    },
+                    final_price: {
+                        value: <?= (float) $currentProduct->getFinalPrice() ?>,
+                            currency: '<?= $escaper->escapeJs($viewModelCurrency->getCurrentCurrencyCode()) ?>'
+                    }
+                }
+            }
+        }
+        <?php endif; ?>
+    }
+
     function initRecentlyViewedProductsComponent<?= /** @noEscape */$uniqueId ?>(options) {
 
         const defaultOptions = {
             isSlider: false,
+            useGraphQL: false,
             noOfProductsToShow: <?= (int) $block->getData('page_size') ?>
         };
         const config = Object.assign({}, defaultOptions, options || {});
@@ -64,7 +120,10 @@ $title = $title ?? __('Recently Viewed Products');
 
         function readRecentlyViewedFromStorage () {
             const data = hyva.getBrowserStorage().getItem('recently_viewed_products');
-            return data ? JSON.parse(data) : [];
+            return data ? JSON.parse(data).filter(product => {
+                <?php /** Remove items that are invalid after switching config.useGraphQL to false */ ?>
+                return config.useGraphQL || product.id;
+            }) : [];
         }
 
         function removeExpiredProductsInLocalStorage() {
@@ -89,10 +148,13 @@ $title = $title ?? __('Recently Viewed Products');
         }
 
         function createRecordForCurrentProduct() {
-            return {
+            const currentProduct = {
                 sku: '<?= $escaper->escapeJs($currentProductSku) ?>',
                 expiry: Date.now() + <?= (int) $viewModelProducts->getRecentlyViewedLifeTime() ?> * 1000
-            }
+            };
+            return config.useGraphQL
+                ? currentProduct
+                : Object.assign(currentProduct, getCurrentProductDataForRecentlyViewedList());
         }
 
         removeExpiredProductsInLocalStorage();
@@ -107,22 +169,29 @@ $title = $title ?? __('Recently Viewed Products');
             minHeight() {
                 return 'min-height: ' + ((this.loading && '491px') || 0);
             },
-            getProducts($nextTick) {
+            getProducts() {
                 const recentlyViewedProductsArray = readRecentlyViewedFromStorage();
-                let itemsToFetch = [];
+                let itemsToShow = [];
                 if (recentlyViewedProductsArray.length > 0) {
                     // Avoid showing the current product
                     const start = '<?= $escaper->escapeJs($currentProductSku) ?>' === '' ? 0 : 1;
-                    itemsToFetch = recentlyViewedProductsArray.slice(start).map(product => product.sku)
+                    itemsToShow = recentlyViewedProductsArray.slice(start)
                 }
 
-                itemsToFetch = itemsToFetch.slice(0, this.noOfProductsToShow);
+                itemsToShow = itemsToShow.slice(0, this.noOfProductsToShow);
 
-                if (!itemsToFetch.length) {
+                if (!itemsToShow.length) {
                     this.noOfProductsToShow = 0;
                     return;
                 }
 
+                config.useGraphQL
+                    ? this.fetchProducts(itemsToShow)
+                    : this.renderRecentlyViewedProducts(itemsToShow)
+            },
+
+            fetchProducts(itemsToShow) {
+                const skusToFetch = itemsToShow.map(product => product.sku);
                 const query = `<?= $gqlViewModel->query("recently_viewed_products_query", 'query ($skus: [String!]!) {
   products(filter: { sku: { in: $skus } }) {
     items {
@@ -152,7 +221,7 @@ $title = $title ?? __('Recently Viewed Products');
     }
   }
 }') ?>`;
-                const variables = JSON.stringify({skus: itemsToFetch});
+                const variables = JSON.stringify({skus: skusToFetch});
                 window.fetch('/graphql?' + new URLSearchParams({query, variables}), {
                     method: 'GET',
                     headers: {
@@ -175,25 +244,26 @@ $title = $title ?? __('Recently Viewed Products');
 
                             // fix sorting of the response-products according to the sorting of the requested-products
                             const sortedProducts = [];
-                            itemsToFetch.forEach(sku => {
+                            skusToFetch.forEach(sku => {
                                 responseProducts.forEach(productData => {
                                     if (sku === productData.sku){
                                         sortedProducts.push(productData);
                                     }
                                 });
                             });
-                            return this.products = sortedProducts;
+                            this.renderRecentlyViewedProducts(sortedProducts);
                         }
                     )
-                    .finally(() => {
-                        this.loading = false;
-                        if (config.isSlider) {
-                            $nextTick
-                                ? $nextTick(() => this.calcPageSize())
-                                : setTimeout(() => this.calcPageSize(), 1);
-                        }
-                    });
-            }, // end getProducts()
+                    .finally(() => this.loading = false)
+            }, // end fetchProducts()
+
+            renderRecentlyViewedProducts(products) {
+                this.products = products;
+                this.loading = false;
+                if (config.isSlider) {
+                    this.$nextTick(() => this.calcPageSize());
+                }
+            },
 
             addToWishlist(productId) {
                 fetch(BASE_URL + 'wishlist/index/add/', {
