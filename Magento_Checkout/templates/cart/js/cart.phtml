@@ -8,12 +8,12 @@
 
 use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Cart\GraphQlQueriesWithVariables as GraphQlQueries;
 use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\Directory as DirectoryViewModel;
 use Hyva\Theme\ViewModel\Store as StoreViewModel;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Escaper;
-use Hyva\Theme\ViewModel\Cart\GraphQlQueries;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
@@ -148,11 +148,15 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 const couponQuery = couponCode
                     ? `<?= /** @noEscape */ $viewModelGraphQl->query(
                         'cart_coupon_add_mutation',
-                        'mutation ($cartId: String!, $couponCode: String!) {' . $viewModelCart->getCouponAddQuery() . '}'
+                        'mutation ($cartId: String!, $couponCode: String!) {' .
+                        $viewModelCart->getCouponAddQuery() .
+                        '}'
                     ) ?>`
                     : `<?= /** @noEscape */ $viewModelGraphQl->query(
                         'cart_coupon_remove_mutation',
-                        'mutation ($cartId: String!) {' . $viewModelCart->getCouponRemoveQuery() . '}'
+                        'mutation ($cartId: String!) {' .
+                        $viewModelCart->getCouponRemoveQuery() .
+                        '}'
                     ) ?>`;
                     const variables = {
                         couponCode: couponCode,
@@ -251,7 +255,9 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 this.isLoading = true;
                 const cartItemRemoveQuery = `<?= /** @noEscape */ $viewModelGraphQl->query(
                     'cart_item_remove_mutation',
-                    'mutation ($cartId: String, $itemId: String!) {' . $viewModelCart->getCartItemRemoveQuery() . '}'
+                    'mutation ($cartId: String, $itemId: String!) {' .
+                    $viewModelCart->getCartItemRemoveQuery() .
+                    '}'
                 )?>`;
                 const variables = {
                     cartId: this.cartId,
