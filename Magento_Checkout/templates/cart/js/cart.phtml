@@ -63,13 +63,15 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
             getCartQuery() {
                 return <?= /** @noEscape */ json_encode($viewModelGraphQl->query(
                     'cart_query',
-                    'query ($cartId: String!) {cart (cart_id: $cartId) {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
+                    'query guestCartQuery($cartId: String!) {cart (cart_id: $cartId) {' .
+                    $viewModelCart->getCartGraphQlQuery() .
+                    '}}'
                 )); ?>
             },
             getCustomerCartQuery() {
                 return <?= /** @noEscape */ json_encode($viewModelGraphQl->query(
                     'customer_cart_query',
-                    'query {customerCart {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
+                    'query customerCartQuery{customerCart {' . /* @noEscape */ $viewModelCart->getCartGraphQlQuery() . '}}'
                 )); ?>
             },
             getCart() {
@@ -148,13 +150,13 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 const couponQuery = couponCode
                     ? `<?= /** @noEscape */ $viewModelGraphQl->query(
                         'cart_coupon_add_mutation',
-                        'mutation ($cartId: String!, $couponCode: String!) {' .
+                        'mutation applyCouponToCartMutation($cartId: String!, $couponCode: String!) {' .
                         $viewModelCart->getCouponAddQuery() .
                         '}'
                     ) ?>`
                     : `<?= /** @noEscape */ $viewModelGraphQl->query(
                         'cart_coupon_remove_mutation',
-                        'mutation ($cartId: String!) {' .
+                        'mutation removeCouponFromCartMutation($cartId: String!) {' .
                         $viewModelCart->getCouponRemoveQuery() .
                         '}'
                     ) ?>`;
@@ -211,7 +213,7 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
 
                 const cartItemUpdateQuery = `<?= /** @noEscape */ $viewModelGraphQl->query(
                     'cart_item_update_mutation',
-                    'mutation ($cartId: String!, $itemId: Int, $qty: Float) {' .
+                    'mutation updateCartItemQtyMutation($cartId: String!, $itemId: Int, $qty: Float) {' .
                     $viewModelCart->getCartItemUpdateQuery() .
                     '}'
                 ) ?>`;
@@ -255,13 +257,13 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 this.isLoading = true;
                 const cartItemRemoveQuery = `<?= /** @noEscape */ $viewModelGraphQl->query(
                     'cart_item_remove_mutation',
-                    'mutation ($cartId: String, $itemId: String!) {' .
+                    'mutation removeCartItemMutation($cartId: String!, $itemId: Int) {' .
                     $viewModelCart->getCartItemRemoveQuery() .
                     '}'
                 )?>`;
                 const variables = {
                     cartId: this.cartId,
-                    itemid: itemId
+                    itemId: itemId
                 };
 
                 fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
