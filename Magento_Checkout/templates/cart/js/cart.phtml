@@ -137,7 +137,7 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 if (!this.cartData.applied_coupons && document.getElementById('coupon_code').value === '') {
                     dispatchMessages([{
                         type: 'error',
-                        text: '<?= $escaper->escapeJs(__('Please enter a coupon code')) ?>'
+                        text: '<?= $escaper->escapeJs(__('Please enter a coupon code!')) ?>'
                     }], 5000)
                 } else {
                     this.mutateCouponCode();
