@@ -338,6 +338,12 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                 const country = estimateShippingState.country || this.getEstimationCountry();
                 const regionId = estimateShippingState.region_id || this.getEstimationRegionId();
                 const regionName = estimateShippingState.region || this.getEstimationRegionName();
+
+                if (! this.countries[this.getEstimationCountry()]) {
+                    console.error('[Configuration Error] The default country is not in the list of allowed countries!');
+                    this.countries[this.getEstimationCountry()] = {name: ''};
+                }
+
                 if (regionId) {
                     this.setEstimationCountry(country);
                     this.setEstimationRegionById(regionId);
