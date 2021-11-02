@@ -27,6 +27,12 @@ $logoWidth = $logoSizeResolver && $logoSizeResolver->getWidth()
 $logoHeight = $logoSizeResolver && $logoSizeResolver->getHeight()
     ? $logoSizeResolver->getHeight()
     : $block->getLogoHeight();
+
+/** @var \Hyva\Theme\ViewModel\Logo\LogoPathResolver $logoPathResolver */
+$logoPathResolver = $block->getData('logoPathResolver');
+$logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
+    ? $logoPathResolver->getLogoSrc()
+    : $block->getLogoSrc();
 ?>
 <div class="order-1 sm:order-2 lg:order-1 w-full pb-2 sm:w-auto sm:pb-0">
     <a class="flex items-center justify-center text-xl font-medium tracking-wide text-gray-800
@@ -34,7 +40,7 @@ $logoHeight = $logoSizeResolver && $logoSizeResolver->getHeight()
        href="<?= $escaper->escapeUrl($block->getUrl('')) ?>"
        title="<?= $escaper->escapeHtmlAttr($storeName) ?>"
        aria-label="store logo">
-        <img src="<?= $escaper->escapeUrl($block->getLogoSrc()) ?>"
+        <img src="<?= $escaper->escapeUrl($logoSrc) ?>"
              title="<?= $escaper->escapeHtmlAttr($block->getLogoAlt()) ?>"
              alt="<?= $escaper->escapeHtmlAttr($block->getLogoAlt()) ?>"
             <?= $logoWidth ?
