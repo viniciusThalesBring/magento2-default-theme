@@ -1,8 +1,9 @@
 const { spacing } = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
 
+
 module.exports = {
-    mode: 'jit',
+    mode: process.env.TAILWIND_COMPILE_MODE || 'jit', // either 'jit' or 'aot'
     theme: {
         extend: {
             screens: {
