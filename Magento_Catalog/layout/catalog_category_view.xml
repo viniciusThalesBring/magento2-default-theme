@@ -41,7 +41,10 @@
                     <container name="category.product.list.additional" as="additional" label="Additional Info" after="product_list_toolbar" />
                 </block>
             </block>
+        </referenceContainer>
 
+        <referenceContainer name="category.product.list.additional">
+            <block name="category.products.list.js" template="Magento_Catalog::product/list/js.phtml"/>
         </referenceContainer>
 
         <referenceBlock name="product.price.render.default">
