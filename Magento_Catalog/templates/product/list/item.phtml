@@ -76,9 +76,7 @@ $uniqueId = '_' . uniqid();
 <?php else: ?>
 <div class="item product product-item card card-interactive flex flex-col <?= $viewIsGrid ? '' : 'md:flex-row' ?>">
 <?php endif; ?>
-    <?php
-    $productImage = $block->getImage($product, $imageDisplayArea);
-    ?>
+    <?php $productImage = $productViewModel->getImage($product, $imageDisplayArea); ?>
     <?php // Product Image ?>
     <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
         class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:mr-5' ?>"

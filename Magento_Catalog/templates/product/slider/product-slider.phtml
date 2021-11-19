@@ -80,9 +80,12 @@ if (in_array($type, ['related', 'upsell', 'crosssell'], true)) {
 
 ?>
 <div x-data="">
-    <?= $sliderViewModel->getSliderForItems('Magento_Catalog::product/slider/product-slider-item.phtml', $items)
-                        ->setData('title', $title)
-                        ->toHtml();
+    <?=
+    $sliderViewModel->getSliderForItems(
+        'Magento_Catalog::product/list/item.phtml',
+        $items,
+        'Magento_Catalog::product/slider/product-slider-container.phtml'
+    )->setData('title', $title)->toHtml();
     ?>
 </div>
 <script>
