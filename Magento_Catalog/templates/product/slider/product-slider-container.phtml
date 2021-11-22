@@ -110,30 +110,28 @@ $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
                      @scroll.debounce="calcActive"
                 >
                     <?php foreach ($items as $product): ?>
-                        <div class="flex-none w-full py-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4">
-                            <div class="mx-1 card h-full">
-                                 <?php
-                                 $itemCacheKeyInfo = [
-                                     $product->getId(),
-                                     $viewMode,
-                                     ProductReviewRenderer::SHORT_VIEW,
-                                     $block->getTemplate(),
-                                     $product->getStoreId(),
-                                     $productViewModel->getCurrencyData()['code'],
-                                     /* category id */ '0'
-                                 ];
-                                 echo $sliderItemRenderer
-                                       ->setData('product', $product)
-                                       ->setData('view_mode', $viewMode)
-                                       ->setData('image_display_area', $imageDisplayArea)
-                                       ->setData('show_description', $showDescription)
-                                       ->setData('template_type', ProductReviewRenderer::SHORT_VIEW)
-//                                       ->setData('cache_lifetime', 3600)
-//                                       ->setData('cache_tags', $product->getIdentities())
-//                                       ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
-                                       ->toHtml();
-                                 ?>
-                            </div>
+                        <div class="flex-none flex items-stretch justify-center w-full py-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4">
+                             <?php
+                             $itemCacheKeyInfo = [
+                                 $product->getId(),
+                                 $viewMode,
+                                 ProductReviewRenderer::SHORT_VIEW,
+                                 $block->getTemplate(),
+                                 $product->getStoreId(),
+                                 $productViewModel->getCurrencyData()['code'],
+                                 /* category id */ '0'
+                             ];
+                             echo $sliderItemRenderer
+                                   ->setData('product', $product)
+                                   ->setData('view_mode', $viewMode)
+                                   ->setData('image_display_area', $imageDisplayArea)
+                                   ->setData('show_description', $showDescription)
+                                   ->setData('template_type', ProductReviewRenderer::SHORT_VIEW)
+                                   ->setData('cache_lifetime', 3600)
+                                   ->setData('cache_tags', $product->getIdentities())
+                                   ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
+                                   ->toHtml();
+                             ?>
                         </div>
                     <?php endforeach; ?>
                     <div :class="{
