@@ -14,6 +14,7 @@ use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\RecentlyViewedProducts;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\ProductPage;
+use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
@@ -53,6 +54,9 @@ $productImage = $currentProduct
 /** @var Store $viewModelStore */
 $viewModelStore = $viewModels->require(Store::class);
 
+/** @var StoreConfig $storeConfig */
+$storeConfig = $viewModels->require(StoreConfig::class);
+
 /** @var Currency $viewModelCurrency */
 $viewModelCurrency = $viewModels->require(Currency::class);
 
@@ -67,7 +71,7 @@ $title = $title ?? __('Recently Viewed Products');
         const defaultOptions = {
             isSlider: false,
             useGraphQL: <?= /** @noEscape */ $recentlyViewed->isFetchRecentlyViewedEnabled() ? 'true' : 'false' ?>,
-            noOfProductsToShow: <?= (int) $block->getData('page_size') ?>
+            noOfProductsToShow: <?= (int) $storeConfig->getStoreConfig('catalog/recently_products/viewed_count') ?>
         };
         const config = Object.assign({}, defaultOptions, options || {});
 
@@ -255,7 +259,7 @@ $title = $title ?? __('Recently Viewed Products');
             getSlider() {
                 return this.$el.querySelector('.js_slides');
             },
-            pageSize: 1,
+            pageSize: 4,
             pageFillers: 0,
             calcPageSize() {
                 const slider = this.getSlider();
