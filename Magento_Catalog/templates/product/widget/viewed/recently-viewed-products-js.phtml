@@ -18,6 +18,8 @@ use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * These variables are automatically assigned to any template
  *
@@ -57,8 +59,6 @@ $viewModelStore = $viewModels->require(Store::class);
 $viewModelCurrency = $viewModels->require(Currency::class);
 
 $title = $title ?? __('Recently Viewed Products');
-
-
 ?>
 <script>
 
@@ -110,7 +110,7 @@ $title = $title ?? __('Recently Viewed Products');
 
             fetchProducts(itemsToShow) {
                 const skusToFetch = itemsToShow.map(product => product.sku);
-                const query = `<?= $gqlViewModel->query("recently_viewed_products_query", 'query ($skus: [String!]!) {
+                const query = `<?= /* @noEscape */ $gqlViewModel->query("recently_viewed_products_query", 'query ($skus: [String!]!) {
   products(filter: { sku: { in: $skus } }) {
     items {
       sku

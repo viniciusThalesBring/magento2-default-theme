@@ -44,9 +44,9 @@ if ($block->getAttributeInputType($attribute) === 'yesno') {
 
 $selectBlock->setName($name)
             ->setId($attribute->getAttributeCode())
-            ->setTitle($this->getAttributeLabel($attribute))
+            ->setTitle($block->getAttributeLabel($attribute))
             ->setExtraParams($extra)
-            ->setValue($this->getAttributeValue($attribute))
+            ->setValue($block->getAttributeValue($attribute))
             ->setOptions($options)
             ->setClass('form-input w-full md:w-2/3 lg:w-1/2');
 

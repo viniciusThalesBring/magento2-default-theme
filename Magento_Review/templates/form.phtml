@@ -355,7 +355,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                             this.isLoading = true;
                             this.displayErrorMessage = false;
 
-                            const query = `<?= $gqlViewModel->query('create_product_review_mutation', '
+                            const query = `<?= /* @noEscape */ $gqlViewModel->query('create_product_review_mutation', '
 mutation createProductReviewMutation(
     $sku: String!,
     $nick: String!,
