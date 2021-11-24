@@ -29,8 +29,8 @@ $productPriceViewModel = $viewModels->require(ProductPrice::class);
 $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptionPrice::PRICE_CODE, $product);
 ?>
 
-<div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
-    <label class="label text-gray-700 text-left w-1/2"
+<div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
+    <label class="label text-gray-700 text-left w-full sm:w-1/2"
            for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>_text">
         <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
         <?php if ($option->getIsRequire()): ?>
@@ -41,7 +41,7 @@ $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptio
         </span>
     </label>
 
-    <div class="ml-2 text-gray-900 text-left w-1/2">
+    <div class="sm:ml-2 text-gray-900 text-left w-full sm:w-1/2">
         <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_FIELD): ?>
             <input type="text"
                    id="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>_text"
