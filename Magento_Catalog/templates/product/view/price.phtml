@@ -177,8 +177,7 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                     <span id="product-price-<?= (int)$product->getId() ?>"
                           class="price-wrapper title-font font-regular text-xl line-through text-gray-900">
                         <span class="price">
-                            <?= /** @noEscape */
-                            $productViewModel->format($regularPrice) ?>
+                            <?= /** @noEscape */ $productViewModel->format($regularPrice) ?>
                         </span>
                     </span>
                 </div>

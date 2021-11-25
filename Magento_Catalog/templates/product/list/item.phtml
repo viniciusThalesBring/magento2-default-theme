@@ -99,8 +99,7 @@ $uniqueId = '_' . uniqid();
         <div class="mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center <?= $viewIsGrid ? '' : 'md:text-left' ?>">
             <a class="product-item-link"
                href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
-                <?= /* @noEscape */
-                $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
+                <?= /* @noEscape */ $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
             </a>
         </div>
 

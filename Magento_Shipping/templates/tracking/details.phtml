@@ -53,9 +53,7 @@ $number = is_object($track) ? $track->getTracking() : $track['number'];
                         <?= $escaper->escapeHtml(__(' for more information or ')) ?>
                     <?php endif; ?>
                     <?= $escaper->escapeHtml(__('email us at ')) ?>
-                    <a href="mailto:<?= /* @noEscape */
-                    $email ?>"><?= /* @noEscape */
-                        $email ?></a>
+                    <a href="mailto:<?= /* @noEscape */ $email ?>"><?= /* @noEscape */ $email ?></a>
                 </div>
             </div>
         <?php elseif ($track->getTrackSummary()): ?>

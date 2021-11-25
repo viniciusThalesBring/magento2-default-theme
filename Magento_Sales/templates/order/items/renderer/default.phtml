@@ -21,8 +21,7 @@ $cols = $block->getData('is_context_shipment') ? 3 : ($block->getData('is_contex
         <div class="item-options mt-2">
             <div class="text-sm flex">
                 <span><?= $escaper->escapeHtml(__('Sku')) ?>:</span>
-                <span class="text-sm ml-1"><?= /* @noEscape */
-                    $block->prepareSku($block->getSku()) ?></span>
+                <span class="text-sm ml-1"><?= /* @noEscape */ $block->prepareSku($block->getSku()) ?></span>
             </div>
             <?php if ($options = $block->getItemOptions()): ?>
                 <?php foreach ($options as $option): ?>
@@ -119,8 +118,7 @@ $cols = $block->getData('is_context_shipment') ? 3 : ($block->getData('is_contex
     <?php if ($block->getData('is_context_creditmemo')): ?>
         <div class="p-2 text-right flex justify-between lg:block">
             <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Discount Amount')) ?></p>
-            <?= /* @noEscape */
-            $block->getOrder()->formatPrice($item->getDiscountAmount()) ?>
+            <?= /* @noEscape */ $block->getOrder()->formatPrice($item->getDiscountAmount()) ?>
         </div>
         <div class="p-2 text-right flex justify-between lg:block">
             <p class="lg:hidden font-medium"><?= $escaper->escapeHtml(__('Row Total')) ?></p>

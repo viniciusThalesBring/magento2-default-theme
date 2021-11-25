@@ -72,7 +72,7 @@ use Magento\Sales\Helper\Reorder;
                             ? $escaper->escapeHtml($order->getBillingAddress()->getCompany()) : "&nbsp;" ?>
                     </div>
                     <div class="p-2 hidden lg:flex items-center <?= $i % 2 === 0 ? '' : ' bg-container-darker' ?>">
-                        <?= /* @noEscape */$order->formatPrice($order->getGrandTotal()) ?>
+                        <?= /* @noEscape */ $order->formatPrice($order->getGrandTotal()) ?>
                     </div>
                     <div class="p-2 hidden lg:flex items-center <?= $i % 2 === 0 ? '' : ' bg-container-darker' ?>">
                         <?= $escaper->escapeHtml(

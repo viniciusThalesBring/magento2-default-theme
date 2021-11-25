@@ -71,8 +71,7 @@ use Magento\LayeredNavigation\Block\Navigation;
                         </div>
                         <template x-if="open">
                             <div class="filter-options-content pt-3">
-                                <?= /* @noEscape */
-                                $block->getChildBlock('renderer')->render($filter) ?>
+                                <?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?>
                             </div>
                         </template>
                     </div>

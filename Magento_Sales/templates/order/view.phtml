@@ -74,8 +74,7 @@ $giftMessageHelper = $this->helper(Message::class);
                             <?= $escaper->escapeHtml($giftMessage->getRecipient()) ?>
                         </dt>
                         <dd class="item-message">
-                            <?= /* @noEscape */
-                            $giftMessageHelper->getEscapedGiftMessage($order) ?>
+                            <?= /* @noEscape */ $giftMessageHelper->getEscapedGiftMessage($order) ?>
                         </dd>
                     </dl>
                 </div>

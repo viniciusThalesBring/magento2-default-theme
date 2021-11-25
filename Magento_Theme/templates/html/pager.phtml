@@ -143,8 +143,7 @@ use Magento\Theme\Block\Html\Pager;
                         item pages-item-next rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none
                         focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500">
                         <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : ''; ?>
-                        <a class="<?= /* @noEscape */
-                        $text ? 'link ' : 'action ' ?> next"
+                        <a class="<?= /* @noEscape */ $text ? 'link ' : 'action ' ?> next"
                            href="<?= $escaper->escapeUrl($block->getNextPageUrl()) ?>"
                            title="<?= $escaper->escapeHtmlAttr($text ? $text : __('Next')) ?>">
                             <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>

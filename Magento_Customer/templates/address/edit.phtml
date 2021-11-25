@@ -91,7 +91,7 @@ $viewModel = $block->getViewModel();
                     <div class="nested">
                         <?php for ($i = 1, $n = $viewModel->addressGetStreetLines(); $i < $n; $i++): ?>
                             <div class="field additional">
-                                <label class="label" for="street_<?= /* @noEscape */$i + 1 ?>">
+                                <label class="label" for="street_<?= /* @noEscape */ $i + 1 ?>">
                                     <span><?= $escaper->escapeHtml(__('Street Address %1', $i + 1)) ?></span>
                                 </label>
                                 <div class="control">
@@ -111,13 +111,13 @@ $viewModel = $block->getViewModel();
             <?php if ($viewModel->addressIsVatAttributeVisible()): ?>
                 <div class="field taxvat w-full">
                     <label class="label" for="vat_id">
-                    <span><?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
+                    <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
                     </label>
                     <div class="control">
                         <input type="text"
                                name="vat_id"
                                value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getVatId()) ?>"
-                               title="<?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('vat_id') ?>"
+                               title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
                                class="form-input"
                                id="vat_id">
                     </div>
@@ -126,14 +126,14 @@ $viewModel = $block->getViewModel();
             <div class="field zip w-full">
                 <label class="label" for="zip">
                     <span>
-                        <?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('postcode') ?>
+                        <?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>
                     </span>
                 </label>
                 <div class="control">
                     <input type="text"
                            name="postcode"
                            value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
-                           title="<?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('postcode') ?>"
+                           title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>"
                            id="zip"
                            :required="isZipRequired"
                            class="form-input validate-zip-international">
@@ -142,7 +142,7 @@ $viewModel = $block->getViewModel();
 
             <div class="field city w-full">
                 <label class="label" for="city">
-                <span><?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('city') ?></span>
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span>
                 </label>
                 <div class="control">
                     <input type="text"
@@ -158,7 +158,7 @@ $viewModel = $block->getViewModel();
             <div class="field country w-full">
                 <label class="label" for="country">
                     <span>
-                        <?= /* @noEscape */$block->getAttributeData()->getFrontendLabel('country_id') ?>
+                        <?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?>
                     </span>
                 </label>
                 <div class="control">

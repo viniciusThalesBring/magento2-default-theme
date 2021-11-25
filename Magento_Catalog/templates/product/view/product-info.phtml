@@ -40,8 +40,7 @@ $product = $productViewModel->getProduct();
     </div>
 
     <?php if ($shortDescription = $productViewModel->getShortDescription()) { ?>
-        <div class="mb-4 leading-relaxed product-description prose"><?= /* @noEscape */
-            $shortDescription ?></div>
+        <div class="mb-4 leading-relaxed product-description prose"><?= /* @noEscape */ $shortDescription ?></div>
     <?php } ?>
 
     <div class="flex flex-col sm:flex-row justify-between my-4">

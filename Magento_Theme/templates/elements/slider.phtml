@@ -135,7 +135,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
 }", ['is_linked_product' => $linkedProduct, 'type' => $type]);
 ?>
 <script>
-    function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
+    function initSliderComponent<?= /** @noEscape */ $uniqueId ?>() {
         return {
             active: 0,
             products: [],

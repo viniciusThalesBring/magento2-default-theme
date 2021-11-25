@@ -50,8 +50,7 @@ $displayAll = $block->getConfig('general/region/display_all');
           id="<?= $escaper->escapeHtmlAttr($formId) ?>"
           @submit.prevent="submitForm()"
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
-        <?= /* @noEscape */
-        $block->getBlockHtml('formkey'); ?>
+        <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <?= $block->getChildHtml('form_fields_before') ?>
         <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
         <div class="md:grid grid-cols-2 gap-4">

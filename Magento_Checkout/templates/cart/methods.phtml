@@ -15,8 +15,7 @@
     <div class="flex flex-wrap items-baseline justify-center lg:justify-end space-x-4 space-y-2">
         <?php foreach ($methods as $method): ?>
             <?php $methodHtml = $block->getMethodHtml($method); ?>
-            <?php if (trim($methodHtml) !== ''): ?><?= /* @noEscape */
-                $methodHtml ?>
+            <?php if (trim($methodHtml) !== ''): ?><?= /* @noEscape */ $methodHtml ?>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
