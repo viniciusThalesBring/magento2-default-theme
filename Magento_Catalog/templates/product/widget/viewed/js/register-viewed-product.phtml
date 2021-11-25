@@ -116,7 +116,6 @@ if (! $recentlyViewed->isRecentlyViewedProductsEnabled()) {
 
         function addCurrentProductToRecentlyViewed() {
             const currentProduct = createRecordForCurrentProduct();
-            console.log(currentProduct);
 
             if (currentProduct.sku !== '') {
                 const recentlyViewedSkusArray = readRecentlyViewedFromStorage()

@@ -110,7 +110,9 @@ $title = $title ?? __('Recently Viewed Products');
 
             fetchProducts(itemsToShow) {
                 const skusToFetch = itemsToShow.map(product => product.sku);
-                const query = `<?= $gqlViewModel->query("recently_viewed_products_query", 'query ($skus: [String!]!) {
+                const query = `<?= /** @noEscape */ $gqlViewModel->query(
+                    "recently_viewed_products_query",
+                    'query ($skus: [String!]!) {
   products(filter: { sku: { in: $skus } }) {
     items {
       sku
@@ -138,7 +140,8 @@ $title = $title ?? __('Recently Viewed Products');
       }
     }
   }
-}') ?>`;
+}'
+                ) ?>`;
                 const variables = JSON.stringify({skus: skusToFetch});
                 window.fetch('/graphql?' + new URLSearchParams({query, variables}), {
                     method: 'GET',
@@ -184,11 +187,12 @@ $title = $title ?? __('Recently Viewed Products');
             },
 
             addToWishlist(productId) {
+                const params = {form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)};
                 fetch(BASE_URL + 'wishlist/index/add/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     },
-                    body: new URLSearchParams({form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)}),
+                    body: new URLSearchParams(params),
                     method: 'POST',
                     mode: 'cors',
                     credentials: 'include'
@@ -228,11 +232,12 @@ $title = $title ?? __('Recently Viewed Products');
             }, // end addToWishlist()
 
             addToCompare(productId) {
+                const params = {form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)};
                 fetch(BASE_URL + 'catalog/product_compare/add/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     },
-                    body: new URLSearchParams({form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)}),
+                    body: new URLSearchParams(params),
                     method: 'POST',
                     mode: 'cors',
                     credentials: 'include'

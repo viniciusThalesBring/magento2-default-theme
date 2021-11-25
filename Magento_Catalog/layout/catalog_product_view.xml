@@ -209,7 +209,7 @@
 
         <referenceContainer name="before.body.end">
             <block name="recently_viewed_products.register_view"
-                   template="Magento_Catalog::product/widget/viewed/register-viewed-product-js.phtml"
+                   template="Magento_Catalog::product/widget/viewed/js/register-viewed-product.phtml"
                    ifconfig="catalog/recently_products/recently_viewed_enabled"/>
         </referenceContainer>
 

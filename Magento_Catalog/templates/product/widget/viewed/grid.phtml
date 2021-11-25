@@ -34,7 +34,7 @@ $title = __('Recently Viewed Products');
 $widgetAttributesToShow = explode(',', (string) $block->getData('show_attributes'));
 $widgetButtonsToShow = explode(',', (string) $block->getData('show_buttons'));
 
-$jsTemplate = 'Magento_Catalog::product/widget/viewed/recently-viewed-products-js.phtml';
+$jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-products.phtml';
 echo $block->assign(['uniqueId' => $uniqueId, 'title' => $title])
            ->fetchView($block->getTemplateFile($jsTemplate));
 
