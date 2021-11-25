@@ -46,7 +46,8 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?? false;
 $type              = $block->getData('type');
 $additionalFilters = (array) $block->getData('additional_filters');
 $itemTemplate      = $block->getData('item_template') ?? 'Magento_Catalog::product/list/item.phtml';
-$containerTemplate = $block->getData('container_template') ?? 'Magento_Catalog::product/slider/product-slider-container.phtml';
+$containerTemplate = $block->getData('container_template')
+    ?? 'Magento_Catalog::product/slider/product-slider-container.phtml';
 
 
 if ($categoryIds) {
@@ -141,9 +142,11 @@ if (in_array($type, ['related', 'upsell', 'crosssell'], true)) {
                         [{
                             type: (result.success) ? "success" : "error",
                             text: (result.success)
-                                ? "<?= $escaper->escapeHtml(
-                                    __("%1 has been added to your Wish List.", __("Product"))
-                                ) ?>" : result.error_message
+                                ? "<?=
+                                    $escaper->escapeHtml(
+                                        __("%1 has been added to your Wish List.", __("Product"))
+                                    )
+                                    ?>" : result.error_message
                         }], 5000
                     );
                     window.dispatchEvent(new CustomEvent("reload-customer-section-data"));

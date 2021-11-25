@@ -49,8 +49,8 @@ if (!$itemCount = count($items)) {
 }
 
 $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
-    ?? $block->getChildBlock('slider.item.template')
-    ?? $block->getLayout()->createBlock(Template::class);
+    ?: $block->getChildBlock('slider.item.template')
+    ?: $block->getLayout()->createBlock(Template::class);
 
 $hideRatingSummary = (bool) $block->getData('hide_rating_summary');
 $hideDetails       = (bool) $block->getData('hide_details');
@@ -84,28 +84,28 @@ $sliderItemRenderer->setData('hide_rating_summary', $hideRatingSummary);
                     <?php foreach ($items as $product): ?>
                         <div class="flex-none flex items-stretch justify-center w-full p-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4">
                              <?php
-                             $itemCacheKeyInfo = [
-                                 $product->getId(),
-                                 $viewMode,
-                                 ProductReviewRenderer::SHORT_VIEW,
-                                 $block->getTemplate(),
-                                 $product->getStoreId(),
-                                 $productViewModel->getCurrencyData()['code'],
-                                 (int) $hideDetails,
-                                 (int) $hideRatingSummary,
-                                 /* category id */ '0'
-                             ];
-                             echo $sliderItemRenderer
-                                   ->setData('product', $product)
-                                   ->setData('view_mode', $viewMode)
-                                   ->setData('image_display_area', $imageDisplayArea)
-                                   ->setData('show_description', $showDescription)
-                                   ->setData('template_type', ProductReviewRenderer::SHORT_VIEW)
-                                   ->setData('cache_lifetime', 3600)
-                                   ->setData('cache_tags', $product->getIdentities())
-                                   ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
-                                   ->toHtml();
-                             ?>
+                                 $itemCacheKeyInfo = [
+                                     $product->getId(),
+                                     $viewMode,
+                                     ProductReviewRenderer::SHORT_VIEW,
+                                     $block->getTemplate(),
+                                     $product->getStoreId(),
+                                     $productViewModel->getCurrencyData()['code'],
+                                     (int) $hideDetails,
+                                     (int) $hideRatingSummary,
+                                     /* category id */ '0'
+                                 ];
+                                 echo $sliderItemRenderer
+                                       ->setData('product', $product)
+                                       ->setData('view_mode', $viewMode)
+                                       ->setData('image_display_area', $imageDisplayArea)
+                                       ->setData('show_description', $showDescription)
+                                       ->setData('template_type', ProductReviewRenderer::SHORT_VIEW)
+                                       ->setData('cache_lifetime', 3600)
+                                       ->setData('cache_tags', $product->getIdentities())
+                                       ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
+                                       ->toHtml();
+                                    ?>
                         </div>
                     <?php endforeach; ?>
                     <div :class="{
