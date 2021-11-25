@@ -81,12 +81,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Many thanks to Daniel Bello (Sherocommerce) for the contribution!
 
-- **Support native Magento shortcut buttons in the minicart**
-
-  More information is available on the [merge request #339](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/339)
-
-  Many thanks to Kiel Pykett (Fisheye) for the contribution!
-
 ### Changed
 
 - **Use SSR rendering for product sliders instead of GraphQL** (PENDING)
