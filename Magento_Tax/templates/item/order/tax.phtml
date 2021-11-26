@@ -6,22 +6,21 @@
  * See https://hyva.io/license
  */
 
-// phpcs:disable Magento2.Templates.ThisInTemplate
-// phpcs:disable Squiz.PHP.GlobalKeyword.NotAllowed
+use Magento\Framework\Escaper;
+use Magento\Tax\Block\Sales\Order\Tax;
 
-/** @var \Magento\Tax\Block\Sales\Order\Tax $block
- * @var \Magento\Framework\Escaper $escaper
- */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Tax $block */
+/** @var Escaper $escaper */
+
+$order    = $block->getOrder();
+$source   = $block->getSource();
+$fullInfo = $this->helper(\Magento\Tax\Helper\Data::class)->getCalculatedTaxes($source);
+
 ?>
-<?php
-$_order = $block->getOrder();
-$_source = $block->getSource();
-$_fullInfo = $this->helper(\Magento\Tax\Helper\Data::class)->getCalculatedTaxes($_source);
-global $taxIter;
-$taxIter++;
-?>
-<?php if ($_fullInfo && $block->displayFullSummary()): ?>
-    <?php foreach ($_fullInfo as $info): ?>
+<?php if ($fullInfo && $block->displayFullSummary()): ?>
+    <?php foreach ($fullInfo as $info): ?>
         <?php
         $percent = $info['percent'];
         $amount = $info['tax_amount'];
@@ -35,8 +34,7 @@ $taxIter++;
             <?php endif; ?>
         </div>
         <div>
-            <?= /* @noEscape */
-            $_order->formatPrice($amount) ?>
+            <?= /* @noEscape */ $order->formatPrice($amount) ?>
         </div>
     <?php endforeach; ?>
 <?php else: ?>
@@ -44,7 +42,6 @@ $taxIter++;
         <?= $escaper->escapeHtml(__('Tax')) ?>
     </div>
     <div>
-        <?= /* @noEscape */
-        $_order->formatPrice($_source->getTaxAmount()) ?>
+        <?= /* @noEscape */ $order->formatPrice($source->getTaxAmount()) ?>
     </div>
 <?php endif; ?>

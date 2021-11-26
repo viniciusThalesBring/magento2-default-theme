@@ -39,17 +39,17 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Account Information')) ?></span></legend>
         <br>
         <?= $block->getLayout()->createBlock(Name::class)->setObject($block->getCustomer())->toHtml() ?>
-        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
-        <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
-        <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
-        <?php if ($_dob->isEnabled()): ?>
-            <?= $_dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
+        <?php $dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+        <?php $taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
+        <?php $gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
+        <?php if ($dob->isEnabled()): ?>
+            <?= $dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
         <?php endif ?>
-        <?php if ($_taxvat->isEnabled()): ?>
-            <?= $_taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
+        <?php if ($taxvat->isEnabled()): ?>
+            <?= $taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
         <?php endif ?>
-        <?php if ($_gender->isEnabled()): ?>
-            <?= $_gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
+        <?php if ($gender->isEnabled()): ?>
+            <?= $gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
         <?php endif ?>
 
         <div class="field choice">
@@ -188,10 +188,11 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 this.displayErrorMessage = this.errorMessages.length
             },
             submitForm() {
-                if (!this.checkPasswordsMatch()){
+                if (!this.checkPasswordsMatch()) {
                     return;
                 }
-                var $form = document.querySelector('#form-validate');
+                // Do not rename $form, it is expected to be declared in the child block output
+                const $form = document.querySelector('#form-validate');
                 <?= $block->getChildHtml('recaptcha_validation_customer_edit'); ?>
 
                 if (this.errors === 0) {

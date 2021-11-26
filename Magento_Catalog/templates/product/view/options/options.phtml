@@ -42,7 +42,7 @@ $options = $block->decorateArray($block->getOptions());
                 customOptionPrices: {},
                 refs: [],
                 formatPrice(value, showSign) {
-                    var formatter = new Intl.NumberFormat(
+                    const formatter = new Intl.NumberFormat(
                         document.documentElement.lang,
                         {
                             style: 'currency',
@@ -134,17 +134,18 @@ $options = $block->decorateArray($block->getOptions());
                             return;
                         break;
                         case 'radio':
-                            target.checked && document.querySelectorAll('input[name="'+target.name+'"]').forEach(input => {
-                                // unset sibling radio buttons
-                                input.dataset &&
-                                input.dataset.optionId &&
-                                input !== target && $dispatch('update-custom-option-active',
-                                    {
-                                        customOptionId: input.dataset.optionId,
-                                        active: false
-                                    }
-                                );
-                            })
+                            target.checked && document.querySelectorAll('input[name="'+target.name+'"]')
+                                .forEach(input => {
+                                    // unset sibling radio buttons
+                                    input.dataset &&
+                                    input.dataset.optionId &&
+                                    input !== target && $dispatch('update-custom-option-active',
+                                        {
+                                            customOptionId: input.dataset.optionId,
+                                            active: false
+                                        }
+                                    );
+                                });
                         // DO NOT BREAK
                         // Checkbox case should also run for Radio
                         case 'checkbox':
@@ -154,7 +155,7 @@ $options = $block->decorateArray($block->getOptions());
                                 .filter(option => option.checked).length;
 
                             requiredOptions.forEach(input => {
-                                if(checkedOptionsQty) {
+                                if (checkedOptionsQty) {
                                     input.required = false;
                                     input.setCustomValidity('');
                                 } else {

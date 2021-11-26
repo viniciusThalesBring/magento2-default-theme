@@ -31,12 +31,12 @@ $availableLimitOptions = $block->getAvailableLimit();
                     $event.currentTarget.options[$event.currentTarget.selectedIndex].value,
                     options.limitDefault
                 )">
-                <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                    <option value="<?= $escaper->escapeHtmlAttr($_key) ?>"
-                        <?php if ($block->isLimitCurrent($_key)): ?>
+                <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                    <option value="<?= $escaper->escapeHtmlAttr($key) ?>"
+                        <?php if ($block->isLimitCurrent($key)): ?>
                             selected="selected"
                         <?php endif ?>>
-                        <?= $escaper->escapeHtml($_limit) ?>
+                        <?= $escaper->escapeHtml($limit) ?>
                     </option>
                 <?php endforeach; ?>
                 </select>

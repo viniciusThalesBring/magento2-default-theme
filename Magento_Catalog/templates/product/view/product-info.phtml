@@ -35,16 +35,18 @@ $product = $productViewModel->getProduct();
     </h1>
 
     <div class="my-2 cursor-pointer"
-         onclick="(document.getElementById('customer-review-list') || document.getElementById('customer-reviews')).scrollIntoView({behavior: 'smooth'})">
+         onclick="(
+              document.getElementById('customer-review-list') ||
+              document.getElementById('customer-reviews')).scrollIntoView({behavior: 'smooth'}
+              )">
         <?= $block->getChildHtml('product.info.review') ?>
     </div>
 
     <?php if ($shortDescription = $productViewModel->getShortDescription()) { ?>
-        <div class="mb-4 leading-relaxed product-description prose"><?= /* @noEscape */
-            $shortDescription ?></div>
+        <div class="mb-4 leading-relaxed product-description prose"><?= /* @noEscape */ $shortDescription ?></div>
     <?php } ?>
 
-    <div class="flex justify-between my-4">
+    <div class="flex flex-col sm:flex-row justify-between my-4">
         <?= $block->getChildHtml("product.info.stockstatus") ?>
         <?= $block->getChildHtml("alert.urls") ?>
     </div>
@@ -53,7 +55,8 @@ $product = $productViewModel->getProduct();
         <?php foreach ($block->getAttributes() as $attributeConfig) {
             $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig); ?>
             <?php if ($value = $attribute['value'] ?? null) { ?>
-                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?= $attribute['value'] ?: "" ?>">
+                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?=/* @noEscape */
+                                                                                          $attribute['value'] ?: "" ?>">
                     <span class="w-1/2 text-left text-gray-700">
                         <?= $escaper->escapeHtml($attribute['label']) ?>
                     </span>
@@ -67,7 +70,7 @@ $product = $productViewModel->getProduct();
 
     <?= $block->getChildHtml('product.info.form') ?>
 
-    <div class="flex flex-row items-end my-4">
+    <div class="flex flex-col sm:flex-row items-end my-4">
 
         <div>
             <?= $block->getChildHtml("product.info.price") ?>

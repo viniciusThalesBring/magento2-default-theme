@@ -143,7 +143,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
 }", ['is_linked_product' => $linkedProduct, 'type' => $type]);
 ?>
 <script>
-    function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
+    function initSliderComponent<?= /** @noEscape */ $uniqueId ?>() {
         return {
             active: 0,
             products: [],
@@ -201,13 +201,11 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                 });
             },
             addToWishlist(productId) {
-                var formKey = document.querySelector('input[name=form_key]').value;
-                var postUrl = BASE_URL+"wishlist/index/add/";
-                fetch(postUrl, {
+                fetch(BASE_URL + "wishlist/index/add/", {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                    "body": "form_key="+ hyva.getFormKey() + "&product="+productId+"&uenc="+btoa(window.location.href),
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
@@ -225,7 +223,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                         );
                     }
                 }).then(function (response) {
-                    if(!response) { return }
+                    if (!response) { return }
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                         [{
                             type: (response.success) ? "success" : "error",
@@ -235,7 +233,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                                 ) ?>" : response.error_message
                         }], 5000
                     );
-                    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                    const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                     window.dispatchEvent(reloadCustomerDataEvent);
                 }).catch(function (error) {
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
@@ -277,7 +275,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
             pageSize: 4,
             pageFillers: 0,
             calcPageSize() {
-                var slider = this.getSlider();
+                const slider = this.getSlider();
                 if (slider) {
                     this.pageSize = Math.round(slider.clientWidth / slider.querySelector('.js_slide').clientWidth);
                     this.pageFillers = (
@@ -286,7 +284,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                 }
             },
             calcActive(event) {
-                var slider = this.getSlider();
+                const slider = this.getSlider();
                 if (slider) {
                     this.active = Math.ceil(
                         Math.round(
@@ -315,7 +313,8 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                     </h3>
                 </div>
             <?php endif; ?>
-            <div class="relative w-full overflow-x-hidden focus-within:ring-1 active:ring-0 ring-blue-500 ring-opacity-50">
+            <div class="relative w-full overflow-x-hidden focus-within:ring-1 active:ring-0 ring-blue-500
+                        ring-opacity-50">
                 <div class="relative flex flex-nowrap w-full overflow-auto transition-all js_slides snap"
                      @scroll.debounce="calcActive"
                 >
@@ -404,7 +403,8 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <template x-for="(product, index) in products" :key="index">
-                        <span class="flex-shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
+                        <span class="flex-shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow
+                                     cursor-pointer"
                               tabindex="-1"
                               :class="{
                                     'bg-opacity-100': active === index,

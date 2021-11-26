@@ -22,9 +22,8 @@ $wishlistViewModel = $viewModels->require(Wishlist::class);
     function initWishlist() {
         return {
             addToWishlist(productId) {
-                var formKey = document.querySelector('input[name=form_key]').value;
-                var postUrl = BASE_URL+"wishlist/index/add/";
-                fetch(postUrl, {
+                const formKey = hyva.getFormKey();
+                fetch(BASE_URL + "wishlist/index/add/", {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
@@ -46,7 +45,7 @@ $wishlistViewModel = $viewModels->require(Wishlist::class);
                         );
                     }
                 }).then(function (response) {
-                    if(!response) { return }
+                    if (!response) { return }
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                         [{
                             type: (response.success) ? "success" : "error",
@@ -58,7 +57,7 @@ $wishlistViewModel = $viewModels->require(Wishlist::class);
                                 : response.error_message
                         }], 5000
                     );
-                    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                    const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                     window.dispatchEvent(reloadCustomerDataEvent);
                 }).catch(function (error) {
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(

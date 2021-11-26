@@ -44,15 +44,14 @@ use Magento\Framework\View\Element\Template;
                 });
             },
             findSimpleIndex () {
-                var productIndexes = this.optionConfig.index;
-                var $this = this;
+                const productIndexes = this.optionConfig.index;
                 this.productIndex = Object.keys(productIndexes).find(productIndex => {
-                    var currentProductIndex = productIndexes[productIndex];
+                    const currentProductIndex = productIndexes[productIndex];
 
-                    for (var productOption in currentProductIndex) {
+                    for (const productOption in currentProductIndex) {
                         if (
-                            $this.selectedValues[productOption] &&
-                            $this.selectedValues[productOption] !== currentProductIndex[productOption]
+                            this.selectedValues[productOption] &&
+                            this.selectedValues[productOption] !== currentProductIndex[productOption]
                         ) {
                             return false;
                         }
@@ -62,15 +61,15 @@ use Magento\Framework\View\Element\Template;
             },
             productIndex: 0,
             findAllowedAttributeOptions() {
-                var allAttributes = this.optionConfig.attributes;
-                var allAttributesSorted = Object.values(allAttributes).sort((a,b) => {
+                const allAttributes = this.optionConfig.attributes;
+                const allAttributesSorted = Object.values(allAttributes).sort((a,b) => {
                     return a.position - b.position
                 });
-                var previousOption = false;
-                var productIndexes = this.optionConfig.index;
-                var availableIndexes = Object.keys(productIndexes);
+                const productIndexes = this.optionConfig.index;
+                let previousOption = false;
+                let availableIndexes = Object.keys(productIndexes);
 
-                var newAllowedAttributeOptions = [];
+                const newAllowedAttributeOptions = [];
 
                 allAttributesSorted.forEach(attribute => {
                     if (previousOption && this.selectedValues[previousOption]) {
@@ -113,14 +112,14 @@ use Magento\Framework\View\Element\Template;
                     )
                 );
             },
-            calculateIsMinimalPrice(){
+            calculateIsMinimalPrice() {
                 return (
                     this.selectedValues.filter(value => !!value).length <
                         Object.keys(this.optionConfig.attributes).length
                 );
             },
             updatePrices() {
-                var value = this.productIndex ?
+                const value = this.productIndex ?
                     this.optionConfig.optionPrices[this.productIndex] :
                     this.optionConfig.prices;
                 window.dispatchEvent(
@@ -136,7 +135,7 @@ use Magento\Framework\View\Element\Template;
                 );
             },
             updateGallery () {
-                var value = this.productIndex ?
+                const value = this.productIndex ?
                     this.optionConfig.images[this.productIndex] :
                     Object.values(this.optionConfig.images)[0];
 
@@ -154,9 +153,9 @@ use Magento\Framework\View\Element\Template;
             },
             preselectCartItems(data) {
                 // pre-select options based on cart data for current (quote) itemId
-                var cart = data && data.cart;
+                const cart = data && data.cart;
                 if (cart && cart.items) {
-                    var cartItem = cart.items.find((item) => {
+                    const cartItem = cart.items.find((item) => {
                         return (
                             item.item_id === this.itemId
                             && item.product_id === this.productId

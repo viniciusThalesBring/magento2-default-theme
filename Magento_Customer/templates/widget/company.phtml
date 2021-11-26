@@ -23,9 +23,8 @@ use Magento\Framework\Escaper;
     </label>
     <div class="control">
             <?php
-            $_validationClass = $escaper->escapeHtmlAttr(
-                $this->helper(AddressHelper::class)
-                     ->getAttributeValidationClass('company')
+            $validationClass = $escaper->escapeHtmlAttr(
+                $this->helper(AddressHelper::class)->getAttributeValidationClass('company')
             );
             ?>
         <input type="text"
@@ -36,7 +35,7 @@ use Magento\Framework\Escaper;
                <?php endif; ?>
                value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
                title="<?= $escaper->escapeHtmlAttr(__('Company')) ?>"
-               class="form-input <?= $_validationClass ?: '' ?>"
+               class="form-input <?= $validationClass ?: '' ?>"
          >
     </div>
 </div>

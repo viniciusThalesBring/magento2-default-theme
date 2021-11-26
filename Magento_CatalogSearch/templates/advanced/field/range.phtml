@@ -55,9 +55,9 @@ $code = $attribute->getAttributeCode();
                class="form-input w-full"
                type="<?= /** @noEscape */ $htmlInputType ?>"
                placeholder="<?= $escaper->escapeHtmlAttr(__('From')) ?>"
-               <?= /** @noEscape */ $maxQueryLength ? "maxlength=\"$maxQueryLength\"" : '' ?>
-               <?= /** @noEscape */ $step ? "step=\"$step\"" : '' ?>
-               <?= /** @noEscape */ $attrInputType === 'price' ? "min=\"0\"" : '' ?>
+               <?= /* @noEscape */ $maxQueryLength ? "maxlength=\"$maxQueryLength\"" : '' ?>
+               <?= /* @noEscape */ $step ? "step=\"$step\"" : '' ?>
+               <?= /* @noEscape */ $attrInputType === 'price' ? "min=\"0\"" : '' ?>
                @input="
                $refs.from.setCustomValidity('');
                $refs.from.validity.valid && $refs.from.setCustomValidity(
@@ -83,7 +83,7 @@ $code = $attribute->getAttributeCode();
                type="<?= /** @noEscape */ $htmlInputType ?>"
                maxlength="<?= $escaper->escapeHtmlAttr($maxQueryLength) ?>"
                placeholder="<?= $escaper->escapeHtmlAttr(__('To')) ?>"
-               <?= /** @noEscape */ $step ? "step=\"$step\"" : '' ?>
+               <?= /* @noEscape */ $step ? "step=\"$step\"" : '' ?>
                @input="
                $refs.from.setCustomValidity('');
                $refs.from.validity.valid && $refs.from.setCustomValidity(

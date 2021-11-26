@@ -42,8 +42,7 @@ $greyHex = '#cbd5e0';
             <?php if ($starFragment): ?>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 0 20 20" fill="currentColor" class="w-6 h-6">
                     <defs>
-                        <linearGradient id="partialFill<?= /* @noEscape */
-                        $block->getProduct()->getId() ?>">
+                        <linearGradient id="partialFill<?= /* @noEscape */ $block->getProduct()->getId() ?>">
                             <stop offset="0%" stop-color="<?= /** @noEscape */ $yellowHex ?>"/>
                             <stop offset="<?= $starFragment * 100 ?>%" stop-color="<?= /** @noEscape */ $yellowHex ?>"/>
                             <stop offset="<?= $starFragment * 100 ?>%" stop-color="<?= /** @noEscape */ $greyHex ?>"/>

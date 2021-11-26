@@ -33,8 +33,8 @@ $fileNamed = $fileName . '_name';
 $productPriceViewModel = $viewModels->require(ProductPrice::class);
 $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptionPrice::PRICE_CODE, $product);
 ?>
-<div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
-    <label class="label text-gray-700 text-left w-1/2"
+<div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
+    <label class="label text-gray-700 text-left w-full sm:w-1/2"
            for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>_text">
         <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
         <?php if ($option->getIsRequire()): ?>
@@ -46,7 +46,7 @@ $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptio
     </label>
 
     <?php if ($fileExists):?>
-    <div class="ml-2 text-gray-900 text-left w-1/2">
+    <div class="ml-2 text-gray-900 text-left w-full sm:w-1/2">
         <span class="<?= /* @noEscape */ $fileNamed ?> inline-block my-2 mr-2">
             <?= $escaper->escapeHtml($fileInfo->getTitle()) ?>
         </span>
@@ -67,18 +67,18 @@ $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptio
         </a>
     </div>
     <?php endif; ?>
-    <div class="ml-2 text-gray-900 text-left w-1/2 <?= $fileExists ? 'display:none' : ''?>"
+    <div class="sm:ml-2 text-gray-900 text-left w-full sm:w-1/2 <?= $fileExists ? 'display:none' : ''?>"
          id="input-box-<?= /* @noEscape */ $fileName ?>"
     >
         <input type="file"
                name="<?= /* @noEscape */ $fileName ?>"
                id="<?= /* @noEscape */ $fileName ?>"
-               class="product-custom-option form-file"
+               class="product-custom-option form-file w-full"
             <?= $fileExists ? 'disabled="disabled"' : '' ?>
             <?php if ($option->getIsRequire()): ?>
                 required
                 oninvalid="this.setCustomValidity('<?= $escaper
-                    ->escapeHtmlAttr( __("Please select a file.")) ?>')"
+                    ->escapeHtmlAttr(__("Please select a file.")) ?>')"
                 oninput="this.setCustomValidity('')"
             <?php endif; ?>
                data-price-amount="<?= $escaper->escapeHtmlAttr($optionPrice) ?>"

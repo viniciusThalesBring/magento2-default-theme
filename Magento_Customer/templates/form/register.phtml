@@ -16,11 +16,11 @@ use Magento\Customer\Helper\Address;
 use Magento\Framework\Escaper;
 use Hyva\Theme\ViewModel\ReCaptcha;
 
-/** @var Register $block */
-/** @var Escaper $escaper */
-
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 // phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var Register $block */
+/** @var Escaper $escaper */
 
 $formId = 'accountcreate';
 
@@ -50,8 +50,7 @@ $displayAll = $block->getConfig('general/region/display_all');
           id="<?= $escaper->escapeHtmlAttr($formId) ?>"
           @submit.prevent="submitForm()"
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
-        <?= /* @noEscape */
-        $block->getBlockHtml('formkey'); ?>
+        <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <?= $block->getChildHtml('form_fields_before') ?>
         <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
         <div class="md:grid grid-cols-2 gap-4">
@@ -85,19 +84,19 @@ $displayAll = $block->getConfig('general/region/display_all');
                     <?= $block->getChildHtml('customer.form.register.newsletter') ?>
                 <?php endif ?>
 
-                <?php $_dob = $block->getLayout()->createBlock(Dob::class) ?>
-                <?php if ($_dob->isEnabled()): ?>
-                    <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+                <?php $dob = $block->getLayout()->createBlock(Dob::class) ?>
+                <?php if ($dob->isEnabled()): ?>
+                    <?= $dob->setDate($block->getFormData()->getDob())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_taxvat = $block->getLayout()->createBlock(Taxvat::class) ?>
-                <?php if ($_taxvat->isEnabled()): ?>
-                    <?= $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
+                <?php $taxvat = $block->getLayout()->createBlock(Taxvat::class) ?>
+                <?php if ($taxvat->isEnabled()): ?>
+                    <?= $taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_gender = $block->getLayout()->createBlock(Gender::class) ?>
-                <?php if ($_gender->isEnabled()): ?>
-                    <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+                <?php $gender = $block->getLayout()->createBlock(Gender::class) ?>
+                <?php if ($gender->isEnabled()): ?>
+                    <?= $gender->setGender($block->getFormData()->getGender())->toHtml() ?>
                 <?php endif ?>
                 <?= $block->getChildHtml('fieldset_create_info_additional') ?>
             </fieldset>
@@ -177,21 +176,21 @@ $displayAll = $block->getConfig('general/region/display_all');
                 </p>
                 <input type="hidden" name="create_address" value="1"/>
 
-                <?php $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
-                <?php if ($_company->isEnabled()): ?>
-                    <?= $_company->setCompany($block->getFormData()->getCompany())->toHtml() ?>
+                <?php $company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
+                <?php if ($company->isEnabled()): ?>
+                    <?= $company->setCompany($block->getFormData()->getCompany())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
-                <?php if ($_telephone->isEnabled()): ?>
-                    <?= $_telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
+                <?php $telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
+                <?php if ($telephone->isEnabled()): ?>
+                    <?= $telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
                 <?php endif ?>
 
-                <?php $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
-                <?php if ($_fax->isEnabled()): ?>
-                    <?= $_fax->setFax($block->getFormData()->getFax())->toHtml() ?>
+                <?php $fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
+                <?php if ($fax->isEnabled()): ?>
+                    <?= $fax->setFax($block->getFormData()->getFax())->toHtml() ?>
                 <?php endif ?>
-                <?php $_streetValidationClass =
+                <?php $streetValidationClass =
                     $this->helper(Address::class)->getAttributeValidationClass(
                         'street'
                     ); ?>
@@ -203,27 +202,25 @@ $displayAll = $block->getConfig('general/region/display_all');
                                value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getStreet(0)) ?>"
                                title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') ?>"
                                id="street_1"
-                               class="form-input <?= $escaper->escapeHtmlAttr($_streetValidationClass) ?>">
+                               class="form-input <?= $escaper->escapeHtmlAttr($streetValidationClass) ?>">
                         <div class="nested">
-                            <?php $_streetValidationClass =
-                                trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
-                            <?php for ($_i = 2,
-                                       $_n = $this->helper(Address::class)->getStreetLines(); $_i <= $_n; $_i++): ?>
+                            <?php $streetValidationClass =
+                                trim(str_replace('required-entry', '', $streetValidationClass)); ?>
+                            <?php for ($i = 2, $n = $this->helper(Address::class)->getStreetLines(); $i <= $n; $i++): ?>
                                 <div class="field additional">
-                                    <label class="label" for="street_<?= /* @noEscape */
-                                    $_i ?>">
+                                    <label class="label" for="street_<?= /* @noEscape */ $i ?>">
                                         <span><?= $escaper->escapeHtml(__('Address')) ?></span>
                                     </label>
                                     <div class="control">
                                         <input type="text" name="street[]"
                                                value="<?= $escaper->escapeHtmlAttr($block
                                                    ->getFormData()
-                                                   ->getStreetLine($_i - 1)) ?>"
+                                                   ->getStreetLine($i - 1)) ?>"
                                                title="<?= $escaper
-                                                   ->escapeHtmlAttr(__('Street Address %1', $_i)) ?>"
-                                               id="street_<?= (int)$_i ?>"
+                                                   ->escapeHtmlAttr(__('Street Address %1', $i)) ?>"
+                                               id="street_<?= (int) $i ?>"
                                                class="form-input <?= $escaper
-                                                   ->escapeHtmlAttr($_streetValidationClass) ?>"
+                                                   ->escapeHtmlAttr($streetValidationClass) ?>"
                                         >
                                     </div>
                                 </div>
@@ -386,8 +383,9 @@ $displayAll = $block->getConfig('general/region/display_all');
                     return false;
                 },
                 submitForm() {
-                    if(this.checkPasswordsMatch()) {
-                        var $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
+                    if (this.checkPasswordsMatch()) {
+                        // Do not rename $form, it is expected to be declared in the child block output
+                        const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
                         <?= $block->getChildHtml('recaptcha_validation'); ?>
 
                         if (this.errors === 0) {

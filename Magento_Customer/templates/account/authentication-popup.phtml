@@ -41,7 +41,8 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 this.displayErrorMessage = this.errorMessages.length;
             },
             submitForm: function () {
-                var $form = document.querySelector('#login-form');
+                // Do not rename $form, it is expected to be declared in the child block output
+                const $form = document.querySelector('#login-form');
                 <?= $block->getChildHtml('recaptcha_validation_customer_login'); ?>
 
                 if (this.errors === 0) {
@@ -55,7 +56,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 }
             },
             redirectIfAuthenticated: function (event) {
-                if (event.detail && event.detail.url){
+                if (event.detail && event.detail.url) {
                     this.checkoutUrl = event.detail.url;
                 }
                 if (!this.forceAuthentication) {
@@ -64,15 +65,15 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
             },
             dispatchLoginRequest: function(form) {
                 this.isLoading = true;
-                var username = this.$refs['customer-email'].value;
-                var password = this.$refs['customer-password'].value;
-                var formKey = document.querySelector('input[name=form_key]').value;
-                var bodyFields = {
+                const username = this.$refs['customer-email'].value;
+                const password = this.$refs['customer-password'].value;
+                const formKey = document.querySelector('input[name=form_key]').value;
+                const bodyFields = {
                     'username': username,
                     'password': password,
                     'formKey': formKey
                 };
-                var recaptchaField = form.querySelector('input[name=g-recaptcha-response]');
+                const recaptchaField = form.querySelector('input[name=g-recaptcha-response]');
                 if (recaptchaField != null) {
                     bodyFields['g-recaptcha-response'] = recaptchaField.value;
                 }

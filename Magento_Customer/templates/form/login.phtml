@@ -118,7 +118,8 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     this.displayErrorMessage = this.errorMessages.length
                 },
                 submitForm() {
-                    var $form = document.querySelector('#customer-login-form');
+                    // do not rename $form - it is the expected name in the child block output
+                    const $form = document.querySelector('#customer-login-form');
                     <?= $block->getChildHtml('recaptcha_validation_customer_login'); ?>
 
                     if (this.errors === 0) {

@@ -30,12 +30,11 @@ use Magento\Framework\View\Element\Template;
                 this.cartItems = this.cart && this.cart.items.sort(function(a,b) { return a.item_id - b.item_id }) || {}
             },
             deleteItemFromCart(itemId) {
-                var formKey = document.querySelector('input[name=form_key]').value;
                 fetch(BASE_URL+"checkout/sidebar/removeItem/", {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    "body": "form_key="+ formKey + "&item_id="+itemId,
+                    "body": "form_key="+ hyva.getFormKey() + "&item_id="+itemId,
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
@@ -61,7 +60,7 @@ use Magento\Framework\View\Element\Template;
                                 : response.error_message
                         }], 5000
                     );
-                    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                    const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                     window.dispatchEvent(reloadCustomerDataEvent);
                 });
             }

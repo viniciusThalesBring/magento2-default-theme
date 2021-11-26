@@ -79,7 +79,6 @@ $productName = $block->getProduct()->getName();
                     title="<?= $escaper->escapeHtmlAttr($productName) ?>"
                     class="object-contain object-center w-full h-auto max-h-screen-75"
                     :class="'opacity-0'"
-                    loading="lazy"
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
@@ -94,20 +93,24 @@ $productName = $block->getProduct()->getName();
                         :class="{ 'cursor-pointer': !fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
-                        loading="lazy"
+                        :loading="active!==index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
                         x-show.transition.opacity.duration.500ms="active===index"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
                      :class="{ 'hidden': activeVideoType !== 'youtube' }"
-                     x-show.transition.opacity.duration.500ms="images[active].type === 'video' && activeVideoType === 'youtube'"
+                     x-show.transition.opacity.duration.500ms="
+                         images[active].type === 'video' && activeVideoType === 'youtube'
+                     "
                 >
                     <div id="youtube-player" class="w-full h-full"></div>
                 </div>
                 <div class="absolute inset-0 hidden w-full h-full bg-white"
                      :class="{ 'hidden': activeVideoType !== 'vimeo' }"
-                     x-show.transition.opacity.duration.500ms="images[active].type === 'video' && activeVideoType === 'vimeo'"
+                     x-show.transition.opacity.duration.500ms="
+                         images[active].type === 'video' && activeVideoType === 'vimeo'
+                     "
                 >
                     <div id="vimeo-player" class="w-full h-full"></div>
                 </div>
@@ -169,7 +172,7 @@ $productName = $block->getProduct()->getName();
                 }
                 this.setActive(active);
             },
-            setActive(index){
+            setActive(index) {
                 this.active = index;
                 if (window.youtubePlayer) {
                     window.youtubePlayer.stopVideo();
@@ -177,11 +180,11 @@ $productName = $block->getProduct()->getName();
                 if (this.vimeoPlayer) {
                     this.vimeoPlayer.contentWindow.postMessage(JSON.stringify({"method": "pause"}), "*");
                 }
-                if(this.images[index].type === 'video') {
+                if (this.images[index].type === 'video') {
                     this.activateVideo();
                 }
             },
-            activateVideo(){
+            activateVideo() {
                 const videoData = this.getVideoData();
 
                 if (!videoData) { return }
@@ -189,7 +192,7 @@ $productName = $block->getProduct()->getName();
                 this.activeVideoType = videoData.type;
 
                 if (videoData.type === "youtube") {
-                    if(!window.youtubePlayer) {
+                    if (!window.youtubePlayer) {
                         this.initYoutubeAPI(videoData);
                     } else {
                         window.youtubePlayer.loadVideoById(videoData.id);
@@ -199,7 +202,7 @@ $productName = $block->getProduct()->getName();
                     this.initVimeoVideo(videoData);
                 }
             },
-            getVideoData(){
+            getVideoData() {
                 const videoUrl = this.images[this.active] && this.images[this.active].videoUrl;
 
                 if (!videoUrl) { return }
@@ -237,14 +240,14 @@ $productName = $block->getProduct()->getName();
                 if (document.getElementById('loadYoutubeAPI')) {
                     return;
                 }
-                var params = {};
-                var loadYoutubeAPI = document.createElement('script');
+                const params = {};
+                const loadYoutubeAPI = document.createElement('script');
                 loadYoutubeAPI.src = 'https://www.youtube.com/iframe_api';
                 loadYoutubeAPI.id = 'loadYoutubeAPI';
-                var firstScriptTag = document.getElementsByTagName('script')[0];
+                const firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(loadYoutubeAPI, firstScriptTag);
 
-                var host = (videoData.useYoutubeNoCookie) ?
+                const host = (videoData.useYoutubeNoCookie) ?
                     'https://www.youtube-nocookie.com' :
                     'https://www.youtube.com';
 
@@ -254,7 +257,7 @@ $productName = $block->getProduct()->getName();
                 if (!this.relatedVideos) {
                     params.rel = 0;
                 }
-                var fireYoutubeAPI = document.createElement('script');
+                const fireYoutubeAPI = document.createElement('script');
                 fireYoutubeAPI.innerHTML = `function onYouTubeIframeAPIReady() {
                     window.youtubePlayer = new YT.Player('youtube-player', {
                         host: '${host}',
@@ -302,10 +305,10 @@ $productName = $block->getProduct()->getName();
                 this.vimeoPlayer = vimeoContainer.childNodes[0];
             },
             eventListeners: {
-                ['@keydown.window.escape'](){
+                ['@keydown.window.escape']() {
                     this.fullscreen = false
                 },
-                ['@update-gallery.window'](event){
+                ['@update-gallery.window'](event) {
                     this.receiveImages(event.detail);
                 }
             }

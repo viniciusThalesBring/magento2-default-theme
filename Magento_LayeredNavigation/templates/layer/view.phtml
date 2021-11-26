@@ -15,13 +15,7 @@ use Magento\LayeredNavigation\Block\Navigation;
 
 /** @var Navigation $block */
 /** @var Escaper $escaper */
-?>
-<?php
-/**
- * Category layered navigation
- *
- * @var Navigation $block
- */
+
 ?>
 <?php if ($block->canShowBlock()): ?>
     <div class="block border border-container bg-container-darker p-4 md:border-0 md:bg-transparent md:py-0 md:px-0 my-6"
@@ -47,7 +41,7 @@ use Magento\LayeredNavigation\Block\Navigation;
                 </svg>
             </span>
         </div>
-        <div class="block-content filter-content pt-3" x-show="isMobile && blockOpen || !isMobile">
+        <div class="block-content filter-content pt-3 hidden md:block" :class="{ 'hidden' : isMobile && !blockOpen }">
             <?= $block->getChildHtml('state') ?>
             <?php foreach ($block->getFilters() as $filter): ?>
                 <?php if ($filter->getItemsCount()): ?>
@@ -69,12 +63,11 @@ use Magento\LayeredNavigation\Block\Navigation;
                                 </svg>
                             </span>
                         </div>
-                        <div class="filter-options-content pt-3 hidden"
-                             :class="{ 'hidden': !open , 'block': 'open' }"
-                        >
-                            <?= /* @noEscape */
-                            $block->getChildBlock('renderer')->render($filter) ?>
-                        </div>
+                        <template x-if="open">
+                            <div class="filter-options-content pt-3">
+                                <?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?>
+                            </div>
+                        </template>
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -86,7 +79,7 @@ use Magento\LayeredNavigation\Block\Navigation;
                 isMobile: false,
                 blockOpen: false,
                 checkIsMobileResolution() {
-                    this.isMobile = window.outerWidth < 768
+                    this.isMobile = window.matchMedia('(max-width: 768px)').matches;
                 }
             }
         }

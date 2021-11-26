@@ -32,16 +32,16 @@ $maxQueryLength = $catalogSearchHelper->getMaxQueryLength();
                 case 'price':
                 case 'date':
                     $fieldTemplate = $block->getTemplateFile('Magento_CatalogSearch::advanced/field/range.phtml');
-                    echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
+                    /* @noEscape */ echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
                     break;
                 case 'select':
                 case 'yesno':
                     $fieldTemplate = $block->getTemplateFile('Magento_CatalogSearch::advanced/field/select.phtml');
-                    echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
+                    /* @noEscape */ echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
                     break;
                 default:
                     $fieldTemplate = $block->getTemplateFile('Magento_CatalogSearch::advanced/field/text.phtml');
-                    echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
+                    /* @noEscape */ echo $block->assign('attribute', $attribute)->fetchView($fieldTemplate);
             } ?>
         </div>
     <?php endforeach; ?>

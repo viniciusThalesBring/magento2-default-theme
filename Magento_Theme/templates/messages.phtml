@@ -25,23 +25,17 @@ declare(strict_types=1);
                 this.messages[messageIndex] = undefined;
             },
             addMessages(messages, hideAfter) {
-                var $this = this;
-                messages.map(function(message) {
-                    $this.messages = $this.messages.concat(message);
+                messages.map((message) => {
+                    this.messages = this.messages.concat(message);
                     if (hideAfter) {
-                        $this.setHideTimeOut($this.messages.length -1, hideAfter);
+                        this.setHideTimeOut(this.messages.length -1, hideAfter);
                     }
                 });
             },
             setHideTimeOut(messageIndex, hideAfter) {
-                var $this = this;
-                setTimeout(
-                    function(messageIndex) {
-                        $this.removeMessage(messageIndex);
-                    },
-                    hideAfter,
-                    messageIndex
-                );
+                setTimeout((messageIndex) => {
+                    this.removeMessage(messageIndex);
+                }, hideAfter, messageIndex);
             },
             eventListeners: {
                 ['@messages-loaded.window']() {

@@ -55,12 +55,12 @@ $suffix = $block->showSuffix();
                         title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('prefix')) ?>"
                         class="<?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('prefix')) ?>"
                         <?= $block->isPrefixRequired() ? ' required' : '' ?> >
-                    <?php foreach ($block->getPrefixOptions() as $_option): ?>
-                        <option value="<?= $escaper->escapeHtmlAttr($_option) ?>"
-                            <?php if ($block->getObject()->getPrefix() == $_option): ?>
+                    <?php foreach ($block->getPrefixOptions() as $option): ?>
+                        <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
+                            <?php if ($block->getObject()->getPrefix() == $option): ?>
                                 selected="selected"
                             <?php endif; ?>>
-                            <?= $escaper->escapeHtml(__($_option)) ?>
+                            <?= $escaper->escapeHtml(__($option)) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -150,13 +150,13 @@ $suffix = $block->showSuffix();
                         class="<?= $escaper->escapeHtmlAttr($block->getAttributeValidationClass('suffix')) ?>"
                     <?= $block->isSuffixRequired() ? ' required' : '' ?>
                 >
-                    <?php foreach ($block->getSuffixOptions() as $_option): ?>
-                        <option value="<?= $escaper->escapeHtmlAttr($_option) ?>"
-                            <?php if ($block->getObject()->getSuffix() == $_option): ?>
+                    <?php foreach ($block->getSuffixOptions() as $option): ?>
+                        <option value="<?= $escaper->escapeHtmlAttr($option) ?>"
+                            <?php if ($block->getObject()->getSuffix() == $option): ?>
                                 selected="selected"
                             <?php endif; ?>
                         >
-                            <?= $escaper->escapeHtml(__($_option)) ?>
+                            <?= $escaper->escapeHtml(__($option)) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

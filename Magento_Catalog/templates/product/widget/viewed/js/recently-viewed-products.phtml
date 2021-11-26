@@ -19,6 +19,8 @@ use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * These variables are automatically assigned to any template
  *
@@ -64,7 +66,7 @@ $title = $title ?? __('Recently Viewed Products');
 ?>
 <script>
 
-    function initRecentlyViewedProductsComponent<?= /** @noEscape */$uniqueId ?>(options) {
+    function initRecentlyViewedProductsComponent<?= /** @noEscape */ $uniqueId ?>(options) {
 
         const defaultOptions = {
             isSlider: false,
@@ -170,7 +172,7 @@ $title = $title ?? __('Recently Viewed Products');
                             const sortedProducts = [];
                             skusToFetch.forEach(sku => {
                                 responseProducts.forEach(productData => {
-                                    if (sku === productData.sku){
+                                    if (sku === productData.sku) {
                                         sortedProducts.push(productData);
                                     }
                                 });
@@ -190,7 +192,11 @@ $title = $title ?? __('Recently Viewed Products');
             },
 
             addToWishlist(productId) {
-                const params = {form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)};
+                const params = {
+                    form_key: hyva.getFormKey(),
+                    product: productId,
+                    uenc: btoa(window.location.href)
+                };
                 fetch(BASE_URL + 'wishlist/index/add/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -235,7 +241,11 @@ $title = $title ?? __('Recently Viewed Products');
             }, // end addToWishlist()
 
             addToCompare(productId) {
-                const params = {form_key: hyva.getFormKey(), product: productId, uenc: btoa(window.location.href)};
+                const params = {
+                    form_key: hyva.getFormKey(),
+                    product: productId,
+                    uenc: btoa(window.location.href)
+                };
                 fetch(BASE_URL + 'catalog/product_compare/add/', {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

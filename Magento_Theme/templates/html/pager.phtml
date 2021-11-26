@@ -92,8 +92,8 @@ use Magento\Theme\Block\Html\Pager;
                     </li>
                 <?php endif; ?>
 
-                <?php foreach ($block->getFramePages() as $_page): ?>
-                    <?php if ($block->isPageCurrent($_page)): ?>
+                <?php foreach ($block->getFramePages() as $page): ?>
+                    <?php if ($block->isPageCurrent($page)): ?>
                         <li class="relative z-10 inline-flex items-center -ml-px text-sm font-medium leading-5
                         text-gray-700 transition duration-150 ease-in-out bg-white bg-gray-100 border item
                         current border-primary focus:outline-none">
@@ -103,7 +103,7 @@ use Magento\Theme\Block\Html\Pager;
                                         __('You\'re currently reading page')
                                     ) ?>
                                 </span>
-                                <span><?= $escaper->escapeHtml($_page) ?></span>
+                                <span><?= $escaper->escapeHtml($page) ?></span>
                             </strong>
                         </li>
                     <?php else: ?>
@@ -111,9 +111,9 @@ use Magento\Theme\Block\Html\Pager;
                             transition duration-150 ease-in-out bg-white border border-gray-300 item hover:text-gray-500
                             focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue
                             active:bg-gray-100 active:text-gray-700">
-                            <a href="<?= $escaper->escapeUrl($block->getPageUrl($_page)) ?>" class="px-4 py-2 page">
+                            <a href="<?= $escaper->escapeUrl($block->getPageUrl($page)) ?>" class="px-4 py-2 page">
                                 <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
-                                <span><?= $escaper->escapeHtml($_page) ?></span>
+                                <span><?= $escaper->escapeHtml($page) ?></span>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -143,8 +143,7 @@ use Magento\Theme\Block\Html\Pager;
                         item pages-item-next rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none
                         focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500">
                         <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : ''; ?>
-                        <a class="<?= /* @noEscape */
-                        $text ? 'link ' : 'action ' ?> next"
+                        <a class="<?= /* @noEscape */ $text ? 'link ' : 'action ' ?> next"
                            href="<?= $escaper->escapeUrl($block->getNextPageUrl()) ?>"
                            title="<?= $escaper->escapeHtmlAttr($text ? $text : __('Next')) ?>">
                             <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
@@ -174,11 +173,11 @@ use Magento\Theme\Block\Html\Pager;
                 <span><?= $escaper->escapeHtml(__('Show')) ?></span>
             </label>
             <select id="limiter" class="mr-2 form-select" onchange="location.href = this.value">
-                <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                    <option value="<?= $escaper->escapeUrl($block->getLimitUrl($_key)) ?>"
-                        <?php if ($block->isLimitCurrent($_key)): ?>
+                <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                    <option value="<?= $escaper->escapeUrl($block->getLimitUrl($key)) ?>"
+                        <?php if ($block->isLimitCurrent($key)): ?>
                             selected="selected"<?php endif ?>>
-                        <?= $escaper->escapeHtml($_limit) ?>
+                        <?= $escaper->escapeHtml($limit) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

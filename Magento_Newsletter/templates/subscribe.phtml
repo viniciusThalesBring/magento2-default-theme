@@ -82,7 +82,8 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     this.displayErrorMessage = this.errorMessages.length
                 },
                 submitForm() {
-                    var $form = document.querySelector('#newsletter-validate-detail');
+                    // Do not rename $form, the variable is expected to be declared in the child block output
+                    const $form = document.querySelector('#newsletter-validate-detail');
                     <?= $block->getChildHtml('recaptcha_validation_newsletter'); ?>
 
                     if (this.errors === 0) {

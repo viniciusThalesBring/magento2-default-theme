@@ -16,16 +16,14 @@
         <div class="w-full py-4">
             <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Billing Address')) ?></p>
             <div class="box-content">
-                <address><?= /* @noEscape */
-                    $block->getFormattedAddress($order->getBillingAddress()) ?></address>
+                <address><?= /* @noEscape */ $block->getFormattedAddress($order->getBillingAddress()) ?></address>
             </div>
         </div>
         <?php if (!$order->getIsVirtual()): ?>
             <div class="w-full py-4">
                 <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Address')) ?></p>
                 <div class="box-content">
-                    <address><?= /* @noEscape */
-                        $block->getFormattedAddress($order->getShippingAddress()) ?></address>
+                    <address><?= /* @noEscape */ $block->getFormattedAddress($order->getShippingAddress()) ?></address>
                 </div>
             </div>
             <div class="w-full py-4">

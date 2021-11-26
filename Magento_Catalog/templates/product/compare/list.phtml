@@ -8,10 +8,6 @@
 
 declare(strict_types=1);
 
-// phpcs:disable Magento2.Templates.ThisInTemplate
-// phpcs:disable PSR2.ControlStructures.SwitchDeclaration
-// phpcs:disable Generic.WhiteSpace.ScopeIndent
-
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\ProductAttributes;
 use Hyva\Theme\ViewModel\Wishlist;
@@ -20,6 +16,10 @@ use Magento\Catalog\Helper\Product\Compare;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
 use Magento\Wishlist\Helper\Data as WishlistHelper;
+
+// phpcs:disable PSR2.ControlStructures.SwitchDeclaration
+// phpcs:disable Generic.WhiteSpace.ScopeIndent
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var ListCompare $block */
 /** @var Escaper $escaper */
@@ -48,7 +48,7 @@ function initPrint() {
 function initCompare() {
     return {
         removeFromCompare(productId, productName) {
-            const formKey = document.querySelector('input[name=form_key]').value;
+            const formKey = hyva.getFormKey();
             const postUrl = BASE_URL + 'catalog/product_compare/remove/';
             const confirmMessage = "<?= $escaper->escapeHtml(
                 __('Are you sure you want to remove this item from your Compare Products list?')
@@ -106,14 +106,12 @@ function initCompare() {
 
 function initWishlist() {
     return {
-        addToWishlist(productId){
-            var formKey = document.querySelector('input[name=form_key]').value;
-            var postUrl = BASE_URL+"wishlist/index/add/";
-            fetch(postUrl, {
+        addToWishlist(productId) {
+            fetch(BASE_URL + "wishlist/index/add/", {
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 },
-                "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                "body": "form_key="+ hyva.getFormKey() + "&product="+productId+"&uenc="+btoa(window.location.href),
                 "method": "POST",
                 "mode": "cors",
                 "credentials": "include"
@@ -131,7 +129,7 @@ function initWishlist() {
                     );
                 }
             }).then(function (response) {
-                if(!response) { return }
+                if (!response) { return }
                 typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                     [{
                         type: (response.success) ? "success" : "error",
@@ -140,7 +138,7 @@ function initWishlist() {
                             : response.error_message
                     }], 5000
                 );
-                var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                 window.dispatchEvent(reloadCustomerDataEvent);
             }).catch(function (error) {
                 typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(

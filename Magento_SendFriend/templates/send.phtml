@@ -175,7 +175,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
             </div>
             <?= $block->getChildHtml('captcha'); ?>
             <div class="w-full grecaptcha-legal">
-                <?= /** @noEscape */$recaptchaLegalNotice ?>
+                <?= /** @noEscape */ $recaptchaLegalNotice ?>
             </div>
             <div class="actions-toolbar">
                 <div class="primary">

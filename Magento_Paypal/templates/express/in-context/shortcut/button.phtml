@@ -26,11 +26,11 @@ $uniqueId = '_' . uniqid();
             customerSection: {},
             cartSection: false,
             actions: {},
-            getSectionData(sectionData){
-                if (sectionData.customer){
+            getSectionData(sectionData) {
+                if (sectionData.customer) {
                     this.customerSection = sectionData.customer;
                 }
-                if (sectionData.cart){
+                if (sectionData.cart) {
                     this.cartSection = sectionData.cart;
                 }
                 if (this.cartSection.items && this.cartSection.items.length) {
@@ -65,7 +65,7 @@ $uniqueId = '_' . uniqid();
                          * @returns {Object} jQuery promise
                          */
                         createOrder() {
-                            var params = "quote_id="+clientConfig.quoteId +
+                            const params = "quote_id="+clientConfig.quoteId +
                                 "&customer_id=" + ( clientConfig.customerId ?
                                     clientConfig.customerId :
                                     ''
@@ -94,7 +94,7 @@ $uniqueId = '_' . uniqid();
                          * @param {Object} actions
                          */
                         onApprove(data, actions) {
-                            var params = "paymentToken=" + (data.orderID || '') +
+                            const params = "paymentToken=" + (data.orderID || '') +
                                 "&payerId=" + (data.payerID || '') +
                                 "&quoteId=" + (clientConfig.quoteId || '') +
                                 "&customerId=" + (clientConfig.customerId || '') +
@@ -119,7 +119,7 @@ $uniqueId = '_' . uniqid();
                                     throw new Error(response['error_message']);
                                 })
                                 .catch((error)=>console.log(error)).finally(()=>{
-                                    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                                    const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                                     window.dispatchEvent(reloadCustomerDataEvent);
                                 });
                         },
@@ -157,10 +157,10 @@ $uniqueId = '_' . uniqid();
                 });
             },
             createScriptLoadPromise(url) {
-                var promises = [];
+                const promises = [];
 
                 promises.push(new Promise(function(resolve, reject) {
-                    var script = document.createElement('script');
+                    const script = document.createElement('script');
                     script.src = url;
 
                     script.addEventListener('load', function() {
@@ -178,7 +178,7 @@ $uniqueId = '_' . uniqid();
                 return promises;
             },
             getCookie(name) {
-                var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
                 return v ? v[2] : null;
             }
         }

@@ -19,7 +19,7 @@ use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Helper\Output as CatalogOutputHelper;
 use Magento\Framework\Escaper;
 
-// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 // phpcs:disable Generic.Files.LineLength.TooLong
 
 /** @var AbstractProduct $block */
@@ -99,8 +99,7 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
         <div class="mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center <?= $viewIsGrid ? '' : 'md:text-left' ?>">
             <a class="product-item-link"
                href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
-                <?= /* @noEscape */
-                $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
+                <?= /* @noEscape */ $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
             </a>
         </div>
 
