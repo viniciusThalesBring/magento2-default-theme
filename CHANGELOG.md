@@ -120,7 +120,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Many thanks to Sean van Zuidam (Mooore) for the contribution!
 
-- **Improve YouTune integration**
+- **Improve YouTube integration**
 
   * make sure to use youtube-nocookie.com if possible
   * only initialise / embed YouTube once
