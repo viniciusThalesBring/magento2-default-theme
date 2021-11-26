@@ -291,6 +291,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   More information can be found in the [issue #281](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/281)
 
+- **Magento Coding Standard compliance and code improvements**
+
+  Many small changes where made to make the code pass the Magento Coding Standards phpcs rules.
+  Besides following the Magento Coding Standard, many small refactorings where made so the code complies with our own
+  standards. All these changes should be backward compatible. The changes include:
+  - Removing underscore prefixs from PHP variables in templates
+  - Use `let` and `const` instead of `var` in JavaScript code
+  - Remove usages of `$this = this` in JavaScript code
+
+  More information can be found in the [merge request #344](https://gitlab.hyva.io/hyva-themes/magento2-theme-module/-/merge_requests/344)
 
 
 ### Removed
