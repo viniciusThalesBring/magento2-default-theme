@@ -83,7 +83,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- **Use SSR rendering for product sliders instead of GraphQL** (PENDING)
+- **Use SSR rendering for product sliders instead of GraphQL**
 
   The product sliders no longer use GraphQL. The graphql product slider template still is present for backward
   compatibility, but it is no longer used.  
