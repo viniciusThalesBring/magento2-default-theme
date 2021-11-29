@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [1.1.9]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.8...1.1.9
 
+### Upgrade guide
+
+If you're upgrading from <1.1.8 please check the documentation page on upgrading. Any additional information and known bugs/issues to this release will be documented there.
+
+[1.1.9 Upgrading docs](https://docs.hyva.io/doc/upgrading-to-119-EVHqOIvJzs)
+
 ### Added
 
 - **Use Tailwind CSS JIT mode**
