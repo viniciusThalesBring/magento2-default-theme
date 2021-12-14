@@ -19,29 +19,30 @@ use Magento\Framework\View\Element\Template;
 /** @var $storeConfig StoreConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
 $siteKey = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/public_key');
-$siteKeyV2 = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha/public_key');
 ?>
+<?php if ($siteKey): ?>
+    <script>
+        'use strict';
 
-<?php if ($siteKey || $siteKeyV2): ?>
-<script>
-    'use strict';
-    (function() {
+        (function() {
 
-        const recaptchaUrl = "https://www.google.com/recaptcha/api.js<?= $siteKey ? $escaper->escapeJs("?render={$siteKey}") : ''; ?>";
-        const loadRecaptchaScript = (event) => {
-            if (typeof window.grecaptcha !== 'undefined' || !event.target.form) {
-                return
+            const recaptchaUrl = "https://www.google.com/recaptcha/api.js?render=<?= $escaper->escapeJs($siteKey) ?>";
+
+            const loadRecaptchaScript = (event) => {
+                if (typeof window.grecaptcha !== 'undefined' || !event.target.form) {
+                    return
+                }
+
+                let script = document.createElement('script');
+                script.setAttribute('type', 'text/javascript');
+                script.setAttribute('src', recaptchaUrl);
+                document.head.appendChild(script);
             }
-            let script = document.createElement('script');
-            script.setAttribute('type', 'text/javascript');
-            script.setAttribute('src', recaptchaUrl);
-            document.head.appendChild(script);
-        }
 
-        document.body.addEventListener("input", loadRecaptchaScript, { once: true });
-        document.body.addEventListener("focus", loadRecaptchaScript, { once: true });
+            document.body.addEventListener("input", loadRecaptchaScript, { once: true });
+            document.body.addEventListener("focus", loadRecaptchaScript, { once: true });
 
-    }());
+        }());
 
-</script>
+    </script>
 <?php endif; ?>
