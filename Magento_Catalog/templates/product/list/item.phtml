@@ -167,6 +167,9 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
                 <?= $heroiconsOutline->scaleHtml("w-5 h-5", 25, 25) ?>
             </button>
             <?php endif; ?>
+            <?php if ($addToBlock = $block->getChildBlock('addto')): ?>
+                <?= $addToBlock->setProduct($product)->getChildHtml() ?>
+            <?php endif; ?>
         </div>
     </div>
 <?php if ($product->isSaleable()): ?>
