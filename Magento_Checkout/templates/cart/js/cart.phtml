@@ -366,6 +366,7 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                     this.initEstimationRegionByCountry(country);
                 }
                 this.setEstimationPostcode(estimateShippingState.postcode || this.getEstimationPostcode());
+                this.estimateShippingRequest();
             },
             getCountriesByCustomerSectionData(data) {
                 // this is a required initialization method, called after section data is received
