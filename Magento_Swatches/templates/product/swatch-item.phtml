@@ -31,7 +31,7 @@ if (!$productId || !$attributeId) {
 ?>
 
 <div>
-    <template x-if="optionIsActive(<?= (int) $attributeId ?>, item.id)">
+    <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && optionIsActive(<?= (int) $attributeId ?>, item.id)">
         <label
             :for="'attribute-option-<?= (int) $productId ?>-'+item.id"
             class="swatch-option relative border-2 shadow-sm cursor-pointer select-none bg-container-lighter"
@@ -61,7 +61,7 @@ if (!$productId || !$attributeId) {
                 style="z-index:-1"
                 x-on:focus="focusLabel(item.id)"
                 x-on:blur="blurLabel()"
-                x-on:change="changeOption(<?= (int) $attributeId ?>, event.target.value)"
+                x-on:change="changeOption(<?= (int) $attributeId ?>, $event.target.value)"
                 :checked="selectedValues[<?= (int) $attributeId ?>] === item.id"
                 :required="getAllowedAttributeOptions(<?= (int) $attributeId ?>).filter(
                                                                     attributeOption => selectedValues[attributeOption]
@@ -74,7 +74,7 @@ if (!$productId || !$attributeId) {
         </label>
     </template>
 
-    <template x-if="!optionIsActive(<?= (int) $attributeId ?>, item.id)">
+    <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && !optionIsActive(<?= (int) $attributeId ?>, item.id)">
         <div
             class="relative border-2 shadow-sm opacity-50 cursor-pointer select-none border-container-darker swatch-option bg-container-lighter"
             :class="{
