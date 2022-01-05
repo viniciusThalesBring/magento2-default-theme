@@ -51,7 +51,7 @@ $product = $productViewModel->getProduct();
         <?= $block->getChildHtml("alert.urls") ?>
     </div>
 
-    <div>
+    <div id="product-details">
         <?php foreach ($block->getAttributes() as $attributeConfig) {
             $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig); ?>
             <?php if ($value = $attribute['value'] ?? null) { ?>
