@@ -57,10 +57,10 @@ $product = $productViewModel->getProduct();
             <?php if ($value = $attribute['value'] ?? null) { ?>
                 <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?=/* @noEscape */
                                                                                           $attribute['value'] ?: "" ?>">
-                    <span class="w-1/2 text-left text-gray-700">
+                    <span class="w-1/2 text-left text-gray-700 product-detail-label">
                         <?= $escaper->escapeHtml($attribute['label']) ?>
                     </span>
-                    <span class="w-1/2 ml-2 text-left text-gray-900">
+                    <span class="w-1/2 ml-2 text-left text-gray-900 product-detail-value">
                         <?= $escaper->escapeHtml($value) ?>
                     </span>
                 </div>
