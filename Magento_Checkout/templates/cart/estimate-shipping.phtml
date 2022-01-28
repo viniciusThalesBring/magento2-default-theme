@@ -26,6 +26,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     <div class="flex">
         <span @click="toggleEstimateShipping"
               class="flex justify-between w-full font-semibold whitespace-nowrap cursor-pointer select-none text-primary-lighter"
+              id="shipping-estimate-toggle"
         >
             <span x-show="cartData.is_virtual">
                 <?= $escaper->escapeHtml(__('Estimate Tax')) ?>
@@ -119,6 +120,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             <template x-for="rate in getRatesForCarrier(carrier)" :key="rate">
                                 <label class="flex items-center">
                                     <input class="mr-2" type="radio"
+                                           :id="'shipping_method_' + rate.method_code"
                                            :value="rate.carrier_code + '_' + rate.method_code"
                                            x-model="selectedShippingRate"
                                            @change="selectShippingRate(rate)"/>

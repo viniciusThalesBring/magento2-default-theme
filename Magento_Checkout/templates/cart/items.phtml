@@ -136,6 +136,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                         </template>
                         <p x-show="item.product_type !== 'grouped'">
                             <a class="mt-2 underline text-sm inline-block text-primary-dark"
+                               id="edit-cart-product"
                               :href="'<?= $escaper->escapeUrl($block->getUrl('checkout/cart/configure')) ?>id/' +
                                item.id + '/product_id/' + item.product.id">
                                 <?= $escaper->escapeHtml(__('Edit')) ?>
@@ -187,6 +188,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                 </p>
                             <?php endif; ?>
                             <span
+                                id="product-price"
                                 class="block text-left md:text-right lg:text-center lg:whitespace-nowrap">
                                 <span class="block text-left md:text-right lg:text-center lg:whitespace-nowrap p-2"
                                       x-html="hyva.formatPrice(item.prices.price.value)">
@@ -277,6 +279,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                                     </p>
                                 <?php endif; ?>
                                 <span
+                                    id="product-subtotal"
                                     class="block text-left md:text-right lg:text-center lg:whitespace-nowrap
                                         <?php if (!$displayPriceTaxBoth): ?>p-2 <?php else: ?>pb-2 <?php endif; ?>
                                     ">
