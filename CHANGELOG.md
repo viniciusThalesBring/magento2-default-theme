@@ -6,7 +6,96 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.10...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.11...main
+
+## [1.1.11] - 2022-01-28
+
+[1.1.11]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.10...1.1.11
+
+### Added
+
+- **Add testing selector attributes to the PDP**
+
+  More information can be found in the [merge request #367](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/367)
+
+  Many thanks to Andrew Millar (Elgentos) for the contribution!
+
+- **Add missing cart totals container as extension point**
+
+  More information can be found in [issue #324](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/324)
+
+- **Added missing 'form_additional_info' container to login form**
+
+  This adds a missing extension point that also is present in Luma.
+
+  More information can be found in the [merge request #378](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/378)
+
+  Many thanks to Ravinder (redChamps) for the patch!
+
+- **Add Hyvä theme-module to default tailwind purge list config**
+
+  Previously tailwind classes used in the modal templates where not picked up by default.
+
+  More information can be found in [issue #327](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/327)
+
+### Changed
+
+- **Bugfix: Fix cache key for all instances of product_list_item**
+
+  The PageBuilder carousel and grid content type used the shared product list item block, but previously did not set
+  the full cache information on the instance before rendering. This caused the previously rendered product to be
+  shown.
+
+  More information can be found in [issue #323](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/323)
+
+- **Bugfix: Fix broken "Track your order" link on order view page**
+
+  More information can be found in [issue #329](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/329)
+
+  Many thanks to Alex Galdin (IT Delight) for the contribution!
+
+- **Bugfix: Fix rendering of escaped html entities in product names in compare list**
+
+  Previously special characters in the product name where escaped twice in the product compare list.
+
+  More information can be found in [issue #313](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/313)
+
+  Many thanks to Matt Walsh for the contribution!
+
+- **Fix checkbox custom option checked property update**
+
+  Previously it was not possible to programmatically alter the checkbox state after a user interacted with it.
+
+  More information can be found in [issue #332](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/332)
+
+  Many thanks to Simon Sprankel (Customgento) for the contribution!
+
+- **Fix structured data for product reviews on the product detail page**
+
+  More information can be found in [issue #321](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/321)
+
+  Many thanks to Lucas Vu (JaJuMa) for the contribution!
+
+- **Fix noisy messages in error log on search result page**
+
+  Previously the redeclaration of a container on the search results page polluted the exception.log with
+  `main.CRITICAL: The element "search_result_list" can't have a child because "search_result_list" already has a child with alias "additional"`
+
+  More information can be found in [issue #304](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/304)
+
+- **Add guard clause against undefined index in swatch renderer template**
+
+  Previously, if a product attribute was set to "Used in Layered Navigation": "Filterable (no results)", an error was displayed.
+
+  More information can be found in [issue #325](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/325)
+
+- **Prohibit search with less than 3 characters**
+
+  More information can be found in [issue #330](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/330)
+
+### Removed
+
+- Nothing
 
 ## [1.1.10] - 2022-01-14
 
