@@ -57,19 +57,13 @@ $block->getParentBlock()->setData('cards_row_number', $i);
             value="<?= $escaper->escapeHtmlAttr($block->getToken()->getPublicHash()) ?>"
             type="hidden"/>
 
-        <!-- todo: add confirmation dialog when merged in Hyvä -->
-        <!-- todo: see https://gitlab.hyva.io/hyva-themes/magento2-theme-module/-/merge_requests/178 -->
-<?php /*
-        <?php $message = $escaper->escapeHtml(__('Are you sure you want to delete this card: %1?', $ccNumberView)) ?>;
+        <?php $message = $escaper->escapeHtml(__('Are you sure you want to delete this card: %1?', $ccNumberView)) ?>
         <?php $confirmation = $modalViewModel->confirm($message) ?>
         <button type="button"
-                @click="<?= /** @noEscape * / $confirmation->getShowJs() ?>.then(ok => ok &&$refs.form.submit())">
+                @click="<?= /** @noEscape */ $confirmation->getShowJs() ?>.then(ok => ok &&$refs.form.submit())">
             <?= $escaper->escapeHtml(__('Delete')) ?>
         </button>
-        <?= /** @noEscape * / $confirmation ?>
-*/ ?>
-        <?php // temp workaround until confirmation MR is merged ?>
-        <button type="submit"><?= $escaper->escapeHtml(__('Delete')) ?></button>
+        <?= /** @noEscape */ $confirmation ?>
     </form>
     </div>
 </div>
