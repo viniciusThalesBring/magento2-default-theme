@@ -38,6 +38,7 @@
                            name="product.info"
                            template="Magento_Catalog::product/view/product-info.phtml">
                         <arguments>
+                            <!-- Use `default` as the value for `call` unless you want a specific method to be used. -->
                             <argument name="attributes" xsi:type="array">
                                 <item name="sku" xsi:type="array">
                                     <item name="call" xsi:type="string">getSku</item>
