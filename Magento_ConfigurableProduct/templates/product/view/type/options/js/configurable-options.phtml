@@ -133,7 +133,6 @@ use Magento\Framework\View\Element\Template;
                 return simpleIndex || this.findCheapestProductForOption(option);
             },
             getAttributeOptionLabel(option) {
-                //debugger;
                 const optionProduct = this.findProductIdToUseForOptionPrice(option);
                 if (! optionProduct || optionProduct === this.productIndex) {
                     return option.label;
