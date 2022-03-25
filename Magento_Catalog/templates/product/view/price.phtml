@@ -122,7 +122,7 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                 this.calculatedFinalPriceWithCustomOptions = finalPrice + this.getCustomOptionPrice();
             },
             getCustomOptionPrice() {
-                this.activeCustomOptions.reduce((priceAccumulator, activeCustomOptionId) => {
+                return this.activeCustomOptions.reduce((priceAccumulator, activeCustomOptionId) => {
                     const customOptionPrice = this.customOptionPrices[activeCustomOptionId];
                     if (customOptionPrice) {
                         return Number.parseFloat(priceAccumulator) + Number.parseFloat(customOptionPrice);
