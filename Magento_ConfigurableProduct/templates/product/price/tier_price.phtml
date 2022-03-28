@@ -11,7 +11,6 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
 use Hyva\Theme\ViewModel\ProductPage;
-use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -31,9 +30,6 @@ if (!$product) {
 /** @var ProductPage $productViewModel */
 $productViewModel = $viewModels->require(ProductPage::class);
 
-$storeConfig = $viewModels->require(StoreConfig::class);
-$jsLocale = str_replace('_', '-', $storeConfig->getStoreConfig('general/locale/code'));
-
 ?>
 <script>
     function initTierPrices<?= (int) $product->getId() ?>() {
@@ -51,34 +47,10 @@ $jsLocale = str_replace('_', '-', $storeConfig->getStoreConfig('general/locale/c
                 }
                 return false;
             },
-            formatPrice(value, showSign) {
-                const formatter = new Intl.NumberFormat(
-                    '<?= $escaper->escapeJs($jsLocale) ?>',
-                    {
-                        style: 'currency',
-                        currency: '<?= $escaper->escapeHtml($productViewModel->getCurrencyData()['code']) ?>',
-                        signDisplay: showSign ? "always" : "auto"
-                    }
-                );
-                return (typeof Intl.NumberFormat.prototype.formatToParts === 'function') ?
-                    formatter.formatToParts(value).map(({type, value}) => {
-                        switch (type) {
-                            case 'currency':
-                                return '<?= $productViewModel->getCurrencyData()['symbol'] ?: ""; ?>' || value;
-                            case 'minusSign':
-                                return '- ';
-                            case 'plusSign':
-                                return '+ ';
-                            default :
-                                return value;
-                        }
-                    }).reduce((string, part) => string + part) :
-                    formatter.format(value);
-            },
             getItemHtml(item) {
                 return '<?= $escaper->escapeHtml(__('Buy %1 for %2 each and', '%1', '%2')) ?>'
                     .replace('%1', item.qty)
-                    .replace('%2', this.formatPrice(item.price))
+                    .replace('%2', hyva.formatPrice(item.price))
             },
             eventListeners: {
                 ['@update-prices-<?= (int) $product->getId() ?>.window'](event) {

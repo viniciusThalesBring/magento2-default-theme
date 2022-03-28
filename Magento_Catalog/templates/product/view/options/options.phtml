@@ -9,7 +9,6 @@
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
-use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Catalog\Block\Product\View\Options;
 use Magento\Catalog\Model\Product\Option;
 use Magento\Framework\Escaper;
@@ -27,9 +26,6 @@ $product = $block->getProduct();
 /** @var ProductPrice $productPriceViewModel */
 $productPriceViewModel = $viewModels->require(ProductPrice::class);
 
-$storeConfig = $viewModels->require(StoreConfig::class);
-$jsLocale = str_replace('_', '-', $storeConfig->getStoreConfig('general/locale/code'));
-
 $displayTax = $productPriceViewModel->displayPriceIncludingTax();
 
 $options = $block->decorateArray($block->getOptions());
@@ -45,34 +41,10 @@ $options = $block->decorateArray($block->getOptions());
                 productFinalPrice: false,
                 customOptionPrices: {},
                 refs: [],
-                formatPrice(value, showSign) {
-                    const formatter = new Intl.NumberFormat(
-                        '<?= $escaper->escapeJs($jsLocale) ?>',
-                        {
-                            style: 'currency',
-                            currency: '<?= /** @noEscape */ $productViewModel->getCurrencyData()['code']; ?>',
-                            signDisplay: showSign ? "always" : "auto"
-                        }
-                    );
-                    return (typeof Intl.NumberFormat.prototype.formatToParts === 'function') ?
-                        formatter.formatToParts(value).map(({type, value}) => {
-                            switch (type) {
-                                case 'currency':
-                                    return '<?= $productViewModel->getCurrencyData()['symbol'] ?: ""; ?>' || value;
-                                case 'minusSign':
-                                    return '- ';
-                                case 'plusSign':
-                                    return '+ ';
-                                default :
-                                    return value;
-                            }
-                        }).reduce((string, part) => string + part) :
-                        formatter.format(value);
-                },
                 getFormattedOptionPrice(optionId) {
                     if (this.customOptionPrices[optionId]) {
                         const showSign = true;
-                        return this.formatPrice(this.customOptionPrices[optionId], showSign);
+                        return hyva.formatPrice(this.customOptionPrices[optionId], showSign);
                     }
                     return false;
                 },
