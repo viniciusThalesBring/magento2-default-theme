@@ -9,17 +9,16 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\BlockCache;
+use Hyva\Theme\ViewModel\ProductListItem;
 use Hyva\Theme\ViewModel\ProductPage;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ReviewRendererInterface;
-use Magento\Catalog\Model\Product;
 
 /** @var ListProduct $block */
 /** @var ViewModelRegistry $viewModels */
 
-$blockCacheViewModel = $viewModels->require(BlockCache::class);
 $productViewModel    = $viewModels->require(ProductPage::class);
+$productListItemViewModel = $viewModels->require(ProductListItem::class);
 
 ?>
 <?php if ($block->getProductCollection() && $block->getProductCollection()->getSize()): ?>
@@ -34,29 +33,8 @@ $productViewModel    = $viewModels->require(ProductPage::class);
     <div class="glider-contain product-items <?= /* @noEscape */ $type ?>">
         <div data-role="glider-content"
              class="mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4 relative overflow-y-hidden overflow-x-scroll">
-            <?php /** @var Product $item */ ?>
-            <?php foreach ($items as $item):
-                $itemCacheKeyInfo = [
-                    $item->getId(),
-                    $mode,
-                    $templateType,
-                    $block->getTemplate(),
-                    $item->getStoreId(),
-                    $productViewModel->getCurrencyData()['code'],
-                    0, // hide details,
-                    0, // hide rating summary,
-                    '0' // category Id
-                ]; ?>
-                <?= $block->getLayout()->getBlock('product_list_item')
-                    ->setData('product', $item)
-                    ->setData('view_mode', $mode)
-                    ->setData('image_display_area', $image)
-                    ->setData('show_description', $description)
-                    ->setData('template_type', $templateType)
-                    ->setData('cache_lifetime', 3600)
-                    ->setData('cache_tags', $item->getIdentities())
-                    ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
-                    ->toHtml() ?>
+            <?php foreach ($items as $item): ?>
+                <?= $productListItemViewModel->getItemHtml($item, $block, $mode, $templateType, $image, $description) ?>
             <?php endforeach ?>
         </div>
         <?= $block->getBlockHtml('pagebuilder.carousel.nav') ?>

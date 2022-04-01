@@ -7,22 +7,20 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\BlockCache;
 use Hyva\Theme\ViewModel\CurrentCategory;
+use Hyva\Theme\ViewModel\ProductListItem;
 use Hyva\Theme\ViewModel\ProductPage;
 use Magento\Catalog\Block\Product\ListProduct;
-use Magento\Catalog\Helper\Product as ProductViewHelper;
 use Magento\Framework\Escaper;
 
 /** @var ListProduct $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 /** @var ProductPage $productViewModel */
-/** @var BlockCache $blockCacheViewModel */
 /** @var CurrentCategory $currentCategoryViewModel */
 
-$productViewModel    = $viewModels->require(ProductPage::class);
-$blockCacheViewModel = $viewModels->require(BlockCache::class);
+$productViewModel         = $viewModels->require(ProductPage::class);
+$productListItemViewModel = $viewModels->require(ProductListItem::class);
 $currentCategoryViewModel = $viewModels->require(CurrentCategory::class);
 
 $hideRatingSummary = (bool) $block->getData('hide_rating_summary');
@@ -31,69 +29,50 @@ $hideDetails       = (bool) $block->getData('hideDetails');
 $productCollection = $block->getLoadedProductCollection();
 
 ?>
-<?php if (!$productCollection->count()):?>
+<?php if (!$productCollection->count()): ?>
     <div class="message info empty">
         <div>
             <?= $escaper->escapeHtml(__('We can\'t find products matching the selection.')) ?>
         </div>
     </div>
-<?php else:?>
-<section class="py-8">
-    <?= $block->getToolbarHtml() ?>
-    <?= $block->getAdditionalHtml() ?>
-    <?php
-    if ($block->getMode() == 'grid') {
-        $viewMode = 'grid';
-        $imageDisplayArea = 'category_page_grid';
-        $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
-    } else {
-        $viewMode = 'list';
-        $imageDisplayArea = 'category_page_list';
-        $showDescription = true;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
-    }
-    /**
-     * Position for actions regarding image size changing in vde if needed
-     */
-    $pos = $block->getPositioned();
-    ?>
-    <div class="products wrapper mode-<?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
-        <div class="mx-auto pt-4 pb-12 grid gap-4 grid-cols-1 <?= /* @noEscape */ $viewMode === 'grid'
-            ? 'sm:grid-cols-2 xl:grid-cols-3'
-            : '' ?>">
-            <?php /** @var \Magento\Catalog\Model\Product $product */ ?>
-            <?php foreach ($productCollection as $product):
-                $itemCacheKeyInfo = [
-                    $product->getId(),
-                    $viewMode,
-                    $templateType,
-                    $block->getTemplate(),
-                    $product->getStoreId(),
-                    $productViewModel->getCurrencyData()['code'],
-                    (int) $hideDetails,
-                    (int) $hideRatingSummary,
-                    $productViewModel->isProductUrlIncludesCategory() && $currentCategoryViewModel->exists()
-                        ? $currentCategoryViewModel->get()->getId()
-                        : '0'
-                ]; ?>
-                <?= $block->getLayout()->getBlock('product_list_item')
-                    ->setData('product', $product)
-                    ->setData('view_mode', $viewMode)
-                    ->setData('image_display_area', $imageDisplayArea)
-                    ->setData('show_description', $showDescription)
-                    ->setData('position', $pos)
-                    ->setData('pos', $pos)
-                    ->setData('template_type', $templateType)
-                    ->setData('hide_details', $hideDetails)
-                    ->setData('hide_rating_summary', $hideRatingSummary)
-                    ->setData('cache_lifetime', 3600)
-                    ->setData('cache_tags', $product->getIdentities())
-                    ->setData('cache_key', $blockCacheViewModel->hashCacheKeyInfo($itemCacheKeyInfo))
-                    ->toHtml(); ?>
-            <?php endforeach; ?>
+<?php else: ?>
+    <section class="py-8">
+        <?= $block->getToolbarHtml() ?>
+        <?= $block->getAdditionalHtml() ?>
+        <?php
+        if ($block->getMode() == 'grid') {
+            $viewMode         = 'grid';
+            $imageDisplayArea = 'category_page_grid';
+            $showDescription  = false;
+            $templateType     = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+        } else {
+            $viewMode         = 'list';
+            $imageDisplayArea = 'category_page_list';
+            $showDescription  = true;
+            $templateType     = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+        }
+        /**
+         * Position for actions regarding image size changing in vde if needed
+         */
+        $pos = $block->getPositioned();
+        ?>
+        <div class="products wrapper mode-<?= /* @noEscape */$viewMode ?> products-<?= /* @noEscape */$viewMode ?>">
+            <div class="mx-auto pt-4 pb-12 grid gap-4 grid-cols-1 <?= /* @noEscape */$viewMode === 'grid'
+                ? 'sm:grid-cols-2 xl:grid-cols-3'
+                : '' ?>">
+                <?php /** @var \Magento\Catalog\Model\Product $product */ ?>
+                <?php foreach ($productCollection as $product): ?>
+                    <?= $productListItemViewModel->getItemHtml(
+                        $product,
+                        $block,
+                        $viewMode,
+                        $templateType,
+                        $imageDisplayArea,
+                        $showDescription
+                    ) ?>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
-    <?= $block->getToolbarHtml() ?>
-</section>
+        <?= $block->getToolbarHtml() ?>
+    </section>
 <?php endif; ?>
