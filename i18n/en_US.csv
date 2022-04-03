@@ -1,19 +1,19 @@
 "
-                        
+
                         <div class=""container"">
                             <p>No Checkout module installed.</p>
                             <p>Either install the Luma Fallback Checkout, or the React Checkout.</p>
                             <p>Please refer to the documentation for more information.</p>
                         </div>
-                        
+
                     ","
-                        
+
                         <div class=""container"">
                             <p>No Checkout module installed.</p>
                             <p>Either install the Luma Fallback Checkout, or the React Checkout.</p>
                             <p>Please refer to the documentation for more information.</p>
                         </div>
-                        
+
                     "
 "+ Add Invitee","+ Add Invitee"
 "<div class=""container"">You currently need the Luma Fallback module to render the Paypal Express Review Page.</div>","<div class=""container"">You currently need the Luma Fallback module to render the Paypal Express Review Page.</div>"
@@ -61,7 +61,8 @@ Sku,Sku
 "This form is protected by reCAPTCHA - the <a class=""underline"" href=""%1"" target=""_blank"" rel=""noopener"">Google Privacy Policy</a> and <a class=""underline"" href=""%2"" target=""_blank"" rel=""noopener"">Terms of Service</a> apply.","This form is protected by reCAPTCHA - the <a class=""underline"" href=""%1"" target=""_blank"" rel=""noopener"">Google Privacy Policy</a> and <a class=""underline"" href=""%2"" target=""_blank"" rel=""noopener"">Terms of Service</a> apply."
 "Track Shipment","Track Shipment"
 "Unable to find the SVG icon ""%1","Unable to find the SVG icon ""%1"
-"Update Wish List' 'Add to Wish List","Update Wish List' 'Add to Wish List"
+"Update Wish List',"Update Wish List"
+"Add to Wish List","Add to Wish List"
 "Update item","Update item"
 Watches,Watches
 "We found other products you might like!
