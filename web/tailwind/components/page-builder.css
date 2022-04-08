@@ -14,14 +14,12 @@
     @apply box-border;
 
     & > div {
-        /* @apply p-2.5 mb-2.5*/
+        @apply p-2.5 mb-2.5; /* @todo not sure about these default values */
     }
 
     &[data-appearance='contained'] {
         @apply container;
-        .columns & {
-            padding:0;
-        }
+        @apply box-border ml-auto mr-auto;
 
         [data-element='inner'] {
             @apply box-border;
@@ -31,16 +29,11 @@
 
     &[data-appearance='full-bleed'] {
         background-attachment: scroll !important;
-        .columns & {
-            @apply w-screen left-1/2 right-1/2 mx-[-50vw] relative;
-        }
     }
 
     &[data-appearance='full-width'] {
         background-attachment: scroll !important;
-        .columns & {
-            @apply w-screen left-1/2 right-1/2 mx-[-50vw] relative;
-        }
+
         > .row-full-width-inner {
             @apply container;
         }
