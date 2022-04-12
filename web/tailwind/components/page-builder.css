@@ -35,7 +35,7 @@
         background-attachment: scroll !important;
 
         > .row-full-width-inner {
-            @apply box-border ml-auto mr-auto max-w-screen-xl w-full;
+            @apply container;
         }
     }
 }

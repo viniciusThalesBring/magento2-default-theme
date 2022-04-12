@@ -31,6 +31,10 @@ body {
     .sidebar {
         @apply order-3;
     }
+
+    .page-main-full-width & {
+        @apply max-w-none px-0;
+    }
 }
 
 .page-with-filter {
