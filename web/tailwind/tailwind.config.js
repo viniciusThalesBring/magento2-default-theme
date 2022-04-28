@@ -1,8 +1,8 @@
 const { spacing } = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
+const hyvaModules = require('@hyva-themes/hyva-modules');
 
-
-module.exports = {
+module.exports = hyvaModules.mergeTailwindConfig({
     mode: process.env.TAILWIND_COMPILE_MODE || 'jit', // either 'jit' or 'aot'
     theme: {
         extend: {
@@ -144,4 +144,4 @@ module.exports = {
             //'../../../../../../../app/code/**/Block/Widget/**/*.php'
         ]
     }
-}
+})
