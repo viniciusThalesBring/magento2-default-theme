@@ -5,17 +5,18 @@ fieldset {
     }
 
     /* Reserve space for single line form validation messages */
-    .field input,
-    .field textarea {
-        @apply mb-7
+    .field.field-reserved {
+        & input, select, textarea {
+            @apply mb-7
+        }
     }
 
-    .field ul {
+    .field.field-reserved ul {
         @apply -mt-6;
         @apply pb-1 text-sm leading-5 /* The padding + leading have to match the negative margin on the line above */
     }
 
-    .field textarea {
+    .field.field-reserved textarea {
         @apply align-top
     }
 

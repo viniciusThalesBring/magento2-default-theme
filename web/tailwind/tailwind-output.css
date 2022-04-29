@@ -2725,6 +2725,9 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .mr-8 {
 	margin-right: 2rem;
 }
+.mt-10 {
+	margin-top: 2.5rem;
+}
 .box-content {
 	box-sizing: content-box;
 }
@@ -3868,17 +3871,17 @@ form .field, fieldset .field {
 	margin-top: 0.25rem;
 }
 /* Reserve space for single line form validation messages */
-form .field input, form .field textarea, fieldset .field input, fieldset .field textarea {
+form .field.field-reserved input, form .field.field-reserved select, form .field.field-reserved textarea, fieldset .field.field-reserved input, fieldset .field.field-reserved select, fieldset .field.field-reserved textarea {
 	margin-bottom: 1.75rem;
 }
-form .field ul, fieldset .field ul {
+form .field.field-reserved ul, fieldset .field.field-reserved ul {
 	margin-top: -1.5rem;
 	padding-bottom: 0.25rem;
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 	line-height: 1.25rem;
 }
-form .field textarea, fieldset .field textarea {
+form .field.field-reserved textarea, fieldset .field.field-reserved textarea {
 	vertical-align: top;
 }
 form label, fieldset label {
