@@ -6,11 +6,17 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
 use Magento\Theme\Block\Html\Pager;
 
 /** @var Pager $block */
 /** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
 
 $pagerItemClass = "relative inline-flex items-center text-sm font-medium leading-5 bg-white border border-gray-300";
 $pagerItemBtnClass = $pagerItemClass
@@ -49,9 +55,9 @@ $pagerItemBtnClass = $pagerItemClass
             <ol class="relative z-0 inline-flex shadow-sm items pages-items"
                 aria-label="<?= $escaper->escapeHtml(__('Page')) ?>"
             >
-                <?php if (!$block->isFirstPage()): ?>
-                    <li class="item pages-item-previous <?= $pagerItemClass ?> rounded-l-md px-3 py-2 text-gray-500">
-                        <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : ''; ?>
+                <li class="item pages-item-previous <?= $pagerItemClass ?> rounded-l-md px-3 py-2 text-gray-500">
+                    <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : ''; ?>
+                    <?php if (!$block->isFirstPage()): ?>
                         <a class="<?= $escaper->escapeHtmlAttr($text ? 'link ' : 'action ') ?> previous"
                            href="<?= $escaper->escapeUrl($block->getPreviousPageUrl()) ?>"
                            title="<?= $escaper->escapeHtmlAttr($text ? $text : __('Previous')) ?>">
@@ -60,18 +66,17 @@ $pagerItemBtnClass = $pagerItemClass
                             <?php if ($text): ?>
                                 <?= $escaper->escapeHtml($text) ?>
                             <?php else: ?>
-                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0
-                                          01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                          clip-rule="evenodd">
-                                    </path>
-                                </svg>
+                                <?= $heroicons->chevronLeftHtml('', 20, 20); ?>
                             <?php endif; ?>
-                        </span>
+                            </span>
                         </a>
-                    </li>
-                <?php endif; ?>
+                    <?php else: ?>
+                        <strong>
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
+                            <?= $heroicons->chevronLeftHtml('', 20, 20); ?>
+                        </strong>
+                    <?php endif; ?>
+                </li>
 
                 <?php if ($block->canShowFirst()): ?>
                     <li class="item <?= $pagerItemBtnClass ?> px-4 py-2 -ml-px text-gray-500">
@@ -131,8 +136,8 @@ $pagerItemBtnClass = $pagerItemClass
                     </li>
                 <?php endif; ?>
 
-                <?php if (!$block->isLastPage()): ?>
-                    <li class="item pages-item-next <?= $pagerItemClass ?> rounded-r-md -ml-px px-3 py-2 text-gray-500">
+                <li class="item pages-item-next <?= $pagerItemClass ?> rounded-r-md -ml-px px-3 py-2 text-gray-500">
+                    <?php if (!$block->isLastPage()): ?>
                         <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : ''; ?>
                         <a class="<?= /* @noEscape */ $text ? 'link ' : 'action ' ?> next"
                            href="<?= $escaper->escapeUrl($block->getNextPageUrl()) ?>"
@@ -142,17 +147,17 @@ $pagerItemBtnClass = $pagerItemClass
                             <?php if ($text): ?>
                                 <?= $escaper->escapeHtml($text) ?>
                             <?php else: ?>
-                                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4
-                                          4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
+                                <?= $heroicons->chevronRightHtml('', 20, 20); ?>
                             <?php endif; ?>
-                        </span>
+                            </span>
                         </a>
-                    </li>
-                <?php endif; ?>
+                    <?php else: ?>
+                        <strong>
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
+                            <?= $heroicons->chevronRightHtml('', 20, 20); ?>
+                        </strong>
+                    <?php endif; ?>
+                </li>
             </ol>
         <?php endif; ?>
     </div>
