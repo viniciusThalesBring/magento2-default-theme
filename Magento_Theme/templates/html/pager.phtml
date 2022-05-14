@@ -104,14 +104,17 @@ $pagerItemBtnClass = $pagerItemClass
                 <?php foreach ($block->getFramePages() as $page): ?>
                     <?php if ($block->isPageCurrent($page)): ?>
                         <li class="item -ml-px">
-                            <strong class="page <?= $pagerItemClass ?> z-10 px-4 py-2 text-gray-700 bg-gray-100 border-primary">
+                            <a
+                                href="<?= $escaper->escapeUrl($block->getPageUrl($page)) ?>"
+                                class="page <?= $pagerItemBtnClass ?> z-10 px-4 py-2 text-gray-700 bg-gray-100 border-primary"
+                                aria-current="page">
                                 <span class="sr-only label">
                                     <?= $escaper->escapeHtml(
                                         __('You\'re currently reading page')
                                     ) ?>
                                 </span>
                                 <span><?= $escaper->escapeHtml($page) ?></span>
-                            </strong>
+                            </a>
                         </li>
                     <?php else: ?>
                         <li class="item -ml-px">
