@@ -87,6 +87,11 @@
                         <argument name="block_id" xsi:type="string">footer_content</argument>
                     </arguments>
                 </block>
+                <block
+                    name="footer-copyright"
+                    template="Magento_Theme::elements/copyright-hyva.phtml"
+                    as="copyright"
+                />
             </block>
         </referenceContainer>
 
