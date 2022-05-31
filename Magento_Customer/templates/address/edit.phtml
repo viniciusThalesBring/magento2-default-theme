@@ -191,7 +191,7 @@ $viewModel = $block->getViewModel();
 
             <div class="field region w-full"
                  x-cloak
-                 x-show="isRegionRequired || showOptionalRegion"
+                 x-show="(hasAvailableRegions() && isRegionRequired) || showOptionalRegion"
             >
                 <label class="label" for="region_id">
                     <span><?= /* @noEscape */ $region ?></span>
