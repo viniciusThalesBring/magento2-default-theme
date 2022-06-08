@@ -74,7 +74,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
                         <fieldset>
                             <div class="flex flex-col mt-4 mb-3">
-                                <div class="text-md <?php if($block->getRatings()->getSize() <= 1): ?>hidden<?php endif ?>"><?= $escaper->escapeHtml(__('Your Rating')) ?>:</div>
+                                <div class="text-md <?php if ($block->getRatings()->getSize() <= 1): ?>hidden<?php endif ?>"><?= $escaper->escapeHtml(__('Your Rating')) ?>:</div>
                                 <div class="mt-4">
                                     <div id="product-review-table">
                                         <?php foreach ($block->getRatings() as $rating): ?>
@@ -82,7 +82,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                                                 <label class="table-cell pr-6 align-middle text-left"
                                                     id="<?= $escaper->escapeHtml($rating->getRatingCode()) ?>_rating_label">
                                                     <span>
-                                                        <?php if($block->getRatings()->getSize() <= 1): ?>
+                                                        <?php if ($block->getRatings()->getSize() <= 1): ?>
                                                             <?= $escaper->escapeHtml(__('Your Rating')) ?>:
                                                         <?php else: ?>
                                                             <?= $escaper->escapeHtml($rating->getRatingCode()) ?>
@@ -335,8 +335,9 @@ mutation createProductReviewMutation(
 
                             const form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
 
-                            const recaptchaHeader = form && form.elements['g-recaptcha-response']
-                                ? {'X-ReCaptcha': form.elements['g-recaptcha-response'].value}
+                            const fieldName = '<?= $escaper->escapeJs($recaptcha->getResultTokenFieldName($formId)) ?>';
+                            const recaptchaHeader = form && form.elements[fieldName]
+                                ? {'X-ReCaptcha': form.elements[fieldName].value}
                                 : {};
 
                             fetch(`${BASE_URL}graphql`, {
