@@ -56,7 +56,7 @@ $maxItemsToDisplay = $storeConfig->getStoreConfig('checkout/sidebar/max_items_di
                     headers: {
                         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     },
-                    body: new URLSearchParams({form_key: hyva.getFormKey(), item_id: itemId}),
+                    body: "form_key=" + hyva.getFormKey() + "&item_id=" + itemId,
                     method: 'POST',
                     mode: 'cors',
                     credentials: 'include'
