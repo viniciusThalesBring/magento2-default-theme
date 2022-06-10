@@ -136,13 +136,13 @@ if (! $customer->customerLoggedIn()) {
                         </template>
                     </ol>
                     <div id="cart-sidebar-reorder-advice-container"></div>
-                    <div class="flex flex-wrap items-center md:mt-5 text-sm">
+                    <div class="flex flex-wrap gap-y-2 items-center md:mt-5 text-sm">
                         <template x-if="isShowAddToCart">
                             <button
                                 @click.prevent="addToCart('<?= $escaper->escapeUrl($block->getFormActionUrl()) ?>')"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>"
                                 title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
-                                class="action tocart primary btn btn-primary">
+                                class="action tocart btn btn-primary text-sm">
                                 <?= $escaper->escapeHtml(__('Add to Cart')) ?>
                             </button>
                         </template>
