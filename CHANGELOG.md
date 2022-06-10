@@ -45,6 +45,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- **Replace the GraphQL cart with a PHP cart implementation using AlpineJS and Ajax**
+
+  This is a backward incompatible change, but existing sites can install the [`hyva-themes/magento2-graphql-cart` extension](https://gitlab.hyva.io/hyva-themes/magento2-graphql-cart)
+  to restore the previous functionality in a backward compatible way.
+
+  For more information please refer to the [Merge Request #397](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/397). 
+
 - **Use SVG ViewModel instead of hardcoded SVGs in default theme**
 
   This includes adding the SVG loader to the theme web folder instead of hardcoding it in the loader template. 
@@ -167,9 +174,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Please refer to the [Issue #408](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/408) for more details.
 
+- **Fix: initConfigurableOptions is not defined on out of stock configurable product page**
+
+  Please refer to the [Issue #410](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/410) for more details.
+
 ### Removed
 
-- Nothing
+- **Removed the composer.lock file from the hyva-themes/magento2-default-theme package**
+
 
 ## [1.1.14] - 2022-04-29
 
