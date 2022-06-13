@@ -21,23 +21,16 @@ use Magento\SendFriend\Block\Send;
  * @var Send $block
  * @var SecureHtmlRenderer $secureRenderer
  * @var Escaper $escaper
- * @var ReCaptcha $recaptchaViewModel
+ * @var ReCaptcha $recaptcha
  * @var ViewModelRegistry $viewModels
  * @var HeroiconsOutline $icons
  */
 
-// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-// Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-
 $icons = $viewModels->require(HeroiconsOutline::class);
 
-$recaptchaInputField = '';
-$recaptchaLegalNotice = '';
-if ($recaptchaViewModel !== null && ($recaptchaData = $recaptchaViewModel->getRecaptchaData('sendfriend'))) {
-    $recaptchaInputField = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD]);
-    $recaptchaLegalNotice = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK]);
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on Magento_ReCaptchaSendFriend module
+$recaptcha = $block->getData('viewModelRecaptcha');
 
 $formData = $block->getFormData();
 $recipients = $formData->getRecipientData() ?? '[]';
@@ -52,7 +45,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
               @submit.prevent="submitForm()"
         >
             <?= $block->getBlockHtml('formkey') ?>
-            <?= /** @noEscape */ $recaptchaInputField ?>
+            <?= $recaptcha ? $recaptcha->getInputHtml('sendfriend') : '' ?>
             <fieldset class="fieldset sender" id="sender_options">
                 <legend class="legend"><span><?= $escaper->escapeHtml(__('Sender')) ?></span></legend>
                 <br>
@@ -177,7 +170,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
             </div>
             <?= $block->getChildHtml('captcha'); ?>
             <div class="w-full grecaptcha-legal">
-                <?= /** @noEscape */ $recaptchaLegalNotice ?>
+                <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('sendfriend') : '' ?>
             </div>
             <div class="actions-toolbar">
                 <div class="primary">
@@ -230,6 +223,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                             this.displayErrorMessage = this.errorMessages.length
                         },
                         submitForm() {
+                            // Do not remove $form. The variable is used in the recaptcha child template.
                             const $form = document.querySelector('#product-sendtofriend-form');
                             if ($form.querySelectorAll('input[id^="recipients-email"]').length === 0) {
                                 dispatchMessages([
@@ -242,7 +236,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                                 ], 10000);
                                 return false;
                             }
-                            <?= $block->getChildHtml('recaptcha_validation'); ?>
+                            <?= $recaptcha ? $recaptcha->getValidationJsHtml('sendfriend') : '' ?>
 
                             if (this.errors === 0) {
                                 $form.submit();

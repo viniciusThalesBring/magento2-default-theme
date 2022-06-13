@@ -21,20 +21,14 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Register $block */
 /** @var Escaper $escaper */
+/** @var ReCaptcha $recaptcha */
 
 $formId = 'accountcreate';
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('customer_create')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
-$region = $block->getAttributeData()->getFrontendLabel('region');
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaCustomer module
+$recaptcha = $block->getData('viewModelRecaptcha');
+$region    = $block->getAttributeData()->getFrontendLabel('region');
 $selectRegion = 'Please select a region, state or province.';
 $displayAll = $block->getConfig('general/region/display_all');
 ?>
@@ -52,7 +46,7 @@ $displayAll = $block->getConfig('general/region/display_all');
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
         <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <?= $block->getChildHtml('form_fields_before') ?>
-        <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+        <?= $recaptcha ? $recaptcha->getInputHtml('customer_create') : '' ?>
         <div class="md:grid grid-cols-2 gap-4">
             <fieldset class="my-8 card">
                 <legend class="contents">
@@ -163,7 +157,7 @@ $displayAll = $block->getConfig('general/region/display_all');
                 </p>
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
-                <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+                <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_create') : '' ?>
             </fieldset>
         </div>
 
@@ -249,7 +243,7 @@ $displayAll = $block->getConfig('general/region/display_all');
 
                 <div class="field region w-full"
                      x-cloak
-                     x-show="isRegionRequired || showOptionalRegion"
+                     x-show="(hasAvailableRegions() && isRegionRequired) || showOptionalRegion"
                 >
                     <label class="label" for="region_id">
                         <span><?= /* @noEscape */ $region ?></span>
@@ -384,9 +378,9 @@ $displayAll = $block->getConfig('general/region/display_all');
                 },
                 submitForm() {
                     if (this.checkPasswordsMatch()) {
-                        // Do not rename $form, it is expected to be declared in the child block output
+                        // Do not rename $form, the variable is expected to be declared in the recaptcha output
                         const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-                        <?= $block->getChildHtml('recaptcha_validation'); ?>
+                        <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_create') : '' ?>
 
                         if (this.errors === 0) {
                             $form.submit();

@@ -17,21 +17,15 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var ContactForm $block */
 /** @var Escaper $escaper */
+/** @var ReCaptcha $recaptcha|null */
 
 $formId = 'contact';
 /** @var ContactHelper $contactHelper */
 $contactHelper = $this->helper(ContactHelper::class);
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('contact')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that would break the dependency
+// on the Magento_ReCaptchaContact module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <div class="flex-columns-wrapper justify-between py-8 gap-4">
     <form class="form contact card lg:w-1/2 md:w-2/3"
@@ -102,7 +96,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                               ) ?></textarea>
                 </div>
                 <?= $block->getChildHtml('form.additional.info') ?>
-                <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml('contact') : '' ?>
             </div>
         </fieldset>
         <div class="w-full">
@@ -113,7 +107,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </div>
         <div class="w-full">
             <?= $block->getChildHtml('form.additional.after') ?>
-            <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('contact') : '' ?>
         </div>
     </form>
     <script>
@@ -122,9 +116,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 errors: 0,
                 hasCaptchaToken: 0,
                 submitForm() {
-                    // Do not rename $form, it is expected to be declared in the child block output
+                    // Do not rename $form, the variable is expected to be declared in the recaptcha output
                     const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-                    <?= $block->getChildHtml('recaptcha_validation'); ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('contact') : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

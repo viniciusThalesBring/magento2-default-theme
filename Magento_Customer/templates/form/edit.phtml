@@ -12,20 +12,16 @@ use Magento\Customer\Block\Widget\Name;
 use Magento\Framework\Escaper;
 use Hyva\Theme\ViewModel\ReCaptcha;
 
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /** @var \Magento\Customer\Block\Form\Edit $block */
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 /** @var Escaper $escaper */
+/** @var ReCaptcha|null $recaptcha */
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('customer_edit')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaCustomer module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <form class="form form-edit-account"
       action="<?= $escaper->escapeUrl($block->getUrl('customer/account/editPost')) ?>"
@@ -54,9 +50,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
 
         <div class="field choice">
             <input type="checkbox" name="change_email" id="change-email" value="1"
-                title="<?= $escaper->escapeHtmlAttr(__('Change Email')) ?>"
-                x-on:change="showEmailField = !showEmailField"
-                class="checkbox"/>
+                   title="<?= $escaper->escapeHtmlAttr(__('Change Email')) ?>"
+                   x-on:change="showEmailField = !showEmailField"
+                   class="checkbox"/>
             <label class="label" for="change-email">
                 <span><?= $escaper->escapeHtml(__('Change Email')) ?></span>
             </label>
@@ -64,10 +60,10 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
 
         <div class="field choice">
             <input type="checkbox" name="change_password" id="change-password" value="1"
-                title="<?= $escaper->escapeHtmlAttr(__('Change Password')) ?>"
-                x-on:change="showPasswordFields = !showPasswordFields"
+                   title="<?= $escaper->escapeHtmlAttr(__('Change Password')) ?>"
+                   x-on:change="showPasswordFields = !showPasswordFields"
                 <?php if ($block->getChangePassword()): ?> checked="checked"<?php endif; ?>
-                class="checkbox"/>
+                   class="checkbox"/>
             <label class="label" for="change-password">
                 <span><?= $escaper->escapeHtml(__('Change Password')) ?></span>
             </label>
@@ -78,9 +74,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 <label class="label" for="email"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
                 <div class="control">
                     <input type="email" name="email" id="email" autocomplete="email" required
-                        value="<?= $escaper->escapeHtmlAttr($block->getCustomer()->getEmail()) ?>"
-                        title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
-                        class="form-input"/>
+                           value="<?= $escaper->escapeHtmlAttr($block->getCustomer()->getEmail()) ?>"
+                           title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
+                           class="form-input"/>
                 </div>
             </div>
         </template>
@@ -92,8 +88,8 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 </label>
                 <div class="control">
                     <input type="password" class="form-input" name="current_password" id="current-password"
-                            data-input="current-password"
-                            autocomplete="off"/>
+                           data-input="current-password"
+                           autocomplete="off"/>
                 </div>
             </div>
         </template>
@@ -101,22 +97,23 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         <template x-if="showPasswordFields">
             <div>
                 <div class="field">
-                    <label class="label" for="password"><span><?= $escaper->escapeHtml(
-                        __('New Password')
-                    ) ?></span></label>
+                    <label class="label" for="password"><span>
+                            <?= $escaper->escapeHtml(__('New Password')) ?>
+                    </span></label>
                     <div class="control">
                         <?php $minimumPasswordLength = $block->getMinimumPasswordLength() ?>
                         <input type="password" class="form-input" name="password" id="password" required
                                x-on:change="checkPasswordsMatch()"
                                minlength="<?= $escaper->escapeHtmlAttr($minimumPasswordLength) ?>" autocomplete="off"/>
                     </div>
-                    <p class="text-sm text-secondary mt-3"><?= $escaper->escapeHtml(
-                        __(
-                            'Minimum of different classes of characters in password is %1.'
-                                . ' Classes of characters: Lower Case, Upper Case, Digits, Special Characters.',
-                            $block->getRequiredCharacterClassesNumber()
-                        )
-                    ) ?></p>
+                    <p class="text-sm text-secondary mt-3">
+                        <?= $escaper->escapeHtml(
+                            __(
+                                'Minimum of different classes of characters in password is %1. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.',
+                                $block->getRequiredCharacterClassesNumber()
+                            )
+                        ) ?>
+                    </p>
                 </div>
 
                 <div class="field">
@@ -140,7 +137,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </template>
     </fieldset>
     <?= $block->getChildHtml('form_additional_info') ?>
-    <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+    <?= $recaptcha ? $recaptcha->getInputHtml('customer_edit') : '' ?>
     <div class="actions-toolbar">
         <div class="primary">
             <button type="submit" class="action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
@@ -155,7 +152,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
     </div>
 </form>
 <div class="w-full">
-    <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_edit') : '' ?>
 </div>
 <script>
     function initForm() {
@@ -177,9 +174,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 }
                 if (document.getElementById('password').value ===
                     document.getElementById('password-confirmation').value) {
-                        this.passwordsMatching = true;
-                        return true;
-                    }
+                    this.passwordsMatching = true;
+                    return true;
+                }
                 this.passwordsMatching = false;
                 return false;
             },
@@ -191,9 +188,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 if (!this.checkPasswordsMatch()) {
                     return;
                 }
-                // Do not rename $form, it is expected to be declared in the child block output
+                // Do not rename $form, the variable is expected to be declared in the recaptcha output
                 const $form = document.querySelector('#form-validate');
-                <?= $block->getChildHtml('recaptcha_validation_customer_edit'); ?>
+                <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_edit') : '' ?>
 
                 if (this.errors === 0) {
                     $form.submit();

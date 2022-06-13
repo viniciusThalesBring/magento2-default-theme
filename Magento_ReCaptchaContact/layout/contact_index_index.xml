@@ -11,8 +11,6 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="contactForm">
-            <block name="recaptcha_validation" template="Magento_ReCaptchaFrontendUi::js/script_token.phtml"
-                   ifconfig="recaptcha_frontend/type_for/contact"/>
             <!-- Do not remove the view model from layout! -->
             <!--
                 Passing the view model in the layout xml keeps the recaptcha implementation in sync with Magento,
@@ -25,9 +23,8 @@
                 <argument name="viewModelRecaptcha" xsi:type="object">Hyva\Theme\ViewModel\ReCaptcha</argument>
             </arguments>
         </referenceBlock>
-        <referenceContainer name="before.body.end">
-            <block name="recaptcha_base" template="Magento_ReCaptchaFrontendUi::js/script_loader.phtml"
-                   ifconfig="recaptcha_frontend/type_for/contact"/>
-        </referenceContainer>
+        <referenceBlock name="page.recaptcha.loader.form_ids">
+            <block name="recaptcha.contact" as="contact" ifconfig="recaptcha_frontend/type_for/contact"/>
+        </referenceBlock>
     </body>
 </page>

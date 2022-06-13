@@ -8,23 +8,23 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Customer\Block\Form\Login;
 use Magento\Framework\Escaper;
 use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Escaper $escaper */
 /** @var Login $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var ReCaptcha $recaptcha */
+/** @var HeroiconsOutline $heroicons */
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('customer_login')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaCustomer module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <div class="w-full md:w-1/2 card mr-4">
     <div aria-labelledby="block-customer-login-heading">
@@ -51,6 +51,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     <div class="control">
                         <input name="login[username]"
                                class="form-input"
+                               required
                                value="<?= $escaper->escapeHtmlAttr($block->getUsername()) ?>"
                             <?php if ($block->isAutocompleteDisabled()): ?>
                                 autocomplete="off"
@@ -65,6 +66,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     <div class="control">
                         <input name="login[password]"
                                class="form-input"
+                               required
                                type="password"
                             <?php if ($block->isAutocompleteDisabled()): ?>
                                 autocomplete="off"
@@ -74,7 +76,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     </div>
                 </div>
 
-                <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml('customer_login') : '' ?>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
                         <button type="submit" class="btn btn-primary" name="send">
@@ -84,17 +86,12 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                         ) ?>"><span><?= $escaper->escapeHtml(__('Forgot Your Password?')) ?></span>
                         </a>
                 </div>
-
                 <div>
                     <template x-if="displayErrorMessage">
                         <p class="text-red flex items-center">
-                                    <span class="inline-block w-8 h-8 mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             stroke="currentColor">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                    </span>
+                            <span class="inline-block w-8 h-8 mr-3">
+                                <?= $heroicons->exclamationCircleHtml(); ?>
+                            </span>
                             <template x-for="errorMessage in errorMessages">
                                 <span x-html="errorMessage"></span>
                             </template>
@@ -105,7 +102,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </form>
     </div>
     <div class="w-full">
-        <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
     </div>
     <script>
         function initCustomerLoginForm() {
@@ -119,9 +116,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     this.displayErrorMessage = this.errorMessages.length
                 },
                 submitForm() {
-                    // do not rename $form - it is the expected name in the child block output
+                    // do not rename $form, the variable is the expected name in the recaptcha output
                     const $form = document.querySelector('#customer-login-form');
-                    <?= $block->getChildHtml('recaptcha_validation_customer_login'); ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_login') : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

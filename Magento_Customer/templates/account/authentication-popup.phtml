@@ -8,23 +8,24 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Framework\Escaper;
 use Magento\Customer\Block\Account\Customer;
-use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Escaper $escaper */
 /** @var Customer $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var ReCaptcha $recaptcha */
+/** @var HeroiconsOutline $heroicons */
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('customer_login')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaCustomer module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <script>
     function initAuthentication() {
@@ -41,9 +42,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 this.displayErrorMessage = this.errorMessages.length;
             },
             submitForm: function () {
-                // Do not rename $form, it is expected to be declared in the child block output
+                // Do not rename $form, the variable is expected to be declared in the recaptcha output
                 const $form = document.querySelector('#login-form');
-                <?= $block->getChildHtml('recaptcha_validation_customer_login'); ?>
+                <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_login', 'auth-popup') : '' ?>
 
                 if (this.errors === 0) {
                     this.dispatchLoginRequest($form);
@@ -73,9 +74,11 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     'password': password,
                     'formKey': formKey
                 };
-                const recaptchaField = form.querySelector('input[name=g-recaptcha-response]');
-                if (recaptchaField != null) {
-                    bodyFields['g-recaptcha-response'] = recaptchaField.value;
+                <?php // All recaptcha variants set a input field g-recaptcha-response value ?>
+                const fieldName = '<?= $escaper->escapeJs($recaptcha->getResultTokenFieldName('customer_login')) ?>';
+                const recaptchaField = form[fieldName];
+                if (recaptchaField) {
+                    bodyFields[fieldName] = recaptchaField.value;
                 }
                 fetch('<?= $escaper->escapeUrl($block->getUrl('customer/ajax/login')) ?>', {
                         method: 'POST',
@@ -107,7 +110,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
 </script>
 <section id="authentication-popup"
          x-data="initAuthentication()"
-         @private-content-loaded.window="onPrivateContentLoaded(event.detail.data)"
+         @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)"
          @toggle-authentication.window="open = forceAuthentication; redirectIfAuthenticated(event)"
          @keydown.window.escape="open = false"
 >
@@ -138,11 +141,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     x-transition:leave-end="opacity-0" class="absolute top-0 right-0 flex p-2 mt-2">
                     <button @click="open = false;" aria-label="Close panel"
                             class="p-2 text-gray-300 transition duration-150 ease-in-out hover:text-black">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                            </path>
-                        </svg>
+                        <?= $heroicons->xHtml(); ?>
                     </button>
                 </div>
                 <div class="flex flex-col h-full py-6 space-y-6 bg-white shadow-xl overflow-y-auto">
@@ -156,7 +155,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                               @submit.prevent="submitForm();"
                               id="login-form"
                         >
-                            <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                            <?= $recaptcha ? $recaptcha->getInputHtml('customer_login', 'auth-popup') : '' ?>
                             <div class="fieldset login">
                                 <div class="field email required">
                                     <label class="label" for="customer-email">
@@ -204,8 +203,8 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                             </div>
                         </form>
                     </div>
-                    <div class="w-full">
-                        <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+                    <div class="mx-4">
+                        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
                     </div>
                     <div class="block-new-customer bg-container border border-container mx-4 p-4 shadow-sm">
                         <h2 id="authenticate-new-customer" class="text-lg mb-2 font-medium leading-7 text-gray-900">

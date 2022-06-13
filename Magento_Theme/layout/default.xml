@@ -47,6 +47,7 @@
                 </block>
                 <block name="header-search" template="Magento_Theme::html/header/search-form.phtml"/>
                 <block name="cart-drawer" template="Magento_Theme::html/cart/cart-drawer.phtml" ifconfig="checkout/sidebar/display">
+                    <block name="cart-drawer-loading" as="loading" template="Hyva_Theme::ui/loading.phtml"/>
                     <block class="Magento\Catalog\Block\ShortcutButtons" name="extra_actions"/>
                 </block>
 
@@ -87,6 +88,12 @@
                         <argument name="block_id" xsi:type="string">footer_content</argument>
                     </arguments>
                 </block>
+                <block
+                    class="Magento\Theme\Block\Html\Footer"
+                    name="footer-copyright"
+                    template="Magento_Theme::html/footer/copyright.phtml"
+                    as="copyright"
+                />
             </block>
         </referenceContainer>
 
