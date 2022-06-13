@@ -16,7 +16,7 @@ use Magento\Framework\View\Element\Template;
     function initConfigurableOptions(productId, optionConfig) {
 
         function findPathParam(key) {
-            // get all path pairs after BASE_URL/front_name/action_path/action
+            <?php // get all path pairs after BASE_URL/front_name/action_path/action ?>
             const baseUrl = (BASE_URL.substr(0, 2) === '//' ? 'http:' : '') + BASE_URL;
             const baseUrlParts = (new URL(baseUrl)).pathname.replace(/\/$/, '').split('/');
             const pathParts = window.location.pathname.split('/').slice(baseUrlParts.length + 3);
@@ -44,8 +44,26 @@ use Magento\Framework\View\Element\Template;
                 });
             },
             findSimpleIndex() {
-                // a better method name would be `updateSelectedSimpleIndex` but keeping for bc
-                this.productIndex = this.calculateSimpleIndexForFullSelection(this.selectedValues);
+                <?php // a better method name would be `updateSelectedSimpleIndex` but keeping for bc ?>
+                this.productIndex = this.calculateSimpleIndexForPartialSelection(this.selectedValues);
+            },
+            calculateSimpleIndexForPartialSelection(selectedValues) {
+                let productIndexIds = Object.keys(this.optionConfig.index);
+                Object.keys(this.optionConfig.attributes).forEach((attribute) => {
+                    <?php
+                    // for each attribute, check if a value is selected for the attribute
+                    // if it is, filter all products to only include those that match the selected attribute value
+                    ?>
+                    const productsWithAttributeMatch = selectedValues[attribute]
+                        ? productIndexIds.filter((productIndex) => {
+                            return this.optionConfig.index[productIndex][attribute] === this.selectedValues[attribute]
+                        })
+                        : [];
+
+                    <?php // if we found matches, only keep the ones that match, otherwise, keep all products ?>
+                    productIndexIds = productsWithAttributeMatch.length ? productsWithAttributeMatch : productIndexIds
+                })
+                return productIndexIds[0];
             },
             calculateSimpleIndexForFullSelection(selectedValues) {
                 const productIndexes = this.optionConfig.index;
@@ -65,7 +83,7 @@ use Magento\Framework\View\Element\Template;
             },
             productIndex: 0,
             findAllowedAttributeOptions() {
-                // a better method name would be `updateAllowedAttributeOptions` but keeping for bc
+                <?php // a better method name would be `updateAllowedAttributeOptions` but keeping for bc ?>
                 this.allowedAttributeOptions = this.calculateAllowedAttributeOptions(this.selectedValues);
             },
             calculateAllowedAttributeOptions(selectedValues) {

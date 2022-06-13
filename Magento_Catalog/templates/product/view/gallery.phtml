@@ -159,8 +159,10 @@ $productName = $block->getProduct()->getName();
             ) === 'append' ? 'true' : 'false' ?>,
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
-                    this.images = [].concat(this.initialImages, images);
-                    this.setActive(images.length ? this.initialImages.length : 0);
+                    const initialUrls = this.initialImages.map(image => image.full);
+                    const newImages = images.filter(image => ! initialUrls.includes(image.full));
+                    this.images = [].concat(this.initialImages, newImages);
+                    this.setActive(newImages.length ? this.initialImages.length : 0);
                 } else {
                     this.images = images;
                     this.setActive(0);
