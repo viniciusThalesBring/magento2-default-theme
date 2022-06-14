@@ -75,8 +75,10 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     'formKey': formKey
                 };
                 <?php // All recaptcha variants set a input field g-recaptcha-response value ?>
-                const fieldName = '<?= $escaper->escapeJs($recaptcha->getResultTokenFieldName('customer_login')) ?>';
-                const recaptchaField = form[fieldName];
+                const fieldName = '<?= $recaptcha
+                    ? $escaper->escapeJs($recaptcha->getResultTokenFieldName('customer_login'))
+                    : '' ?>';
+                const recaptchaField = fieldName && form[fieldName];
                 if (recaptchaField) {
                     bodyFields[fieldName] = recaptchaField.value;
                 }

@@ -321,8 +321,10 @@ mutation createProductReviewMutation(
 
                             const form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
 
-                            const fieldName = '<?= $escaper->escapeJs($recaptcha->getResultTokenFieldName($formId)) ?>';
-                            const recaptchaHeader = form && form.elements[fieldName]
+                            const fieldName = '<?= $recaptcha
+                                ? $escaper->escapeJs($recaptcha->getResultTokenFieldName($formId))
+                                : '' ?>';
+                            const recaptchaHeader = fieldName && form && form.elements[fieldName]
                                 ? {'X-ReCaptcha': form.elements[fieldName].value}
                                 : {};
 
