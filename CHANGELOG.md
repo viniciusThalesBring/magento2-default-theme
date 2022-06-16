@@ -7,7 +7,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.15...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.16...main
+
+## [1.1.16] - 2022-06-16
+
+[1.1.16]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.15...1.1.16
+
+Release 1.1.16 is a backward compatible bugfix release.
+
+### Added
+
+- Nothing added
+
+### Changed
+
+- **Fix rendering of newsletter subscription form in footer**
+
+  In 1.1.15 a bug was introduced while extracting the copyright into a separate template.
+  This bug is now fixed.
+
+  For more information please refer to the [Merge Request #470](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/470).
+
+### Removed
+
+- Nothing removed
 
 ## [1.1.15] - 2022-06-13
 
