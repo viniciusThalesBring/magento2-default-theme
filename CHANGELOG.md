@@ -7,7 +7,165 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.16...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.17...main
+
+## [1.1.17] - 2022-087-16
+
+[1.1.17]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.16...1.1.17
+
+### Added
+
+- **Specify the minimum node version >=12.13.0 in package.json**
+
+  This is currently for informational purpose only since it will not be automatically checked without a `.npmrc` file with `strict-engine=true`.  
+  The version constraint >=12.13.0 matches the one of [TailwindCSS v2](https://github.com/tailwindlabs/tailwindcss/blob/v2.2.19/package.json#L118).
+
+  For more information please refer to the [issue #423](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/423).
+
+- **Add show password functionality**
+
+  The "Show Password" functionality was added to Luma in Magento versions 2.4.3-p2 and 2.4.4. This MR adds support for this feature to Hyvä.
+
+  For more information please refer to the [merge request #484](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/484).
+
+  Many thanks to Guus Portegies (Cees en Co) for the contribution!
+
+- **Add .gitlab-ci file**
+
+  Some tests and checks are now automatically executed in GitLab pipelines for new merge requests.  
+  Currently some do not have to succeed (for example the code style check), but this will change at some point in the future.
+
+- **Add absolute footer block**
+
+  Hyvä now also contains this customization point (like Luma).
+
+  For more information please refer to the [merge request #486](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/486).
+
+  Many thanks to Erwin Romkes (Moore) for the contribution!
+
+- **Add Out Of Stock label in product list item template**
+
+  For more information please refer to the [issue #412](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/412).
+
+  Many thanks to Nataly Gorupaha (Atwix) for the contribution!
+
+- **Add default red textColor**
+
+  The css class `text-red` was used in several templates, but no default text color was declared for the default theme.
+
+  For more information please refer to the [merge request #497](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/497).
+
+### Changed
+
+- **Bugfix: Resolve "Cannot use object of type stdClass as array"**
+
+  For more information please refer to the [issue #435](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/435).
+
+- **Bugfix: Add missing bundled product cart item renderers**
+
+  Previously the selected options on bundled products where not shown on the PHP cart page.  
+  For more information please refer to the [issue #440](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/440).
+
+  Many thanks to Laura Folco for the report and suggesting a fix!
+
+- **Bugfix: Use JS to determine redirect target after addToCart in cached product list item template**
+
+  For more information please refer to the [issue #445](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/445).
+
+  Many thanks to Zach Nanninga (DEG Digital) for the detailed report and suggested solution!
+
+- **Use new hyva.getUenc function to encode the current URL**
+
+  Previously, a number of templates used `'&unec=' + btoa(window.location.href)` to add the ``uenc query parameter to an url.
+  This is missing additional encoding of `+`, `/` and `=` done by `\Magento\Framework\Url\Encoder::encode()`.  
+
+  For more information please refer to the [issue #450](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/450).
+
+- **Bugfix: Fix ReCaptcha loader if no ReCaptcha v3 website key is configured**
+
+  For more information please refer to the [merge request #475](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/475).
+
+  Many thanks to Laura Folco for the help debugging the issue!
+
+- **Bugfix: Fix call to replaceDomElement within reloadCartContent()**
+
+  For more information please refer to the [issue #439](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/439).
+
+- **Bugfix: Shipping methods with underscores in method code break the PHP cart**
+
+  For more information please refer to the [issue #433](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/433).
+
+  Many thanks to Stephanie Ehrling (Artplants) for the report and suggesting a fix!
+
+- **Bugfix: Show new password mismatch method on customer edit form**
+
+  For more information please refer to the [issue #422](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/422).
+
+  Many thanks to Nataly Gorupaha (Atwix) for the contribution!
+
+- **Update the minimum version requirement for `@hyva-themes/hyva-modules`**
+  
+  This change is only applicable to new installs and ensures the node version 12 compatible release of `@hyva-themes/hyva-modules` is installed by `npm install`.  
+  Previously an older version of the library was installed by default that required node version 14 or newer.
+
+  For more information please refer to the [issue #423](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/423).
+
+- **Fix: Google PageSpeed warning "Links are not crawlable"**
+
+  For more information please refer to the [issue #429](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/429).
+
+  Many thanks to Ryan Hissey (Aware Digital) for the contribution!
+
+- **Improvement: Reset PDP Gallery when all options are reset to "Choose an option..."**
+
+  For more information please refer to the [issue #432](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/432).
+
+- **Improvement: Sort the updated PDP Gallery when configurable options are selected**
+
+  Previously only the initial gallery was sorted according to the image position specified on the product.
+
+  For more information please refer to the [issue #426](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/426).
+
+  Many thanks to Irina Smidt (Customgento) for the contribution!
+
+- **Bugfix: add missing closing HTML tag on cart page**
+
+  For more information please refer to the [merge request #481](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/481).
+
+  Many thanks to Simon Sprankel (Customgento) for the contribution!
+
+- **Improvement: Correctly associate labels to fields in login form**
+
+  For more information please refer to the [merge request #482](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/482).
+
+  Many thanks to Lucas van Staden (ProxiBlue) for the contribution!
+
+- **Improvement: Add missing import for ViewModelRegistry in template**
+
+  The class name is only referenced from a PHPDoc annotation, so previously no error was thrown, but now, with this change, IDE autocompletion correctly works for the `$viewModels` variable.
+
+  For more information please refer to the [issue #442](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/442).
+
+  Many thanks to Guus Portegies (Cees en Co) for the contribution!
+
+- **Improvement: fix minor CLS on mobile menu**
+
+  The "X" SVG to close the mobile menu was displayed on page load and then hidden by JS, causing it to be displayed briefly and causing a small CLS.
+
+  For more information please refer to the [merge request #485](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/485).
+
+  Many thanks to Nick Hall (MFG Supply) for the contribution!
+
+### Removed
+
+- **Remove hover classes for mobile**
+
+  The hover state is generally not available on mobile devices, thus the classes previously had no effect.
+
+  For more information please refer to the [issue #444](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/444).
+
+  Many thanks to Jesse de Boer (Elgentos) for the contribution!
+
 
 ## [1.1.16] - 2022-06-16
 
@@ -162,7 +320,7 @@ If you're upgrading from <1.1.15 please check the [documentation page on upgradi
 
   For more information please refer to the [Merge Request #422](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/422).
 
-  Many thanks to Lucas can Staden (ProxyBlue) for the contribution!
+  Many thanks to Lucas van Staden (ProxiBlue) for the contribution!
 
 - **Fix: Render product image for selected attributes**
 
@@ -388,7 +546,7 @@ If you're upgrading from <1.1.15 please check the [documentation page on upgradi
 
   More information can be found in [issue #326](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/326)
 
-  Many thanks to Lucas van Staden (ProxyBlue) for the contribution!
+  Many thanks to Lucas van Staden (ProxiBlue) for the contribution!
 
 - **Fix pager jump styles**
 
@@ -1349,7 +1507,7 @@ _Version 1.1.4 of the Hyva_Theme module is required for this update_
 
 - **Customer account registration pages are no longer cached**
 
-  If any error occured during customer signup & customer was being redirected back to the registration form with error message. But the form data would not be preserved due to full-page caching.
+  If any error occurred during customer signup & customer was being redirected back to the registration form with error message. But the form data would not be preserved due to full-page caching.
 
   `cacheable="false"` has now been added to the `customer_form_register` block.
 
