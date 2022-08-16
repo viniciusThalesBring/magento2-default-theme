@@ -74,6 +74,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Many thanks to Zach Nanninga (DEG Digital) for the detailed report and suggested solution!
 
+- **Use new hyva.getUenc function to encode the current URL**
+
+  Previously, a number of templates used `'&unec=' + btoa(window.location.href)` to add the ``uenc query parameter to an url.
+  This is missing additional encoding of `+`, `/` and `=` done by `\Magento\Framework\Url\Encoder::encode()`.  
+
+  For more information please refer to the [issue #450](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/450).
+
 - **Bugfix: Fix ReCaptcha loader if no ReCaptcha v3 website key is configured**
 
   For more information please refer to the [merge request #475](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/475).
@@ -1500,7 +1507,7 @@ _Version 1.1.4 of the Hyva_Theme module is required for this update_
 
 - **Customer account registration pages are no longer cached**
 
-  If any error occured during customer signup & customer was being redirected back to the registration form with error message. But the form data would not be preserved due to full-page caching.
+  If any error occurred during customer signup & customer was being redirected back to the registration form with error message. But the form data would not be preserved due to full-page caching.
 
   `cacheable="false"` has now been added to the `customer_form_register` block.
 
