@@ -12,10 +12,10 @@
     
     <referenceContainer name="main"/>
     <referenceContainer name="columns">
-        <container name="div.sidebar.main" htmlTag="div" htmlClass="sidebar sidebar-main" before="main">
+        <container name="div.sidebar.main" htmlTag="aside" htmlClass="sidebar sidebar-main" before="main">
             <container name="sidebar.main" as="sidebar_main" label="Sidebar Main"/>
         </container>
-        <container name="div.sidebar.additional" htmlTag="div" htmlClass="sidebar sidebar-additional" after="main">
+        <container name="div.sidebar.additional" htmlTag="aside" htmlClass="sidebar sidebar-additional" after="main">
             <container name="sidebar.additional" as="sidebar_additional" label="Sidebar Additional"/>
         </container>
     </referenceContainer>
