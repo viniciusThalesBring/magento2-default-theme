@@ -45,7 +45,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 class="form-input inline-flex w-full"
                 placeholder="<?= $escaper->escapeHtmlAttr(__('Enter your email address')) ?>">
             <?= $block->getBlockHtml('formkey') ?>
-            <?= $recaptcha ? $recaptcha->getInputHtml('newsletter') : '' ?>
+            <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
             <button class="inline-flex flex-shrink-0 ml-auto xl:mt-0 btn btn-primary">
                 <?= $escaper->escapeHtml(__('Subscribe')) ?>
             </button>
@@ -64,7 +64,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         </div>
     </form>
     <div class="w-full">
-        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('newsletter') : '' ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
     </div>
     <script>
         function initNewsletterForm() {
@@ -80,7 +80,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 submitForm() {
                     // Do not rename $form, the variable is expected to be declared in the recaptcha output
                     const $form = document.querySelector('#newsletter-validate-detail');
-                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('newsletter') : '' ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_NEWSLETTER) : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

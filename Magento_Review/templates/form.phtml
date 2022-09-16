@@ -59,7 +59,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                   x-data="initReviewForm()"
             >
                 <?= $block->getChildHtml('form_fields_before') ?>
-                <?= $recaptcha ? $recaptcha->getInputHtml('product_review') : '' ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
                 <fieldset>
                     <legend class="text-xs">
                         <span>
@@ -214,7 +214,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                         </template>
                     </div>
                     <?= $block->getChildHtml('form_additional_after') ?>
-                    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('product_review') : '' ?>
+                    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
                 </div>
             </form>
 
@@ -242,7 +242,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                             const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
                             this.validate();
 
-                            <?= $recaptcha ? $recaptcha->getValidationJsHtml('product_review') : '' ?>
+                            <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_PRODUCT_REVIEW) : '' ?>
 
                             if (this.errors === 0) {
                                 this.placeReview();

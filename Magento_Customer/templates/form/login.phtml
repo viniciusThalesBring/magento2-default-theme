@@ -87,7 +87,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     </label>
                 </div>
 
-                <?= $recaptcha ? $recaptcha->getInputHtml('customer_login') : '' ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
                         <button type="submit" class="btn btn-primary" name="send">
@@ -113,7 +113,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         </form>
     </div>
     <div class="w-full">
-        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
     </div>
     <script>
         function initCustomerLoginForm() {
@@ -130,7 +130,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 submitForm() {
                     // do not rename $form, the variable is the expected name in the recaptcha output
                     const $form = document.querySelector('#customer-login-form');
-                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_login') : '' ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

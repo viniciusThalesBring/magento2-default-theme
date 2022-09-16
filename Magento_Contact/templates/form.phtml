@@ -96,7 +96,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                               ) ?></textarea>
                 </div>
                 <?= $block->getChildHtml('form.additional.info') ?>
-                <?= $recaptcha ? $recaptcha->getInputHtml('contact') : '' ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
             </div>
         </fieldset>
         <div class="w-full">
@@ -107,7 +107,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         </div>
         <div class="w-full">
             <?= $block->getChildHtml('form.additional.after') ?>
-            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('contact') : '' ?>
+            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
         </div>
     </form>
     <script>
@@ -118,7 +118,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 submitForm() {
                     // Do not rename $form, the variable is expected to be declared in the recaptcha output
                     const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('contact') : '' ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

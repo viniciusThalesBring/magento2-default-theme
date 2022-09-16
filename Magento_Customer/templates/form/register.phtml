@@ -46,7 +46,7 @@ $displayAll = $block->getConfig('general/region/display_all');
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
         <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
         <?= $block->getChildHtml('form_fields_before') ?>
-        <?= $recaptcha ? $recaptcha->getInputHtml('customer_create') : '' ?>
+        <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_CREATE) : '' ?>
         <div class="md:grid grid-cols-2 gap-4">
             <fieldset class="my-8 card">
                 <legend class="contents">
@@ -157,7 +157,7 @@ $displayAll = $block->getConfig('general/region/display_all');
                 </p>
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
-                <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_create') : '' ?>
+                <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_CREATE) : '' ?>
             </fieldset>
         </div>
 
@@ -380,7 +380,7 @@ $displayAll = $block->getConfig('general/region/display_all');
                     if (this.checkPasswordsMatch()) {
                         // Do not rename $form, the variable is expected to be declared in the recaptcha output
                         const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-                        <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_create') : '' ?>
+                        <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_CREATE) : '' ?>
 
                         if (this.errors === 0) {
                             $form.submit();

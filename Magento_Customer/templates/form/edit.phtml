@@ -137,7 +137,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         </template>
     </fieldset>
     <?= $block->getChildHtml('form_additional_info') ?>
-    <?= $recaptcha ? $recaptcha->getInputHtml('customer_edit') : '' ?>
+    <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_EDIT) : '' ?>
     <div class="actions-toolbar">
         <div class="primary">
             <button type="submit" class="action save primary" title="<?= $escaper->escapeHtmlAttr(__('Save')) ?>">
@@ -152,7 +152,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
     </div>
 </form>
 <div class="w-full">
-    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_edit') : '' ?>
+    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_EDIT) : '' ?>
 </div>
 <script>
     function initForm() {
@@ -190,7 +190,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 }
                 // Do not rename $form, the variable is expected to be declared in the recaptcha output
                 const $form = document.querySelector('#form-validate');
-                <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_edit') : '' ?>
+                <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_EDIT) : '' ?>
 
                 if (this.errors === 0) {
                     $form.submit();
