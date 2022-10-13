@@ -172,13 +172,10 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 if (!this.showPasswordFields) {
                     return true;
                 }
-                if (document.getElementById('password').value ===
-                    document.getElementById('password-confirmation').value) {
-                    this.passwordsMatching = true;
-                    return true;
-                }
-                this.passwordsMatching = false;
-                return false;
+
+                this.passwordsMatching = document.getElementById('password').value === document.getElementById('password-confirmation').value;
+
+                return this.passwordsMatching;
             },
             setErrorMessages(messages) {
                 this.errorMessages = [messages]

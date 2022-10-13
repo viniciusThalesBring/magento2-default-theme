@@ -368,13 +368,9 @@ $displayAll = $block->getConfig('general/region/display_all');
                 errors: 0,
                 hasCaptchaToken: 0,
                 checkPasswordsMatch() {
-                    if (document.getElementById('password').value ===
-                        document.getElementById('password-confirmation').value) {
-                            this.passwordsMatching = true;
-                            return true;
-                        }
-                    this.passwordsMatching = false;
-                    return false;
+                    this.passwordsMatching = document.getElementById('password').value === document.getElementById('password-confirmation').value;
+
+                    return this.passwordsMatching;
                 },
                 submitForm() {
                     if (this.checkPasswordsMatch()) {
