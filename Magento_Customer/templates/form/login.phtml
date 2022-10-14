@@ -9,18 +9,21 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Customer\Block\Form\Login;
 use Magento\Framework\Escaper;
-use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Escaper $escaper */
 /** @var Login $block */
+/** @var LoginButton $loginButtonViewModel */
 /** @var ViewModelRegistry $viewModels */
 /** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
 
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+$loginButtonViewModel = $block->getData('login_button_view_model') ?? $viewModels->require(LoginButton::class);
 
 // Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
 // on the Magento_ReCaptchaCustomer module
@@ -90,7 +93,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
-                        <button type="submit" class="btn btn-primary" name="send">
+                        <button type="submit" class="btn btn-primary" name="send" <?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" <?php endif; ?>>
                             <span><?= $escaper->escapeHtml(__('Sign In')) ?></span></button>
                         <a class="underline text-secondary" href="<?= $escaper->escapeUrl(
                             $block->getForgotPasswordUrl()
@@ -140,4 +143,3 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         }
     </script>
 </div>
-
