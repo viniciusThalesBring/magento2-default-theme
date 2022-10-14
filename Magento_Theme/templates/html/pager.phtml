@@ -28,7 +28,7 @@ $pagerItemBtnClass = $pagerItemClass
 <?php if ($block->getCollection()->getSize()): ?>
 
     <?php if ($block->getUseContainer()): ?>
-        <div class="grid items-center grid-flow-row grid-cols-4 gap-2 pager
+        <div class="thisisthecontainer grid items-center grid-flow-row grid-cols-4 gap-2 pager
             sm:grid-cols-8 md:grid-cols-4 lg:grid-cols-8">
     <?php endif ?>
 
@@ -49,7 +49,7 @@ $pagerItemBtnClass = $pagerItemClass
         </p>
     <?php endif ?>
 
-    <div class="flex justify-center order-2 col-span-4">
+    <div class="flex justify-center order-2 col-span-4 sm:col-start-3 md:col-start-auto lg:col-start-3">
         <?php if ($block->getLastPageNum() > 1): ?>
             <nav class="inline-flex items-center pages" aria-label="pagination">
                 <ol class="relative z-0 inline-flex shadow-sm items pages-items">

@@ -20,7 +20,11 @@ $availableLimitOptions = $block->getAvailableLimit();
 ?>
 
 <?php if (count($availableLimitOptions) > 1): ?>
-    <div class="field limiter flex items-center order-3 sm:order-2 md:order-3 lg:order-2 col-span-2 justify-end">
+    <div class="field limiter flex items-center order-3 col-span-4 justify-center
+                sm:col-span-2 sm:justify-end sm:order-2
+                md:col-span-4 md:justify-center md:order-3
+                lg:col-span-2 lg:justify-end lg:order-2"
+    >
         <div class="control">
             <label class="text-sm label">
                 <span><?= $escaper->escapeHtml((string)__('Show')) ?></span>
@@ -47,7 +51,7 @@ $availableLimitOptions = $block->getAvailableLimit();
     </span>
     </div>
 <?php else: ?>
-    <div class="field limiter flex order-3 sm:order-2 md:order-3 lg:order-2 col-span-2 justify-end">
+    <div class="field limiter flex">
 
     </div>
 <?php endif;
