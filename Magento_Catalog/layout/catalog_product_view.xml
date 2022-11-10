@@ -214,5 +214,10 @@
                    ifconfig="catalog/recently_products/recently_viewed_enabled"/>
         </referenceContainer>
 
+        <referenceBlock name="breadcrumbs">
+            <arguments>
+                 <argument name="special_template" xsi:type="string">Magento_Catalog::product/view/breadcrumbs.phtml</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
