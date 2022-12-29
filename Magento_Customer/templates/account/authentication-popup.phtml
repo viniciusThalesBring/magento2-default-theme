@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Framework\Escaper;
@@ -21,7 +22,7 @@ use Magento\Customer\Block\Account\Customer;
 /** @var HeroiconsOutline $heroicons */
 
 $heroicons = $viewModels->require(HeroiconsOutline::class);
-
+$loginButtonViewModel = $viewModels->require(LoginButton::class);
 
 // Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
 // on the Magento_ReCaptchaCustomer module
@@ -118,9 +119,9 @@ $recaptcha = $block->getData('viewModelRecaptcha');
 >
         <div role="dialog"
              aria-modal="true"
-             @click.away="open = false"
-             class="hidden inset-y-0 right-0 z-30 flex max-w-full"
-             :class="{ 'hidden': !open, 'fixed': open }"
+             @click.outside="open = false"
+             class="inset-y-0 right-0 z-30 flex max-w-full"
+             :class="{'fixed': open }" x-cloak x-show="open"
         >
             <div class="relative w-screen max-w-md pt-16 bg-container-lighter"
                  x-show="open"
@@ -148,9 +149,9 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 </div>
                 <div class="flex flex-col h-full py-6 space-y-6 bg-white shadow-xl overflow-y-auto">
                     <div class="block-customer-login bg-container border border-container mx-4 p-4 shadow-sm">
-                        <h2 id="authenticate-customer-login" class="text-lg font-medium leading-7 text-gray-900">
-                            <?= $escaper->escapeHtml(__('Checkout using your account')) ?>
-                        </h2>
+                        <p id="authenticate-customer-login" class="text-lg leading-7 text-gray-900">
+                            <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout using your account')) ?></strong>
+                        </p>
 
                         <form class="form form-login"
                               method="post"
@@ -192,8 +193,8 @@ $recaptcha = $block->getData('viewModelRecaptcha');
 
                                 <input name="context" type="hidden" value="checkout" />
                                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
-                                    <button type="submit"
-                                            class="inline-flex btn btn-primary"
+                                    <button type="submit"<?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" data-recaptcha-btn<?php endif; ?>
+                                            class="inline-flex btn btn-primary disabled:opacity-75"
                                     >
                                         <?= $escaper->escapeHtml(__('Sign In')) ?>
                                     </button>
@@ -211,9 +212,9 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                         <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
                     </div>
                     <div class="block-new-customer bg-container border border-container mx-4 p-4 shadow-sm">
-                        <h2 id="authenticate-new-customer" class="text-lg mb-2 font-medium leading-7 text-gray-900">
-                            <?= $escaper->escapeHtml(__('Checkout as a new customer')) ?>
-                        </h2>
+                        <p id="authenticate-new-customer" class="text-lg mb-2 leading-7 text-gray-900">
+                            <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout as a new customer')) ?></strong>
+                        </p>
 
                         <div class="block-content">
                             <p class="mb-1">

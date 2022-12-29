@@ -30,15 +30,11 @@ $product = $productViewModel->getProduct();
 
 ?>
 <div class="order-2 w-full mb-6 md:w-7/12 md:pl-5 lg:pl-10 md:py-6 lg:w-1/2 md:mb-0">
-    <h1 class="text-xl mt-4 mb-3 md:text-3xl font-semibold md:font-bold text-gray-900 title-font">
-        <?= $escaper->escapeHtml($product->getName()) ?>
-    </h1>
+    <p class="hidden md:block text-xl mt-4 mb-3 md:text-3xl text-gray-900 title-font">
+        <strong class="font-semibold md:font-bold"><?= $escaper->escapeHtml($product->getName()) ?></strong>
+    </p>
 
-    <div class="my-2 cursor-pointer"
-         onclick="(
-              document.getElementById('customer-review-list') ||
-              document.getElementById('customer-reviews')).scrollIntoView({behavior: 'smooth'}
-              )">
+    <div class="my-2 flex">
         <?= $block->getChildHtml('product.info.review') ?>
     </div>
 
@@ -55,8 +51,7 @@ $product = $productViewModel->getProduct();
         <?php foreach ($block->getAttributes() as $attributeConfig) {
             $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig); ?>
             <?php if ($value = $attribute['value'] ?? null) { ?>
-                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?=/* @noEscape */
-                                                                                          $attribute['value'] ?: "" ?>">
+                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?=/* @noEscape */ $attribute['value'] ?: "" ?>">
                     <span class="w-1/2 text-left text-gray-700 product-detail-label">
                         <?= $escaper->escapeHtml($attribute['label']) ?>
                     </span>

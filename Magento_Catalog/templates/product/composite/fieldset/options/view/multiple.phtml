@@ -89,6 +89,9 @@ if ($option): ?>
         $isPercentage = $value->getPriceType() === 'percent';
 
         $valuePrice = $productPriceViewModel->getCustomOptionPrice($value, CustomOptionPrice::PRICE_CODE, $product);
+        if ($productPriceViewModel->displayPriceInclAndExclTax()) {
+            $valueBasePrice = $value->getPrice(true);
+        }
         ?>
 
             <option type="<?= $escaper->escapeHtmlAttr($optionType) ?>"
@@ -102,15 +105,19 @@ if ($option): ?>
                 <?php if (in_array($value->getOptionTypeId(), $configValue)): ?>
                    selected="selected"
                 <?php endif; ?>
-                x-html="'<?= $escaper->escapeJs($escaper->escapeHtml($value->getTitle())) ?> ' +
-                    (
-                        getFormattedOptionPrice('<?= $escaper->escapeJs($optionId) ?>') ||
-                        ''
-                    )
+                x-html="'<?= $escaper->escapeJs($escaper->escapeHtml($value->getTitle())) ?> '
+                    + (getFormattedOptionPrice('<?= $escaper->escapeJs($optionId) ?>') || '')
+                    <?php if ($productPriceViewModel->displayPriceInclAndExclTax() && $valueBasePrice > 0): ?>
+                    + ' (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: '
+                    + (getFormattedOptionBasePrice('<?= $escaper->escapeJs($optionId) ?>') || '') + ')'
+                    <?php endif; ?>
                 "
             >
                 <?= $escaper->escapeHtml($value->getTitle()) ?>
                 <?= /* @noEscape */ $block->formatPrice($value) ?>
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                (<?= $escaper->escapeHtml(__('Excl. Tax')) ?>: <?= /* @noEscape */ $productPriceViewModel->format($valueBasePrice) ?>)
+                <?php endif; ?>
             </option>
         </div>
     <?php endforeach; ?>

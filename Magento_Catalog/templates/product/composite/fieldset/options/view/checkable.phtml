@@ -76,6 +76,9 @@ if ($option): ?>
         $optionId = $option->getId() . '_' . $value->getOptionTypeId();
 
         $valuePrice = $productPriceViewModel->getCustomOptionPrice($value, CustomOptionPrice::PRICE_CODE, $product);
+        if ($productPriceViewModel->displayPriceInclAndExclTax()) {
+            $valueBasePrice = $value->getPrice(true);
+        }
         ?>
 
         <div class="field choice">
@@ -98,6 +101,9 @@ if ($option): ?>
                            ->escapeHtmlAttr(__("Please select one of the options.")) ?>"
                     <?php endif; ?>
                    data-price-amount="<?= $escaper->escapeHtmlAttr($valuePrice) ?>"
+                   <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                   data-base-price-amount="<?= $escaper->escapeHtmlAttr($valueBasePrice) ?>"
+                   <?php endif; ?>
                    data-price-type="<?= $escaper->escapeHtmlAttr($value->getPriceType()) ?>"
                    data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
                    x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
@@ -107,11 +113,10 @@ if ($option): ?>
             />
             <label class="label text-left"
                    for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
             >
                 <span><?= $escaper->escapeHtml($value->getTitle()) ?></span>
-                <span x-html="getFormattedOptionPrice('<?= $escaper->escapeHtmlAttr($optionId) ?>') || ''">
-                    <?= /* @noEscape */ $block->formatPrice($value) ?>
-                </span>
+                <span><?= /* @noEscape */ $block->formatPrice($value) ?></span>
             </label>
         </div>
     <?php endforeach; ?>

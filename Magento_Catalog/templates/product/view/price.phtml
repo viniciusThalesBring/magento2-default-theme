@@ -11,40 +11,59 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
+use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Catalog\Pricing\Price\TierPrice;
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Element\Template;
 
-// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
-
-/** @var Template $block */
+/** @var AbstractProduct $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-
 /** @var Product $product */
 $product = $block->getProduct();
 
 /** @var ProductPrice $productPriceViewModel */
 $productPriceViewModel = $viewModels->require(ProductPrice::class);
 
+/** @var ProductPage $productViewModel */
+$productViewModel = $viewModels->require(ProductPage::class);
+
 $regularPrice = $productPriceViewModel->getPriceValue(RegularPrice::PRICE_CODE, $product);
 $finalPrice = $productPriceViewModel->getPriceValue(FinalPrice::PRICE_CODE, $product);
 $tierPrices = $productPriceViewModel->getTierPrices(TierPrice::PRICE_CODE, $product);
 
-/** @var ProductPage $productViewModel */
-$productViewModel = $viewModels->require(ProductPage::class);
+if ($productPriceViewModel->displayPriceInclAndExclTax()) {
+    $regularPriceExclTax = $productPriceViewModel->getPriceValueExclTax(RegularPrice::PRICE_CODE, $product);
+    $finalPriceExclTax = $productPriceViewModel->getPriceValueExclTax(FinalPrice::PRICE_CODE, $product);
+}
 
 $displayTax = $productPriceViewModel->displayPriceIncludingTax();
 
 ?>
 <script>
     function initPrice<?= (int)$product->getId() ?>() {
+
+        <?php /* All four of these keys are used - they are rendered by PHP */ ?>
+        const regularPriceInclTaxKey = 'oldPrice',
+              regularPriceExclTaxKey = 'baseOldPrice',
+              finalPriceInclTaxKey = 'finalPrice',
+              finalPriceExclTaxKey = 'basePrice';
+
+        function calculateCustomOptionPrices(activeCustomOptions, customOptionPrices) {
+            return activeCustomOptions.reduce((priceAccumulator, activeCustomOptionId) => {
+                const customOptionPrice = customOptionPrices[activeCustomOptionId];
+                if (customOptionPrice) {
+                    return Number.parseFloat(priceAccumulator) + Number.parseFloat(customOptionPrice);
+                }
+                return priceAccumulator;
+            }, 0);
+        }
+
         return {
-            regularPriceKey: '<?= /* @noEscape */ $displayTax ? 'oldPrice' : 'baseOldPrice' ?>',
-            finalPriceKey: '<?= /* @noEscape */ $displayTax ? 'finalPrice' : 'basePrice' ?>',
+            regularPriceKey: <?= $displayTax ? 'regularPriceInclTaxKey' : 'regularPriceExclTaxKey' ?>,
+            finalPriceKey: <?= $displayTax ? 'finalPriceInclTaxKey' : 'finalPriceExclTaxKey' ?>,
             activeProductsPriceData: false,
             initialFinalPrice: <?= (float)$finalPrice ?>,
             calculatedFinalPrice: false,
@@ -52,10 +71,15 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
             initialTierPrices: <?= /** @noEscape */ json_encode($tierPrices) ?>,
             showRegularPriceLabel: <?= ($finalPrice < $regularPrice) ? 'true' : 'false' ?>,
             customOptionPrices: [],
+            <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+            initialBasePrice: <?= (float)$regularPriceExclTax ?>,
+            calculatedBasePrice: false,
+            customOptionBasePrices: [],
+            calculatedBasePriceWithCustomOptions: false,
+            <?php endif; ?>
             activeCustomOptions: [],
             qty: 1,
             updateCustomOptionActive(data) {
-
                 let activeCustomOptions = this.activeCustomOptions;
                 const customOptionId = data.customOptionId;
 
@@ -71,65 +95,72 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                 }
                 this.calculateFinalPriceWithCustomOptions()
             },
-            updateCustomOptionPrices(prices) {
-
+            updateCustomOptionPrices(prices, basePrices) {
                 if (prices) {
                     this.customOptionPrices = prices;
                 }
 
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                if (basePrices) {
+                    this.customOptionBasePrices = basePrices;
+                }
+                <?php endif; ?>
+
                 this.calculateFinalPriceWithCustomOptions();
             },
             calculateFinalPrice() {
-                let finalPrice = this.initialFinalPrice;
 
-                if (this.activeProductsPriceData && this.activeProductsPriceData.tierPrices) {
-                    finalPrice = this.activeProductsPriceData.tierPrices.reduce((finalValue, tierPrice) => {
-                        if (this.qty >= tierPrice.qty) {
-                            return tierPrice.price < finalValue ? tierPrice.price : finalValue;
-                        }
-                        return finalValue;
-                    }, this.activeProductsPriceData[this.finalPriceKey].amount);
+                const findApplicableTierPrice = (initialPrice, withTax) => {
+                    if (this.activeProductsPriceData && this.activeProductsPriceData.tierPrices) {
+                        const key = withTax ? 'price' : 'basePrice'
+                        return this.activeProductsPriceData.tierPrices.reduce((acc, tierPrice) => {
+                            if (this.qty >= tierPrice.qty && tierPrice[key] < acc) {
+                                return tierPrice[key];
+                            }
+                            return acc;
+                        }, this.activeProductsPriceData[withTax ? finalPriceInclTaxKey : finalPriceExclTaxKey].amount);
 
-                } else {
-                    finalPrice = Object.values(this.initialTierPrices).reduce((finalValue, tierPrice) => {
-                        if (this.qty >= tierPrice.price_qty) {
-                            return parseFloat(tierPrice.website_price) < finalValue ?
-                                parseFloat(tierPrice.website_price) :
-                                finalValue;
-                        }
-                        return finalValue;
-                    }, finalPrice);
+                    } else {
+                        const key = withTax ? 'price_incl_tax' : 'price_excl_tax';
+                        return Object.values(this.initialTierPrices).reduce((acc, tierPrice) => {
+                            if (this.qty >= tierPrice.price_qty && tierPrice[key] < acc) {
+                                return tierPrice[key];
+                            }
+                            return acc;
+                        }, initialPrice);
 
+                    }
                 }
-                this.calculatedFinalPrice = finalPrice;
 
-                window.dispatchEvent(
-                    new CustomEvent(
-                        "update-product-final-price",
-                        {detail: this.calculatedFinalPrice}
-                    )
-                );
+                this.calculatedFinalPrice = findApplicableTierPrice(this.initialFinalPrice, <?= $displayTax ? 'true' : 'false' ?>);
+                window.dispatchEvent(new CustomEvent("update-product-final-price", {detail: this.calculatedFinalPrice}));
+
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                this.calculatedBasePrice = findApplicableTierPrice(<?= (float) $finalPriceExclTax ?>, false);
+                window.dispatchEvent(new CustomEvent("update-product-base-price", {detail: {basePrice: this.calculatedBasePrice}}));
+                <?php endif; ?>
             },
             calculatePriceLabelVisibility() {
-                this.showRegularPriceLabel = (
+                this.showRegularPriceLabel =
                     (this.calculatedFinalPrice === this.activeProductsPriceData[this.regularPriceKey].amount) &&
-                    this.activeProductsPriceData.isMinimalPrice
-                );
+                    this.activeProductsPriceData.isMinimalPrice;
             },
             calculateFinalPriceWithCustomOptions() {
-                let finalPrice = this.calculatedFinalPrice ||
-                    this.initialFinalPrice;
+                const finalPrice = this.calculatedFinalPrice || this.initialFinalPrice;
                 this.calculatedFinalPriceWithCustomOptions = finalPrice + this.getCustomOptionPrice();
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                const basePrice = this.calculatedBasePrice || this.initialBasePrice;
+                this.calculatedBasePriceWithCustomOptions = basePrice + this.getCustomOptionBasePrice();
+                <?php endif; ?>
             },
             getCustomOptionPrice() {
-                return this.activeCustomOptions.reduce((priceAccumulator, activeCustomOptionId) => {
-                    const customOptionPrice = this.customOptionPrices[activeCustomOptionId];
-                    if (customOptionPrice) {
-                        return Number.parseFloat(priceAccumulator) + Number.parseFloat(customOptionPrice);
-                    }
-                    return priceAccumulator;
-                }, 0);
+                return calculateCustomOptionPrices(this.activeCustomOptions, this.customOptionPrices);
             },
+            <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+            getCustomOptionBasePrice() {
+                return calculateCustomOptionPrices(this.activeCustomOptions, this.customOptionBasePrices);
+            },
+            <?php endif; ?>
             getFormattedFinalPrice() {
                 return hyva.formatPrice(
                     this.calculatedFinalPriceWithCustomOptions ||
@@ -137,11 +168,20 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                     this.initialFinalPrice
                 )
             },
+            <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+            getFormattedBasePrice() {
+                return hyva.formatPrice(
+                    this.calculatedBasePriceWithCustomOptions ||
+                    this.calculatedBasePrice ||
+                    this.initialBasePrice
+                )
+            },
+            <?php endif; ?>
             isPriceHidden() {
                 const finalPrice = this.calculatedFinalPriceWithCustomOptions ||
                     this.calculatedFinalPrice ||
                     this.initialFinalPrice;
-                return <?= /** @noEscape  */ $product->isSaleable() ? 'false' : 'true' ?> && finalPrice === 0;
+                return <?= $product->isSaleable() ? 'false' : 'true' ?> && finalPrice === 0;
             },
             eventListeners: {
                 ['@update-prices-<?= (int)$product->getId() ?>.window'](event) {
@@ -161,13 +201,18 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                 },
                 ['@update-custom-option-prices.window'](event) {
                     this.updateCustomOptionPrices(event.detail);
+                },
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                ['@update-custom-option-base-prices.window'](event) {
+                    this.updateCustomOptionPrices(null, event.detail);
                 }
+                <?php endif; ?>
             }
         }
     }
 </script>
 <div x-data="initPrice<?= (int)$product->getId() ?>()"
-     x-spread="eventListeners"
+     x-bind="eventListeners"
      class="price-box price-final_price"
 >
     <template x-if="!activeProductsPriceData && !isPriceHidden()">
@@ -181,6 +226,16 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                         </span>
                     </span>
                 </div>
+                <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                <div class="old-price-excl-tax">
+                    <span class="font-regular line-through text-gray-900">
+                        <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
+                        <span class="price" x-html="hyva.formatPrice(<?= (float)$regularPriceExclTax ?> + getCustomOptionBasePrice())">
+                            <?= /** @noEscape */ $productViewModel->format($regularPriceExclTax) ?>
+                        </span>
+                    </span>
+                </div>
+                <?php endif; ?>
             <?php endif; ?>
 
             <div class="final-price inline-block" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
@@ -199,6 +254,16 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                 <meta itemprop="priceCurrency"
                       content="<?= $escaper->escapeHtmlAttr($productViewModel->getCurrencyData()['code']) ?>">
             </div>
+            <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                <div class="final-price-excl-tax">
+                    <span class="font-regular text-gray-900">
+                        <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
+                        <span class="price" x-html="getFormattedBasePrice()">
+                            <?= /** @noEscape */ $productViewModel->format($finalPriceExclTax) ?>
+                        </span>
+                    </span>
+                </div>
+            <?php endif; ?>
         </div>
     </template>
     <template x-if="activeProductsPriceData &&
@@ -215,9 +280,7 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
     <template x-if="activeProductsPriceData">
         <div class="final-price inline-block">
             <?php if ($product->canConfigure() && is_int($product->getPrice())): ?>
-                <span class="price-label block"
-                      :class="{ 'invisible' : !showRegularPriceLabel }"
-                >
+                <span class="price-label block" :class="{ 'invisible' : !showRegularPriceLabel }">
                     <?= $escaper->escapeHtml(__('As low as')) ?>:
                 </span>
             <?php endif; ?>
@@ -227,4 +290,25 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
             </span>
         </div>
     </template>
+    <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+    <template x-if="activeProductsPriceData &&
+        activeProductsPriceData.oldPrice &&
+        activeProductsPriceData[finalPriceKey].amount < activeProductsPriceData[regularPriceKey].amount
+    ">
+        <div class="old-price-excl-tax">
+            <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
+            <span class="font-regular text-gray-900">
+                <span class="price" x-html="hyva.formatPrice(activeProductsPriceData['baseOldPrice'].amount + getCustomOptionBasePrice())"></span>
+            </span>
+        </div>
+    </template>
+    <template x-if="activeProductsPriceData">
+        <div class="price-excl-taxinline-block">
+            <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
+            <span class="font-regular text-gray-900">
+                <span class="price" x-html="getFormattedBasePrice()"></span>
+            </span>
+        </div>
+    </template>
+    <?php endif; ?>
 </div>

@@ -9,18 +9,24 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Customer\Block\Form\Login;
 use Magento\Framework\Escaper;
-use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Escaper $escaper */
 /** @var Login $block */
+/** @var LoginButton $loginButtonViewModel */
 /** @var ViewModelRegistry $viewModels */
 /** @var ReCaptcha $recaptcha */
-/** @var HeroiconsOutline $heroicons */
+/** @var HeroiconsOutline $heroiconsoutline */
+/** @var HeroiconsSolid $heroiconssolid */
 
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+$heroiconsoutline = $viewModels->require(HeroiconsOutline::class);
+$heroiconssolid = $viewModels->require(HeroiconsSolid::class);
+$loginButtonViewModel = $viewModels->require(LoginButton::class);
 
 // Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
 // on the Magento_ReCaptchaCustomer module
@@ -63,7 +69,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 </div>
                 <div class="field password required">
                     <label for="pass" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
-                    <div class="control">
+                    <div class="control flex items-center">
                         <input name="login[password]"
                                class="form-input"
                                required
@@ -73,24 +79,26 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                             <?php endif; ?>
                                id="pass"
                                title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"/>
+                        <div x-on:click="showPassword = !showPassword"
+                             class="cursor-pointer px-4"
+                             :aria-label="showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'"
+                        >
+                            <template x-if="!showPassword">
+                                <?= $heroiconssolid->eyeHtml('w-5 h-5'); ?>
+                            </template>
+                            <template x-if="showPassword">
+                                <?= $heroiconssolid->eyeOffHtml('w-5 h-5'); ?>
+                            </template>
+                        </div>
                     </div>
                 </div>
-                <div class="field choice">
-                    <input name="show-password"
-                           class="checkbox"
-                           id="show-password"
-                           type="checkbox"
-                           x-model="showPassword"
-                           title="<?= $escaper->escapeHtmlAttr(__('Show Password')) ?>"/>
-                    <label for="show-password" class="label">
-                        <span><?= $escaper->escapeHtml(__('Show Password')) ?></span>
-                    </label>
-                </div>
 
-                <?= $recaptcha ? $recaptcha->getInputHtml('customer_login') : '' ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
-                        <button type="submit" class="btn btn-primary" name="send">
+                        <button type="submit" class="btn btn-primary disabled:opacity-75" name="send"
+                            <?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" data-recaptcha-btn<?php endif; ?>
+                        >
                             <span><?= $escaper->escapeHtml(__('Sign In')) ?></span></button>
                         <a class="underline text-secondary" href="<?= $escaper->escapeUrl(
                             $block->getForgotPasswordUrl()
@@ -101,7 +109,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     <template x-if="displayErrorMessage">
                         <p class="text-red flex items-center">
                             <span class="inline-block w-8 h-8 mr-3">
-                                <?= $heroicons->exclamationCircleHtml(); ?>
+                                <?= $heroiconsoutline->exclamationCircleHtml(); ?>
                             </span>
                             <template x-for="errorMessage in errorMessages">
                                 <span x-html="errorMessage"></span>
@@ -113,7 +121,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         </form>
     </div>
     <div class="w-full">
-        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
     </div>
     <script>
         function initCustomerLoginForm() {
@@ -130,7 +138,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 submitForm() {
                     // do not rename $form, the variable is the expected name in the recaptcha output
                     const $form = document.querySelector('#customer-login-form');
-                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_login') : '' ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();
@@ -140,4 +148,3 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         }
     </script>
 </div>
-

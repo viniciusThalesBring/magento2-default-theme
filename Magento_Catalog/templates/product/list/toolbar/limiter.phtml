@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Framework\Escaper;
+use Hyva\Theme\Model\LocaleFormatter;
 
 /** @var Toolbar $block */
 /** @var Escaper $escaper */
-
+/** @var LocaleFormatter $localeFormatter */
 
 $availableLimitOptions = $block->getAvailableLimit();
 
@@ -36,7 +37,7 @@ $availableLimitOptions = $block->getAvailableLimit();
                         <?php if ($block->isLimitCurrent($key)): ?>
                             selected="selected"
                         <?php endif ?>>
-                        <?= $escaper->escapeHtml($limit) ?>
+                        <?= $escaper->escapeHtml(is_numeric($limit) ? $localeFormatter->formatNumber((int) $limit) : $limit) ?>
                     </option>
                 <?php endforeach; ?>
                 </select>

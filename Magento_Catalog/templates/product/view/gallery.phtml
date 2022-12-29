@@ -22,12 +22,10 @@ use Magento\Framework\Escaper;
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 $images = $block->getGalleryImages()->getItems();
-$mainImage = current(array_filter($images, function ($img) use ($block) {
-    return $block->isMainImage($img);
-}));
+$mainImage = current(array_filter($images, [$block, 'isMainImage']));
 
 if (!empty($images) && empty($mainImage)) {
-    $mainImage = $block->getGalleryImages()->getFirstItem();
+    $mainImage = reset($images);
 }
 
 /** @var Image $helper */
@@ -46,13 +44,13 @@ $productName = $block->getProduct()->getName();
 
 <div id="gallery"
      x-data="initGallery()"
-     x-init="initActive()"
-     x-spread="eventListeners"
+     x-init="initActive(); $nextTick(() => calcPageSize())"
+     x-bind="eventListeners"
      class="order-1 w-full md:w-5/12 lg:w-1/2 md:h-auto"
     >
     <div :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}">
         <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="fullscreen = false"
+            <button @click="fullscreen = false; $nextTick(() => calcPageSize())"
                     type="button"
                     class="hidden text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500
                         transition ease-in-out duration-150"
@@ -74,7 +72,7 @@ $productName = $block->getProduct()->getName();
                  * aspect ratio for the gallery. It will be hidden as
                  * soon as JS is loaded, but will keep reserving the
                  * necessary space in the layout for the other (absolute positioned)
-                 * images. Hence `opacity-0` instead of `x-show` or `hidden`
+                 * images. Hence, `opacity-0` instead of `x-show` or `hidden`
                  */
                 ?>
                 <img
@@ -85,25 +83,26 @@ $productName = $block->getProduct()->getName();
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
-                    @click="fullscreen = true"
+                    itemprop="image"
+                    @click="fullscreen = true; $nextTick(() => calcPageSize())"
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                        @click="fullscreen = true"
+                        @click="fullscreen = true; $nextTick(() => calcPageSize())"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-screen-75"
                         :class="{ 'cursor-pointer': !fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
                         :loading="active!==index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
-                        x-show.transition.opacity.duration.500ms="active===index"
+                        x-transition.opacity.duration.500ms x-show="active===index"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
                      :class="{ 'hidden': activeVideoType !== 'youtube' }"
-                     x-show.transition.opacity.duration.500ms="
+                     x-transition.opacity.duration.500ms x-show="
                          images[active].type === 'video' && activeVideoType === 'youtube'
                      "
                 >
@@ -111,7 +110,7 @@ $productName = $block->getProduct()->getName();
                 </div>
                 <div class="absolute inset-0 hidden w-full h-full bg-white"
                      :class="{ 'hidden': activeVideoType !== 'vimeo' }"
-                     x-show.transition.opacity.duration.500ms="
+                     x-transition.opacity.duration.500ms x-show="
                          images[active].type === 'video' && activeVideoType === 'vimeo'
                      "
                 >
@@ -119,24 +118,48 @@ $productName = $block->getProduct()->getName();
                 </div>
             </div>
         </div>
-        <div id="thumbs" class="flex flex-wrap"
-            :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen}"
-            style="min-height: 100px;">
-            <template x-for="(image, index) in images" :key="index">
-                <div class="mb-2 mr-2 lg:mr-4 last:mr-0">
-                    <a href="#" @click.prevent="setActive(index);"
-                       class="block border border-gray-300 hover:border-primary focus:border-primary"
-                       :class="{'border-primary': active === index}"
-                    >
-                        <img :src="image.thumb"
-                             :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                             :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                             width="<?= /* @noEscape */ $smallWidth ?>"
-                             height="<?= /* @noEscape */ $smallHeight ?>"
-                        />
-                    </a>
+        <div @resize.window.debounce="calcPageSize(); $nextTick(() => calcActive())">
+            <div
+                id="thumbs"
+                class="flex items-center"
+                :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen }"
+                style="min-height: 100px;"
+            >
+                <button
+                    aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
+                    tabindex="-1"
+                    class="mr-4 text-black rounded-full outline-none focus:outline-none flex-none"
+                    :class="{ 'opacity-25 pointer-events-none' : activeSlide === 0, 'hidden' : !isSlider }"
+                    @click="scrollPrevious"
+                ><?= $heroicons->chevronLeftHtml() ?></button>
+                <div class="js_thumbs_slides thumbs-wrapper relative flex flex-nowrap w-full overflow-auto js_slides snap md:px-1 xl:px-2"
+                     x-ref="jsThumbSlides"
+                     @scroll.debounce="calcPageSize(); calcActive()"
+                >
+                    <template x-for="(image, index) in images" :key="index">
+                        <div class="js_thumbs_slide flex shrink-0 mb-2 mr-2 lg:mr-4 last:mr-0">
+                            <a href="#" @click.prevent="setActive(index);"
+                               class="block border border-gray-300 hover:border-primary focus:border-primary"
+                               :class="{'border-primary': active === index}"
+                            >
+                                <img :src="image.thumb"
+                                     :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                                     :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                                     width="<?= /* @noEscape */ $smallWidth ?>"
+                                     height="<?= /* @noEscape */ $smallHeight ?>"
+                                />
+                            </a>
+                        </div>
+                    </template>
                 </div>
-            </template>
+                <button
+                    aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
+                    tabindex="-1"
+                    class="ml-4 text-black rounded-full outline-none focus:outline-none flex-none"
+                    :class="{ 'opacity-25 pointer-events-none' : activeSlide >= itemCount-pageSize, 'hidden' : !isSlider }"
+                    @click="scrollNext"
+                ><?= $heroicons->chevronRightHtml() ?></button>
+            </div>
         </div>
     </div>
 </div>
@@ -151,12 +174,16 @@ $productName = $block->getProduct()->getName();
             "relatedVideos": false,
             "vimeoPlayer": null,
             "fullscreen": false,
+            "isSlider": false,
             "initialImages": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
             "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-            "appendOnReceiveImages": <?= $block->getVar(
-                'gallery_switch_strategy',
-                'Magento_ConfigurableProduct'
-            ) === 'append' ? 'true' : 'false' ?>,
+            "appendOnReceiveImages": <?=
+                $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append' ? 'true' : 'false'
+            ?>,
+            "activeSlide": 0,
+            "itemCount": 0,
+            "pageSize": 4,
+            "pageFillers": 0,
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
                     const initialUrls = this.initialImages.map(image => image.full);
@@ -226,7 +253,6 @@ $productName = $block->getProduct()->getName();
                     id = videoUrl.replace(/^\/(embed\/|v\/)?/, '').replace(/\/.*/, '');
                     type = 'youtube';
 
-                    <?php // phpcs:ignore Generic.Files.LineLength.TooLong ?>
                     youtubeRegex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
                     id = videoUrl.match(youtubeRegex)[1];
 
@@ -312,6 +338,46 @@ $productName = $block->getProduct()->getName();
                      />`;
 
                 this.vimeoPlayer = vimeoContainer.childNodes[0];
+            },
+            getSlider() {
+                return this.$refs.jsThumbSlides;
+            },
+            calcPageSize() {
+                const slider = this.getSlider();
+                if (slider) {
+                    const slideEl = slider.querySelector('.js_thumbs_slide'),
+                        marginRight = parseInt(window.getComputedStyle(slideEl).marginRight);
+
+                    this.itemCount = slider.querySelectorAll('.js_thumbs_slide').length;
+                    this.pageSize = Math.round(slider.clientWidth / (slideEl.clientWidth + marginRight));
+                    this.pageFillers = (
+                        this.pageSize * Math.ceil(this.itemCount / this.pageSize)
+                    ) - this.itemCount;
+
+                    this.isSlider = ((slider.clientWidth - (this.itemCount * (slideEl.clientWidth + marginRight))) < 0);
+                }
+            },
+            calcActive() {
+                const slider = this.getSlider();
+                if (slider) {
+                    const sliderItems = this.itemCount + this.pageFillers;
+                    const calculatedActiveSlide = slider.scrollLeft / (slider.scrollWidth / sliderItems);
+                    this.activeSlide = Math.round(calculatedActiveSlide / this.pageSize) * this.pageSize;
+                }
+            },
+            scrollPrevious() {
+                this.scrollTo(this.activeSlide - this.pageSize);
+            },
+            scrollNext() {
+                this.scrollTo(this.activeSlide + this.pageSize);
+            },
+            scrollTo(idx) {
+                const slider = this.getSlider();
+                if (slider) {
+                    const slideWidth = slider.scrollWidth / (this.itemCount + this.pageFillers);
+                    slider.scrollLeft = Math.floor(slideWidth) * idx;
+                    this.activeSlide = idx;
+                }
             },
             eventListeners: {
                 ['@keydown.window.escape']() {

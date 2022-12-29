@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\ProductCompare;
+use Hyva\Theme\ViewModel\ProductPrice;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
@@ -29,6 +30,9 @@ $compareViewModel = $viewModels->require(ProductCompare::class);
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var ProductPrice $productPrice */
+$productPrice = $viewModels->require(ProductPrice::class);
 
 $uniqueId = '_' . uniqid();
 $title = __('Recently Viewed Products');
@@ -88,8 +92,23 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                     </p>
                                 <?php endif; ?>
                                 <?php if (in_array("price", $widgetAttributesToShow)): ?>
-                                    <p class="pt-1 text-lg text-center text-gray-900"
-                                       x-text="hyva.formatPrice(product.price_range.minimum_price.final_price.value)"></p>
+                                    <div class="price-container flex flex-col justify-center items-center">
+                                        <div class="final-price">
+                                        <span class="price-wrapper title-font font-medium text-2xl text-gray-900">
+                                            <span class="price" x-html="hyva.formatPrice(product.price_range.minimum_price.final_price.value)"></span>
+                                        </span>
+                                        </div>
+                                        <?php if ($productPrice->displayPriceInclAndExclTax()): ?>
+                                            <template x-if="product.price_range.minimum_price.base_price">
+                                                <div class="final-price-excl-tax">
+                                        <span class="font-regular text-gray-900">
+                                            <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
+                                            <span class="price" x-html="hyva.formatPrice(product.price_range.minimum_price.base_price.value)"></span>
+                                        </span>
+                                                </div>
+                                            </template>
+                                        <?php endif; ?>
+                                    </div>
                                 <?php endif; ?>
                                 <p class="flex flex-wrap gap-2 inline p-3">
                                     <?php if (in_array("learn_more", $widgetAttributesToShow)): ?>

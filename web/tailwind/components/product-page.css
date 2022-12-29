@@ -12,7 +12,15 @@
                 }
 
                 .price {
-                    @apply block font-semibold text-2xl text-gray-800 leading-tight;
+                    @apply font-semibold text-2xl text-gray-800 leading-tight;
+                }
+            }
+
+            .price-including-tax + .price-excluding-tax {
+                @apply mt-1;
+
+                .price {
+                    @apply text-base;
                 }
             }
 

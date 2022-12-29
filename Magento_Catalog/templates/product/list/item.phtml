@@ -17,6 +17,7 @@ use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Catalog\Helper\Output as CatalogOutputHelper;
+use Magento\Catalog\ViewModel\Product\OptionsData as ProductOptionsData;
 use Magento\Framework\Escaper;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
@@ -46,6 +47,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 /** @var HeroiconsSolid $heroiconsSolid */
 $heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
 
+$productOptionsViewmodel = $viewModels->require(ProductOptionsData::class);
+
 /** @var Magento\Catalog\Model\Product $product */
 $product = $block->getData('product');
 $imageDisplayArea = $block->getData('image_display_area');
@@ -60,10 +63,15 @@ if (!$product) {
     return '';
 }
 $productId = $product->getId();
+$options   = $productOptionsViewmodel->getOptionsData($product);
 $uniqueId = '_' . uniqid();
 
 $hideDetails       = $block->getData('hide_details') ?: false;
 $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
+
+$imageCustomAttributes = $product->getData('image_custom_attributes')
+    ?? $block->getData('image_custom_attributes')
+    ?? [];
 ?>
 
 <?php if ($product->isSaleable()): ?>
@@ -76,20 +84,26 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
 >
     <?= /** @noEscape */ $block->getBlockHtml('formkey') ?>
     <input type="hidden" name="product" value="<?= (int)$productId ?>"/>
-<?php else: ?>
+    <?php foreach ($options as $optionItem): ?>
+    <input type="hidden"
+           name="<?= $escaper->escapeHtml($optionItem['name']) ?>"
+           value="<?= $escaper->escapeHtml($optionItem['value']) ?>">
+    <?php endforeach; ?>
+    <?php else: ?>
 <div class="item product product-item card card-interactive flex flex-col w-full <?= $viewIsGrid ? '' : 'md:flex-row' ?>">
 <?php endif; ?>
-    <?php // Product Image ?>
+    <?php /* Product Image */ ?>
     <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
         class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:mr-5' ?>"
         tabindex="-1"
     >
         <?= $block->getImage($product, $imageDisplayArea)
             ->setTemplate('Magento_Catalog::product/list/image.phtml')
+            ->setData('custom_attributes', $imageCustomAttributes)
             ->setProductId($productId)
             ->toHtml(); ?>
     </a>
-    <div class="product-info flex flex-col flex-grow">
+    <div class="product-info flex flex-col grow">
         <?php $productNameStripped = $block->stripTags($product->getName(), null, true); ?>
         <div class="mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center <?= $viewIsGrid ? '' : 'md:text-left' ?>">
             <a class="product-item-link"
@@ -119,14 +133,16 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
             {
                 return {
                     updatePrice(priceData) {
-                        const regularPriceLabel = this.$el.querySelector('.normal-price .price-label');
-                        const regularPriceElement = this.$el.querySelector('.normal-price .price-wrapper .price');
+                        const regularPriceLabel = this.$root.querySelector('.normal-price .price-label');
+                        const regularPriceElement = this.$root.querySelector('.normal-price [data-price-type=finalPrice].price-wrapper .price');
+                        const basePriceElement = this.$root.querySelector('.normal-price [data-price-type=basePrice].price-wrapper .price');
                         if (priceData.finalPrice.amount < priceData.oldPrice.amount) {
                             regularPriceLabel.classList.add('hidden');
                         } else {
                             regularPriceLabel.classList.remove('hidden');
                         }
                         regularPriceElement.innerText = hyva.formatPrice(priceData.finalPrice.amount);
+                        basePriceElement && (basePriceElement.innerText = hyva.formatPrice(priceData.basePrice.amount));
                     }
                 }
             }
@@ -159,7 +175,7 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
                     @click.prevent="addToWishlist(<?= (int)$productId ?>)"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
                     type="button"
-                    class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex flex-shrink-0 items-center justify-center text-gray-500 hover:text-red-600 ml-2">
+                    class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-red-600 ml-2">
                 <?= $heroiconsSolid->heartHtml("w-5 h-5", 25, 25) ?>
             </button>
             <?php endif; ?>
@@ -168,7 +184,7 @@ $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
                     @click.prevent="addToCompare(<?= (int)$productId ?>)"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
                     type="button"
-                    class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex flex-shrink-0 items-center justify-center text-gray-500 hover:text-yellow-500 ml-2">
+                    class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-yellow-500 ml-2">
                 <?= $heroicons->scaleHtml("w-5 h-5", 25, 25) ?>
             </button>
             <?php endif; ?>
