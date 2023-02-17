@@ -76,7 +76,7 @@ $productName = $block->getProduct()->getName();
                  */
                 ?>
                 <img
-                    alt="main product photo"
+                    :alt="'<?= $escaper->escapeJs($productName) ?>'"
                     title="<?= $escaper->escapeHtmlAttr($productName) ?>"
                     class="object-contain object-center w-full h-auto max-h-screen-75"
                     :class="'opacity-0'"
@@ -98,6 +98,13 @@ $productName = $block->getProduct()->getName();
                         :loading="active!==index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
                         x-transition.opacity.duration.500ms x-show="active===index"
+                        @keydown.enter="fullscreen = true; $nextTick(() => calcPageSize())"
+                        tabindex="0"
+                        :aria-label="fullscreen
+                            ? `${image.caption || '<?= $escaper->escapeJs($productName) ?>'}`
+                            : 'Click to view image in fullscreen'
+                        "
+                        aria-live="polite"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
