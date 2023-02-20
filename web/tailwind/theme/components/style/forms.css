@@ -50,3 +50,17 @@ fieldset {
 fieldset ~ fieldset {
     @apply mt-8
 }
+
+:is(
+    .required,
+    .field-reserved
+):has(
+    :is(
+        input,
+        select,
+        textarea
+    )[required]
+) label:after {
+    content: ' \002A';
+    @apply text-red-500;
+}
