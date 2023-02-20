@@ -19,14 +19,18 @@ use Magento\Framework\Escaper;
 
 /** @var HeroiconsSolid $heroicons */
 $heroicons = $viewModels->require(HeroiconsSolid::class);
-
+$productName = $block->getItem()->getName()
 ?>
-<a href="#"
-   title="<?= $escaper->escapeHtml(__('Remove item')) ?>"
-   class="action action-delete"
-   x-data="{}"
-   @click.prevent='hyva.postForm(<?= /* @noEscape */ $block->getDeletePostJson() ?>)'
+<a
+    href="#"
+    title="<?= $escaper->escapeHtml(__('Remove %1', $productName)) ?>"
+    class="action action-delete"
+    x-data="{}"
+    @click.prevent='hyva.postForm(<?= /* @noEscape */ $block->getDeletePostJson() ?>)'
+    aria-label="<?= $escaper->escapeHtml(__('Remove %1', $productName)) ?>"
 >
-    <?= $heroicons->trashHtml('w-6 h-6') ?>
-    <span class="sr-only"><?= $escaper->escapeHtml(__('Remove item')) ?></span>
+    <?= $heroicons->trashHtml('w-6 h-6', 24, 24, ['role' => 'presentation', 'focusable' => 'false']) ?>
+    <span class="sr-only">
+        <?= $escaper->escapeHtml(__('Remove %1', $productName)) ?>
+    </span>
 </a>
