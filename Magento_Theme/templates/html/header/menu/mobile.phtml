@@ -91,7 +91,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 "
                                 class="absolute right-0 flex items-center justify-center w-11 h-11 mr-8 cursor-pointer
                                 bg-container-lighter border-container"
-                                aria-label="<?= $escaper->escapeHtmlAttr(__('Open subcategories')) ?>"
+                                aria-label="<?= $escaper->escapeHtmlAttr(__('Open')) ?><?= $escaper->escapeHtmlAttr($menuItem['name']) ?><?= $escaper->escapeHtmlAttr(__('subcategories')) ?>"
                             >
                                 <div class="w-8 h-8 border rounded">
                                     <?= $heroicons->chevronRightHtml(
