@@ -230,10 +230,12 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
                 x-transition:leave-end="translate-x-full"
             >
                 <div class="relative">
-                    <label class="text-lg font-medium leading-7 text-gray-900" for="enquiry-form-drawer-title-order-gift-options"><?= $escaper->escapeHtml('Order Gift Options') ?></label>
-                        <div class="absolute top-0 right-0 cursor-pointer" @click="formBlockVisibility=false" aria-label="Close panel" tabindex="0" role="button">
-                            <?= $heroicons->xHtml('inline-block', 24, 24) ?>
-                        </div>
+                    <div class="text-lg font-medium leading-7 text-gray-900" id="enquiry-form-drawer-title-order-gift-options">
+                        <?= $escaper->escapeHtml('Order Gift Options') ?>
+                    </div>
+                    <div class="absolute top-0 right-0 cursor-pointer" @click="formBlockVisibility=false" aria-label="Close panel" tabindex="0" role="button">
+                        <?= $heroicons->xHtml('inline-block', 24, 24) ?>
+                    </div>
                 </div>
                 <?= $block->getChildHtml('gift-options-body') ?>
             </div>

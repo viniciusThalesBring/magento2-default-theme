@@ -72,9 +72,9 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
                         <?= $heroicons->xHtml('inline-block', 24, 24) ?>
                     </div>
                 </div>
-                <label class="gift-options-item" for="enquiry-form-drawer-title-<?= $block->getItem()->getId() ?>">
+                <div class="gift-options-item" id="enquiry-form-drawer-title-<?= $block->getItem()->getId() ?>">
                     <span><?= $escaper->escapeHtml($block->getItem()->getName()) ?></span>
-                </label>
+                </div>
                 <?= $block->getChildHtml('gift-options-body') ?>
             </div>
         </div>
