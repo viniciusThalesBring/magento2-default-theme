@@ -60,19 +60,8 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         :class="{ 'hidden' : !open }"
         :aria-hidden="open ? 'false' : 'true'"
     >
-        <button
-            @click="closeMenu()"
-            class="flex justify-end w-16 self-end mb-1"
-            aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
-            type="button"
-        >
-            <?= $heroicons->xHtml(
-                'hidden p-4', 64, 64,
-                [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
-            ); ?>
-        </button>
         <ul
-            class="border-t flex flex-col gap-y-1"
+            class="border-t flex flex-col gap-y-1 mt-[68px]"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation links')) ?>"
         >
             <?php foreach ($menuItems as $index => $menuItem): ?>
@@ -122,18 +111,8 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 'invisible': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>'
                             }"
                         >
-                            <button
-                                @click="closeMenu()"
-                                class="flex justify-end w-16 self-end mb-1 transition-none"
-                                aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
-                            >
-                                <?= $heroicons->xHtml(
-                                    'hidden p-4', 64, 64,
-                                    [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
-                                ); ?>
-                            </button>
                             <ul
-                                class="transition-transform duration-200 ease-in-out translate-x-full transform"
+                                class="mt-[68px] transition-transform duration-200 ease-in-out translate-x-full transform"
                                 :class="{
                                     'translate-x-full' : mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
                                     'translate-x-0' : mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>',
@@ -181,11 +160,32 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
+                            <button
+                                @click="closeMenu()"
+                                class="absolute flex justify-end w-16 self-end mb-1 transition-none"
+                                aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
+                            >
+                                <?= $heroicons->xHtml(
+                                    'hidden p-4', 64, 64,
+                                    [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
+                                ); ?>
+                            </button>
                         </div>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>
+        <button
+            @click="closeMenu()"
+            class="absolute flex justify-end w-16 self-end mb-1"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
+            type="button"
+        >
+            <?= $heroicons->xHtml(
+                'hidden p-4', 64, 64,
+                [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
+            ); ?>
+        </button>
     </div>
 </nav>
 <script>
