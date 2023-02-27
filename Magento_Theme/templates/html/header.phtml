@@ -143,16 +143,7 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                 @mouseleave.prevent.stop="showTooltip = false"
                 @focus.prevent.stop="showTooltip = true"
                 @blur.prevent.stop="showTooltip = false"
-                aria-label="<?= $escaper->escapeHtml(__('Toggle minicart')) ?>"
-                :aria-description="
-                isCartEmpty ?
-                    '<?= $escaper->escapeHtml(__('Cart is empty')) ?>' :
-                    hyva.str(
-                        'You have %1 product%2 in your cart.',
-                        cart.summary_count,
-                        cart.summary_count === 1 ? '' : 's'
-                    )
-                "
+                aria-label="<?= $escaper->escapeHtml(__($showMiniCart ? 'Toggle minicart' : 'View cart')) ?>"
                 :aria-disabled="isCartEmpty"
                 <?php if ($showMiniCart): ?>
                     @click.prevent.stop="$dispatch('toggle-cart', { isOpen: true })"
@@ -163,8 +154,17 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                     :href="isCartEmpty ? '#' : '<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>'"
                 <?php endif ?>
             >
-                <span class="sr-only label">
-                    <?= $escaper->escapeHtml(__('Cart')) ?>
+                <span
+                    class="sr-only label"
+                    x-text="isCartEmpty ?
+                        '<?= $escaper->escapeHtml(__('Cart is empty')) ?>' :
+                        hyva.str(
+                            'You have %1 product%2 in your cart.',
+                            cart.summary_count,
+                            cart.summary_count === 1 ? '' : 's'
+                        )
+                    "
+                >
                 </span>
 
                 <span
