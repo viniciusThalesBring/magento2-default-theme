@@ -34,6 +34,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             <a
                 class="action view inline-block underline"
                 href="<?= $escaper->escapeUrl($block->getUrl('sales/order/history')) ?>"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('View all orders')) ?>"
             >
                 <?= $escaper->escapeHtml(__('View All')) ?>
             </a>
