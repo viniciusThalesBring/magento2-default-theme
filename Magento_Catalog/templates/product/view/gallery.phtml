@@ -73,13 +73,13 @@ $productName = $block->getProduct()->getName();
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
                     itemprop="image"
-                    @click="fullscreen = true; $nextTick(() => calcPageSize())"
+                    @click="openFullscreen($root)"
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                        @click="fullscreen = true; $nextTick(() => calcPageSize())"
+                        @click="openFullscreen($root)"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-screen-75"
                         :class="{ 'cursor-pointer': !fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
@@ -87,13 +87,12 @@ $productName = $block->getProduct()->getName();
                         :loading="active!==index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
                         x-transition.opacity.duration.500ms x-show="active===index"
-                        @keydown.enter="fullscreen = true; $nextTick(() => calcPageSize())"
+                        @keydown.enter="openFullscreen($root)"
                         tabindex="0"
                         :aria-label="fullscreen
                             ? `${image.caption || '<?= $escaper->escapeJs($productName) ?>'}`
                             : 'Click to view image in fullscreen'
                         "
-                        aria-live="polite"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
@@ -115,7 +114,7 @@ $productName = $block->getProduct()->getName();
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="fullscreen = false; $nextTick(() => calcPageSize())"
+            <button @click="closeFullScreen()"
                     type="button"
                     class="hidden text-gray-400 hover:text-gray-500 focus:text-gray-500
                         transition ease-in-out duration-150"
@@ -193,6 +192,7 @@ $productName = $block->getProduct()->getName();
             "itemCount": 0,
             "pageSize": 4,
             "pageFillers": 0,
+            "focusTrapListener": null,
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
                     const initialUrls = this.initialImages.map(image => image.full);
@@ -390,7 +390,7 @@ $productName = $block->getProduct()->getName();
             },
             eventListeners: {
                 ['@keydown.window.escape']() {
-                    this.fullscreen = false
+                    this.closeFullScreen()
                 },
                 ['@update-gallery.window'](event) {
                     this.receiveImages(event.detail);
@@ -398,6 +398,42 @@ $productName = $block->getProduct()->getName();
                 ['@reset-gallery.window'](event) {
                     this.resetGallery();
                 }
+            },
+            focusTrapHandler: function(firstFocusableElement, lastFocusableElement, e) {
+                const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+
+                if (!isTabPressed) {
+                    return;
+                }
+
+                e.shiftKey
+                    ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
+                    : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
+            },
+            openFullscreen(node) {
+                this.fullscreen = true;
+                this.$nextTick(() => this.calcPageSize());
+
+                const focusableElements = 'button, [href], input, select, textarea';
+                const focusableContent = Array.from(node.querySelectorAll(focusableElements))
+                    .filter(el => el.attributes.tabindex >= 0 || !el.attributes.tabindex);
+
+                const firstFocusableElement = focusableContent.length > 0
+                    ? focusableContent[0]
+                    : null;
+                const lastFocusableElement = focusableContent.length > 0
+                    ? focusableContent[focusableContent.length - 1]
+                    : null;
+
+                this.focusTrapListener = this.focusTrapHandler.bind(this, firstFocusableElement, lastFocusableElement)
+
+                document.addEventListener('keydown', this.focusTrapListener);
+            },
+            closeFullScreen() {
+                this.fullscreen = false;
+                this.$nextTick(() => this.calcPageSize())
+
+                document.removeEventListener('keydown', this.focusTrapListener);
             }
         }
      }
