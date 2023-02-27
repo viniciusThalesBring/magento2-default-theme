@@ -350,13 +350,9 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
      x-init="init($dispatch)"
      @private-content-loaded.window="receiveCustomerData($event.detail.data)"
 >
-    <div
-        class="title"
-        data-role="title"
-    >
-        <div
+    <h2 class="title">
+        <button
             @click="toggleEstimateShipping"
-            @keydown.enter="toggleEstimateShipping"
             class="flex justify-between w-full font-semibold whitespace-nowrap cursor-pointer select-none text-primary-lighter"
             id="shipping-estimate-toggle"
             role="heading"
@@ -377,14 +373,13 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
                     class="w-6 h-6"
                     width="25"
                     height="25"
-                    role="presentation"
-                    focusable="false"
+                    aria-hidden="true"
                 >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </span>
-        </div>
-    </div>
+        </button>
+    </h2>
     <div id="block-summary"
          class="content my-4 card"
          data-role="content"
@@ -498,8 +493,8 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
                                         />
                                         <label :for="'shipping_method_' + rate.method_code" class="w-full mb-0 cursor-pointer">
                                             <div class="grid grid-cols-2 w-full">
-                                                <div x-text="rate.method_title"></div>
-                                                <div x-text="hyva.formatPrice(rate.price_excl_tax)"></div>
+                                                <span x-text="rate.method_title"></span>
+                                                <span x-text="hyva.formatPrice(rate.price_excl_tax)"></span>
                                             </div>
                                         </label>
                                     </div>
