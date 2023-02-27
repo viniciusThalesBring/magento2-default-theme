@@ -116,7 +116,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0"
                  @click="closeCartDrawer"
-                 aria-label="Close panel"></div>
+                 aria-label="<?= $escaper->escapeHtmlAttr(__('Close minicart')) ?>"></div>
             <div class="relative w-screen max-w-md shadow-2xl"
                  x-show="open"
                  x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -136,7 +136,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     x-transition:leave-end="opacity-0" class="absolute top-0 right-0 flex p-2 mt-2">
                     <button
                         @click="closeCartDrawer"
-                        aria-label="Close panel"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Close minicart')) ?>"
                         class="p-2 text-gray-300 transition duration-150 ease-in-out hover:text-black"
                     >
                         <?= $heroicons->xHtml(); ?>
