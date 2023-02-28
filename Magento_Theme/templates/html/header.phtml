@@ -177,16 +177,16 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                     x-transition:leave-start="opacity-100 scale-100"
                     x-transition:leave-end="opacity-0 scale-90"
                     class="
-                        absolute left-1/2 -translate-x-1/2 translate-y-10 p-4 whitespace-nowrap text-sm
-                        leading-tight text-black bg-white rounded-lg shadow-t-lg
-                        pointer-events-none
+                        absolute left-1/2 -translate-x-3/4 translate-y-10 p-4 whitespace-nowrap text-sm
+                        leading-tight text-black bg-white rounded-lg shadow-t-lg pointer-events-none
+                        lg:-translate-x-1/2
                     "
                 >
                     <?= $escaper->escapeHtml(__('Cart is empty')) ?>
                     <svg
                         class="
-                            absolute top-1.5 left-1/2 z-10 text-white -translate-x-1/2
-                            -translate-y-full rotate-[135deg] fill-current
+                            absolute top-1.5 left-3/4 z-10 text-white -translate-x-1/2
+                            -translate-y-full rotate-[135deg] fill-current lg:left-1/2
                         "
                         width="12"
                         height="12"
