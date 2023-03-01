@@ -59,6 +59,8 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         "
         :class="{ 'hidden' : !open }"
         :aria-hidden="open ? 'false' : 'true'"
+        role="dialog"
+        aria-modal="true"
     >
         <ul
             class="border-t flex flex-col gap-y-1 mt-[68px]"
