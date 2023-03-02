@@ -85,19 +85,19 @@ $hasAssociatedProducts = count($associatedProducts) > 0;
         <div class="flex flex-wrap border-t border-gray-300
             py-2 w-full items-center justify-between gap-2"
         >
-            <div class="text-gray-700 text-left">
-                <label
-                    for="super_group[<?= $escaper->escapeHtmlAttr($item->getId()) ?>]"
-                    class="product-item-name font-semibold"
-                >
+            <label
+                class="text-gray-700 text-left"
+                for="super_group[<?= $escaper->escapeHtmlAttr($item->getId()) ?>]"
+            >
+                <span class="product-item-name font-semibold">
                     <?= $escaper->escapeHtml($item->getName()) ?>
-                </label>
+                </span>
                 <?php if ($block->getCanShowProductPrice($product)): ?>
                     <?php if ($block->getCanShowProductPrice($item)): ?>
                         <?= /* @noEscape */ $block->getProductPrice($item) ?>
                     <?php endif; ?>
                 <?php endif; ?>
-            </div>
+            </label>
             <div class="label text-gray-900 text-left sm:text-right w-full sm:w-20">
                 <?php if ($product->isSaleable()): ?>
 
