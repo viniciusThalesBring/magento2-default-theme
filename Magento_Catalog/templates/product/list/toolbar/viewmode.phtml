@@ -42,7 +42,7 @@ use Magento\Framework\Escaper;
                 <?php else: ?>
                     <button
                         aria-describedby="mode-description"
-                        class="modes-mode mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> opacity-25 hover:opacity-100"
+                        class="modes-mode mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> opacity-50 hover:opacity-100"
                         title="<?= $escaper->escapeHtmlAttr($label) ?>"
                         href="#"
                         @click.prevent="changeUrl(
