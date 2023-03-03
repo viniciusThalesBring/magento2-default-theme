@@ -8,11 +8,15 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\Product\RadioPriceRenderer;
 use Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio;
 use Magento\Framework\Escaper;
 
 /** @var Radio $block */
 /** @var Escaper $escaper */
+
+/** @var RadioPriceRenderer $radioPriceRenderer */
+$radioPriceRenderer = $block->getData('radio_price_renderer');
 
 $option = $block->getOption();
 $selections = $option->getSelections();
@@ -23,7 +27,7 @@ $optionId = $option->getId();
 $activeSelectOptions = [];
 ?>
 <?php if ($block->showSingle()): ?>
-    <?= /* @noEscape */ $block->getSelectionTitlePrice($selections[0]) ?>
+    <?= /* @noEscape */ $radioPriceRenderer->getSelectionTitlePrice($selections[0]) ?>
     <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selections[0]) ?>
     <input type="hidden"
            id="bundle-option-<?= (int)$optionId ?>-<?= (int)$selections[0]->getSelectionId() ?>"
@@ -85,7 +89,7 @@ $activeSelectOptions = [];
             />
             <label class="label text-sm"
                    for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>">
-                <span><?= /* @noEscape */ $block->getSelectionTitlePrice($selection) ?></span>
+                <span><?= /* @noEscape */ $radioPriceRenderer->getSelectionTitlePrice($selection) ?></span>
             </label>
         </div>
         <div class="text-sm my-2">
