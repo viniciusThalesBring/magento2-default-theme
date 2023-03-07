@@ -18,7 +18,7 @@ use Hyva\Theme\ViewModel\Logo\LogoSizeResolver;
 /** @var ViewModelRegistry $viewModels */
 /** @var LogoSizeResolver $logoSizeResolver */
 
-$storeName = $block->getThemeName() ?: $block->getLogoAlt();
+$storeName = $block->getThemeName();
 
 $logoSizeResolver = $viewModels->require(LogoSizeResolver::class);
 $logoWidth = $logoSizeResolver && $logoSizeResolver->getWidth()
@@ -39,7 +39,7 @@ $logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
         class="flex items-center justify-center text-xl font-medium tracking-wide text-gray-800
             no-underline hover:no-underline font-title"
         href="<?= $escaper->escapeUrl($block->getUrl('')) ?>"
-        aria-label="<?= $escaper->escapeHtmlAttr(__('Go to %1 home page', $storeName ? $escaper->escapeHtmlAttr($storeName) : __('store'))) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Go to home page')) ?>"
     >
         <img
             src="<?= $escaper->escapeUrl($logoSrc) ?>"
@@ -53,6 +53,8 @@ $logoSrc = $logoPathResolver && method_exists($logoPathResolver, 'getLogoSrc')
                 : 'height="150"'
             ?>
         />
-        <?= $escaper->escapeHtml($storeName) ?>
+        <?php if (!$logoSrc): ?>
+            <?= $escaper->escapeHtml($storeName) ?>
+        <?php endif; ?>
     </a>
 </div>
