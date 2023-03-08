@@ -35,6 +35,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             addMessages(messages, hideAfter) {
                 messages.map((message) => {
                     this.messages = this.messages.concat(message);
+                    if (hideAfter === undefined && message.type === 'success') {
+                        hideAfter = window.defaultSuccessMessageTimeout || 10000
+                    }
                     if (hideAfter) {
                         this.setHideTimeOut(this.messages.length -1, hideAfter);
                     }
