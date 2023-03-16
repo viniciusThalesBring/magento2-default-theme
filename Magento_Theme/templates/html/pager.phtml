@@ -78,9 +78,7 @@ $pagerItemBtnClass = $pagerItemClass
                                     <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
                                     <span><?= $escaper->escapeHtml($text) ?></span>
                                 <?php else: ?>
-                                    <span aria-hidden="true">
-                                        <?= $heroicons->chevronLeftHtml('', 20, 20); ?>
-                                    </span>
+                                    <?= $heroicons->chevronLeftHtml('', 20, 20, [ 'aria-hidden' => 'true']); ?>
                                 <?php endif; ?>
                             </a>
                         <?php else: ?>
@@ -90,9 +88,7 @@ $pagerItemBtnClass = $pagerItemClass
                                 aria-disabled="true"
                                 aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
                             >
-                                <span aria-hidden="true">
-                                    <?= $heroicons->chevronLeftHtml('', 20, 20); ?>
-                                </span>
+                                <?= $heroicons->chevronLeftHtml('', 20, 20, [ 'aria-hidden' => 'true']); ?>
                             </strong>
                         <?php endif; ?>
                     </li>
@@ -196,9 +192,7 @@ $pagerItemBtnClass = $pagerItemClass
                                     <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
                                     <span><?= $escaper->escapeHtml($text) ?></span>
                                 <?php else: ?>
-                                    <span aria-hidden="true">
-                                        <?= $heroicons->chevronRightHtml('', 20, 20); ?>
-                                    </span>
+                                    <?= $heroicons->chevronRightHtml('', 20, 20, [ 'aria-hidden' => 'true']); ?>
                                 <?php endif; ?>
                             </a>
                         <?php else: ?>
@@ -208,9 +202,7 @@ $pagerItemBtnClass = $pagerItemClass
                                 aria-disabled="true"
                                 aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
                             >
-                                <span aria-hidden="true">
-                                    <?= $heroicons->chevronRightHtml('', 20, 20); ?>
-                                </span>
+                                <?= $heroicons->chevronRightHtml('', 20, 20, [ 'aria-hidden' => 'true']); ?>
                             </strong>
                         <?php endif; ?>
                     </li>
