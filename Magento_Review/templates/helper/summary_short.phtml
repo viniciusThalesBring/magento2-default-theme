@@ -24,7 +24,7 @@ $productId = $block->getProduct()->getId();
 ?>
 <?php if ($block->isReviewEnabled()): ?>
     <div
-        x-data="initRating<?= $productId ?>()"
+        x-data="initRating<?= $escaper->escapeHtmlAttr($productId) ?>()"
         @keyup.enter="scrollToRatings()"
         @click="scrollToRatings()"
         class="rating-summary flex cursor-pointer"

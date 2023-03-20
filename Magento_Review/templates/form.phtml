@@ -114,7 +114,6 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                                                                     ->escapeHtmlAttr(
                                                                         $rating->getRatingCode() . '_' . $option->getValue()
                                                                     ) ?>_label"
-
                                                             >
                                                                 <span :class="<?= (int)$iterator ?> <= clickedRatingId
                                                                     ? 'text-yellow-400'
