@@ -21,10 +21,11 @@ $yellowHex = '#f6e05e';
 $greyHex = '#cbd5e0';
 $productName = $block->getProduct()->getName();
 $productId = $block->getProduct()->getId();
+$uniqueId = $productId . uniqid();
 ?>
 <?php if ($block->isReviewEnabled()): ?>
     <div
-        x-data="initRating<?= $escaper->escapeHtmlAttr($productId) ?>()"
+        x-data="initRating<?= $uniqueId ?>()"
         @keyup.enter="scrollToRatings()"
         @click="scrollToRatings()"
         class="rating-summary flex cursor-pointer"
@@ -125,7 +126,7 @@ $productId = $block->getProduct()->getId();
 <script>
     'use strict';
 
-    const initRating<?= $productId ?> = () => {
+    const initRating<?= $uniqueId ?> = () => {
         return {
             reviewsSection: document.getElementById('customer-review-list')
                 || document.getElementById('customer-reviews')
