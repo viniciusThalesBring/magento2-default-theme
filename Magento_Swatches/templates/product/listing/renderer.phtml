@@ -155,6 +155,7 @@ $swatchItemBlock->setData('product_id', $productId);
         <?php foreach ($attributes as $attribute): ?>
             <?php $attributeId = $attribute->getAttributeId(); ?>
             <?php $productAttribute = $attribute->getProductAttribute(); ?>
+            <?php $attributeLabelUniqueId = uniqid() ?>
 
             <?php if (!$productAttribute->getUsedInProductListing() || !$swatchRendererViewModel->isSwatchAttribute($productAttribute)) {
                 continue;
@@ -169,7 +170,8 @@ $swatchItemBlock->setData('product_id', $productId);
                          x-bind="scrollEvents"
                     >
                         <label class="sr-only"
-                               for="attribute<?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
+                               id="attribute-label-<?= $escaper->escapeHtmlAttr($attributeId).$attributeLabelUniqueId ?>"
+                               aria-hidden="true"
                         >
                             <span>
                                 <?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>
@@ -178,7 +180,11 @@ $swatchItemBlock->setData('product_id', $productId);
                         <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
                                   :key="item.id"
                         >
-                            <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
+                            <?= /* @noEscape */ $swatchItemBlock
+                                ->setData('attribute_label_unique_id', $attributeLabelUniqueId)
+                                ->setData('attribute_id', $attributeId)
+                                ->toHtml();
+                            ?>
                         </template>
                     </div>
                 </template>
