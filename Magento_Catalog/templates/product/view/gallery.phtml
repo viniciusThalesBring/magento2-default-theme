@@ -122,17 +122,7 @@ $productName = $block->getProduct()->getName();
                 </div>
             </div>
         </div>
-        <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="closeFullScreen()"
-                    type="button"
-                    class="hidden text-gray-400 hover:text-gray-500 focus:text-gray-500
-                        transition ease-in-out duration-150"
-                    :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
-                    aria-label="Close fullscreen"
-            >
-                <?= $heroicons->xHtml(); ?>
-            </button>
-        </div>
+
         <div @resize.window.debounce="calcPageSize(); $nextTick(() => calcActive())">
             <div
                 id="thumbs"
@@ -186,6 +176,17 @@ $productName = $block->getProduct()->getName();
                     @click="scrollNext"
                 ><?= $heroicons->chevronRightHtml() ?></button>
             </div>
+        </div>
+        <div class="absolute top-0 right-0 pt-4 pr-4">
+            <button @click="closeFullScreen()"
+                    type="button"
+                    class="hidden text-gray-400 p-3 hover:text-gray-500 focus:text-gray-500
+                        transition ease-in-out duration-150"
+                    :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
+            >
+                <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+            </button>
         </div>
     </div>
 </div>
