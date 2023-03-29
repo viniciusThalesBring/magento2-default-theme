@@ -236,7 +236,8 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            title="<?= /* @noEscape */ $regionLabel ?>"
                            class="form-input"
                            aria-label="<?= /* @noEscape */ $regionLabel ?>"
-                           :required="isRegionRequired"
+                           :required="!hasAvailableRegions() && !showOptionalRegions ? isRegionRequired : false"
+                           @input.debounce="onChange"
                     />
                 </div>
             </div>
@@ -353,9 +354,11 @@ function initCustomerAddressEdit() {
                 this.setupField(this.$refs['country_id']);
                 this.setupField(this.$refs['postcode']);
                 this.setupField(this.$refs['region']);
+                this.setupField(this.$refs['region_id']);
 
                 this.fields['postcode'] && this.validateField(this.fields['postcode']);
                 this.fields['region'] && this.validateField(this.fields['region']);
+                this.fields['region_id'] && this.validateField(this.fields['region_id']);
             })
         },
         hasAvailableRegions() {
