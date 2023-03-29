@@ -57,7 +57,10 @@ $productCollection = $block->getLoadedProductCollection();
          */
         $pos = $block->getPositioned();
         ?>
-        <div class="products wrapper mode-<?= /* @noEscape */$viewMode ?> products-<?= /* @noEscape */$viewMode ?>">
+        <div
+            class="products wrapper mode-<?= /* @noEscape */$viewMode ?> products-<?= /* @noEscape */$viewMode ?>"
+            id="main-content"
+        >
             <div class="mx-auto pt-4 pb-12 grid gap-4 grid-cols-1 <?= /* @noEscape */$viewMode === 'grid'
                 ? 'sm:grid-cols-2 xl:grid-cols-3'
                 : '' ?>">

@@ -23,19 +23,35 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 <?php $filters = $block->getActiveFilters() ?>
 <?php if (!empty($filters)): ?>
 <div class="filter-current bg-container-lighter border border-container p-4 md:px-8" x-data="{ open: true }">
-    <div class="filter-options-title flex justify-between items-center cursor-pointer"
-         @click="open = !open">
-        <strong><?= $escaper->escapeHtml(__('Active filtering')) ?></strong>
-        <span class="py-1 px-1 rounded border border-container">
-            <?= $heroicons->chevronDownHtml(
-                'transition-transform transform duration-300 ease-in-out',
-                24,
-                24,
-                [":class" => "{ 'rotate-180': open }"]
-            ); ?>
-        </span>
-    </div>
-    <div class="items pt-1 pb-3" x-show="open">
+    <h3 class="filter-options-title" id="filter-current-title">
+        <button
+            class="flex justify-between items-center cursor-pointer w-full"
+            @click="open = !open"
+            aria-controls="filter-current-content"
+            :aria-expanded="open"
+            aria-label="<?= $escaper->escapeHtmlAttr(__("Adjust active filtering")) ?>"
+        >
+            <strong><?= $escaper->escapeHtml(__('Active filtering')) ?></strong>
+            <span class="py-1 px-1 rounded border border-container">
+                <?= $heroicons->chevronDownHtml(
+                    'transition-transform transform duration-300 ease-in-out',
+                    24,
+                    24,
+                    [
+                        ":class" => "{ 'rotate-180': open }",
+                        "aria-hidden" => "{ true }"
+                    ]
+                ); ?>
+            </span>
+        </button>
+    </h3>
+    <div
+        id="filter-current-content"
+        class="items pt-1 pb-3"
+        x-show="open"
+        aria-labelledby="filter-current-title"
+        role="region"
+    >
         <?php foreach ($filters as $filter): ?>
             <div class="item flex justify-between items-center">
                 <span>
@@ -47,7 +63,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 <span>
                     <a class="py-2 px-2 text-center block action remove text-primary hover:text-primary-darker"
                        href="<?= $escaper->escapeUrl($filter->getRemoveUrl()) ?>"
-                       title="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Remove This Item')) ?>">
+                       aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Remove current filter %1', $block->stripTags($filter->getName()))) ?>">
                         <?= $heroicons->trashHtml('', 20, 20); ?>
                     </a>
                 </span>
@@ -56,8 +72,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     </div>
     <?php if ($block->getLayer()->getState()->getFilters()): ?>
         <div class="block-actions filter-actions">
-            <a href="<?= $escaper->escapeUrl($block->getClearUrl()) ?>"
-               class="text-xs text-primary hover:text-primary-darker"><?= $escaper->escapeHtml(__('Clear All')) ?></a>
+            <a
+                href="<?= $escaper->escapeUrl($block->getClearUrl()) ?>"
+                class="text-xs text-primary hover:text-primary-darker"
+                aria-label="<?= /* @noEscape */ $escaper->escapeHtmlAttr(__('Remove all filters')) ?>"
+            >
+                <?= $escaper->escapeHtml(__('Clear All')) ?>
+            </a>
         </div>
     <?php endif; ?>
 </div>
