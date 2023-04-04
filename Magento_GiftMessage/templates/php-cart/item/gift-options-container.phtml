@@ -79,7 +79,7 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
             >
                 <div class="relative">
                     <h2 class="text-lg font-medium leading-7 text-gray-900 "><?= $escaper->escapeHtml('Item Gift Options') ?></h2>
-                    <button class="absolute top-0 right-0 cursor-pointer" @click="closeDialog" aria-label="<?= $escaper->escapeHtmlAttr('Close panel') ?>">
+                    <button class="absolute top-0 right-0 cursor-pointer" @click.prevent="closeDialog" aria-label="<?= $escaper->escapeHtmlAttr('Close panel') ?>">
                         <?= $heroicons->xHtml('inline-block', 24, 24, ["aria-hidden" => "true"]) ?>
                     </button>
                 </div>
