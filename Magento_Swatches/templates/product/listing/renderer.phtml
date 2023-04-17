@@ -155,7 +155,6 @@ $swatchItemBlock->setData('product_id', $productId);
         <?php foreach ($attributes as $attribute): ?>
             <?php $attributeId = $attribute->getAttributeId(); ?>
             <?php $productAttribute = $attribute->getProductAttribute(); ?>
-            <?php $attributeLabelUniqueId = uniqid() ?>
 
             <?php if (!$productAttribute->getUsedInProductListing() || !$swatchRendererViewModel->isSwatchAttribute($productAttribute)) {
                 continue;
@@ -169,16 +168,11 @@ $swatchItemBlock->setData('product_id', $productId);
                          role="radiogroup"
                          x-bind="scrollEvents"
                          aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
-                         id="attribute-label-<?= $escaper->escapeHtmlAttr($attributeId).$attributeLabelUniqueId ?>"
                     >
                         <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
                                   :key="item.id"
                         >
-                            <?= /* @noEscape */ $swatchItemBlock
-                                ->setData('attribute_label_unique_id', $attributeLabelUniqueId)
-                                ->setData('attribute_id', $attributeId)
-                                ->toHtml();
-                            ?>
+                            <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
                         </template>
                     </div>
                 </template>

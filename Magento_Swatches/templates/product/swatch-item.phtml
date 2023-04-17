@@ -24,7 +24,6 @@ $configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
 
 $productId = $block->getProductId();
 $attributeId = $block->getAttributeId();
-$attributeLabelUniqueId = $block->getData('attribute_label_unique_id') ?: '';
 
 if (!$productId || !$attributeId) {
     return '';
@@ -68,7 +67,6 @@ if (!$productId || !$attributeId) {
                     attributeOption => selectedValues[attributeOption]
                 ).length === 0"
                 :aria-label="getSwatchText(<?= $escaper->escapeHtmlAttr($attributeId) ?>, item.id)"
-                aria-describedby="attribute-label-<?= $escaper->escapeHtmlAttr($attributeId).$attributeLabelUniqueId ?>"
             >
             <template x-if="isTextSwatch(<?= (int) $attributeId ?>, item.id)">
                 <div
