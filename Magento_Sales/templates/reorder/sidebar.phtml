@@ -114,12 +114,17 @@ if (! $customer->customerLoggedIn()) {
                         <template x-for="product in reorderItems">
                             <li class="flex items-start mb-4">
                                 <div class="shrink-0 mr-2">
-
+                                    <label class="label hidden">
+                                        <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                    </label>
                                     <div class="control">
                                         <input type="checkbox"
                                                name="order_items[]"
                                                :id="checkboxId + product.id"
                                                :value="product.id"
+                                               :title="product.is_saleable
+                                                ? '<?= $escaper->escapeJs(__('Add to Cart')) ?>'
+                                                : '<?= $escaper->escapeJs(__('Product is not salable.')) ?>'"
                                                :disabled="!product.is_saleable"
                                         />
                                     </div>
