@@ -179,6 +179,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
                     <?php foreach ($items as $product): ?>
                         <div class="flex shrink-0 w-full mr-1 p-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4"
                              role="group"
+                             :aria-hidden="<?= $sliderIndex ?> > active && <?= $sliderIndex ?> <= (active + pageSize) ? 'false' : 'true'"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Item %1', $sliderIndex++)) ?>"
                              aria-describedby="slide-desc-<?= $escaper->escapeHtmlAttr($product->getId().'-'.$uniqueId) ?>"
                         >
