@@ -29,9 +29,11 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         @resize.window.debounce="checkIsMobileResolution()"
         @visibilitychange.window.debounce="checkIsMobileResolution()"
         class="block border border-container bg-container-darker p-4 md:border-0 md:bg-transparent md:py-0 md:px-0 my-6"
+        role="region"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Product filters')) ?>"
     >
         <a
-            href="#main-content"
+            href="#products-list"
             class="sr-only focus:not-sr-only bg-blue-600 text-white px-12 py-4 text-center w-full block rounded-sm"
         >
             <?= $escaper->escapeHtml(__('Skip to products list')) ?>
@@ -72,8 +74,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             id="filters-content"
             class="block-content filter-content pt-3"
             x-show="isMobile && blockOpen || !isMobile"
-            aria-labelledby="filters-heading"
-            :aria-expanded="isMobile && blockOpen || !isMobile"
         >
             <?= $block->getChildHtml('state') ?>
             <?php foreach ($block->getFilters() as $filter): ?>
@@ -95,6 +95,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             >
                                 <span class="title text-md md:text-lg font-semibold">
                                     <?= $escaper->escapeHtml(__($filter->getName())) ?>
+                                    <span class="sr-only"><?= $escaper->escapeHtml(__(' filter')) ?></span>
                                 </span>
                                     <span class="py-1 px-1 rounded border border-container">
                                     <?= $heroicons->chevronDownHtml(
@@ -114,10 +115,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             <div
                                 :id="`${id}-content`"
                                 class="filter-options-content pt-3"
-                                role="region"
-                                :aria-labelledby="`${id}-title`"
                             >
-                                <?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?>
+                                <?= /* @noEscape */ $block->getChildBlock('renderer')->setFilterTitle($filter->getName())->render($filter); ?>
                             </div>
                         </template>
                     </div>
