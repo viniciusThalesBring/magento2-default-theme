@@ -111,12 +111,16 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         role="cell"
                         class="p-2 hidden lg:flex items-center <?= $i % 2 === 0 ? '' : ' bg-container-darker' ?>"
                     >
-                        <?php $date = new DateTime($order->getCreatedAt()); ?>
-                        <span>
-                            <!-- A11y TO DO: user should be informed about current date format, should be added in `sr-only element`. Issue: #629: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/629 -->
-                            <?= $escaper->escapeHtml(
-                                $block->formatDate($date)
-                            ) ?>
+                        <?php
+                            $date = $order->getCreatedAt();
+                            $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+                            $formatLong = $block->getDateFormat() ?: \IntlDateFormatter::LONG;
+                        ?>
+                        <span aria-hidden="true">
+                            <?= $escaper->escapeHtmlAttr($block->formatDate($date, $format)); ?>
+                        </span>
+                        <span class="sr-only">
+                            <?= $escaper->escapeHtml($block->formatDate($date, $formatLong)); ?>
                         </span>
                     </div>
                     <div
