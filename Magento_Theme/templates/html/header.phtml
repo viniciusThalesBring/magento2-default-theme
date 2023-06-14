@@ -141,7 +141,7 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                     :aria-expanded="isCartOpen"
                     aria-haspopup="dialog"
                 <?php else: ?>
-                    :href="isCartEmpty ? '#' : '<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>'"
+                    href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
                 <?php endif ?>
             >
                 <span
