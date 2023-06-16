@@ -149,7 +149,7 @@ $uniqueId = $productId . uniqid();
                     return
                 }
 
-                addEventListener('scroll', function scrollHandler() {
+                addEventListener('scroll', () => {
                     clearTimeout(scrollTimeout);
 
                     scrollTimeout = setTimeout(() => {
@@ -159,7 +159,7 @@ $uniqueId = $productId . uniqid();
 
                         window.removeEventListener("scroll", scrollHandler);
                     }, 50);
-                }.bind(this));
+                }, { once: true });
 
                 this.reviewsSection.scrollIntoView({behavior: 'smooth'})
             }
