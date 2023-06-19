@@ -39,7 +39,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         <nav
             class="duration-150 ease-in-out transform w-auto relative min-h-0 transition-display"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
-        >   
+        >
             <ul class="flex justify-start">
                 <?php foreach ($menuItems as $index => $menuItem): ?>
                     <li class="relative mr-2 level-0"
@@ -57,9 +57,10 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             </a>
                             <?php if (!empty($menuItem['childData'])): ?>
                                 <button class="sr-only -right-2 h-5 w-5 focus:not-sr-only focus:absolute"
-                                        x-ref="sr-button-<?= /* @noEscape */ (string) $index ?>"
-                                        :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>' ? 'true' : 'false'"
-                                        @click="openMenuOnClick('<?= /* @noEscape */ (string) $index ?>')"
+                                    type="button"
+                                    data-sr-button-id="<?= $escaper->escapeHtmLAttr($index) ?>"
+                                    :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>' ? 'true' : 'false'"
+                                    @click="openMenuOnClick('<?= /* @noEscape */ (string) $index ?>')"
                                 >
                                     <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5", 25, 25, ['aria-hidden' => 'true']) ?>
                                     <span class="sr-only">
@@ -81,7 +82,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                         <a href="<?= $escaper->escapeUrl($subMenuItem['url']) ?>"
                                            title="<?= $escaper->escapeHtmlAttr($subMenuItem['name']) ?>"
                                            class="block w-full px-3 py-1 my-1 whitespace-nowrap first:mt-0 hover:underline"
-                                           @keyup.escape="$nextTick(() => $refs['sr-button-<?= /* @noEscape */ (string) $index ?>'].focus())"
+                                           @keyup.escape="this.nextTick(() => document.querySelector('[data-sr-button-id=<?= $escaper->escapeJs($index) ?>]').focus())"
                                         >
                                             <span class="text-base text-gray-700">
                                                 <?= $escaper->escapeHtml($subMenuItem['name']) ?>
