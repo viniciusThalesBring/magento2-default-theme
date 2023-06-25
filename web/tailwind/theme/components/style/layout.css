@@ -1,4 +1,4 @@
-/* For backwards competibility */
+/* For backwards compatibility */
 
 .flex-columns-wrapper {
     @apply flex flex-col;
