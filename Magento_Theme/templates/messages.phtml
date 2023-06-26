@@ -9,12 +9,12 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
 
 /** @var ViewModelRegistry $viewModels */
 
-/** @var HeroiconsSolid $heroicons */
-$heroicons = $viewModels->require(HeroiconsSolid::class);
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
 
 ?>
 <script>
@@ -62,50 +62,6 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
                 ['@clear-messages.window']() {
                     this.messages = [];
                 }
-            },
-            getColor(messageType) {
-                let color;
-                switch (messageType) {
-                    case 'success':
-                        color = 'text-green-600';
-                        break;
-                    case 'error':
-                        color = 'text-red-600';
-                        break;
-                    case 'warning':
-                        color = 'text-yellow-500';
-                        break;
-                    case 'notice':
-                        color = 'text-blue-500';
-                        break;
-                    case 'info':
-                        color = 'text-blue-500';
-                        break;
-                }
-                return color;
-            },
-            getIcon(messageType) {
-                let iconHtml;
-                switch (messageType) {
-                <?php // phpcs:disable Generic.Files.LineLength.TooLong ?>
-                    case 'success':
-                        iconHtml = <?= /** @noEscape */ json_encode($heroicons->checkCircleHtml('stroke-current', 25, 25)) ?>;
-                        break;
-                    case 'error':
-                        iconHtml = <?= /** @noEscape */ json_encode($heroicons->exclamationCircleHtml('stroke-current', 25, 25)) ?>;
-                        break;
-                    case 'warning':
-                        iconHtml = <?= /** @noEscape */ json_encode($heroicons->exclamationHtml('stroke-current', 25, 25)) ?>;
-                        break;
-                    case 'notice':
-                        iconHtml = <?= /** @noEscape */ json_encode($heroicons->informationCircleHtml('stroke-current', 25, 25)) ?>;
-                        break;
-                    case 'info':
-                        iconHtml = <?= /** @noEscape */ json_encode($heroicons->informationCircleHtml('stroke-current', 25, 25)) ?>;
-                        break;
-                    // phpcs:enable Generic.Files.LineLength.TooLong
-                }
-                return iconHtml;
             }
         }
     }
@@ -113,25 +69,19 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
 <section id="messages"
          x-data="initMessages()"
          x-bind="eventListeners"
-         aria-live="assertive"
-         role="alert"
 >
     <template x-if="!isEmpty()">
         <div class="w-full">
-            <div class="messages container mx-auto py-3">
+            <div role="alert" class="messages container mx-auto py-3">
                 <template x-for="(message, index) in messages" :key="index">
                     <div>
                         <template x-if="message">
-                            <div class="w-full bg-white shadow rounded flex items-center gap-4 mb-2 p-4"
-                                 :ui-id="'message-' + 'notice'"
+                            <div class="message" :class="message.type"
+                                 :ui-id="'message-' + message.type"
                             >
-
-                                <div x-html="getIcon('notice')" :class="getColor('notice')"></div>
-
-                                <div class="flex-1" x-html="message.text"></div>
-
+                                <span x-html="message.text"></span>
                                 <button
-                                    class="text-gray-500 hover:text-black"
+                                    class="text-gray-600 hover:text-black"
                                     aria-label="<?= $escaper->escapeHtml(__('Close message')) ?>"
                                     @click.prevent="removeMessage(index)"
                                 >
