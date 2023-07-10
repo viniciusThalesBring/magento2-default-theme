@@ -37,12 +37,9 @@ $product = $currentProductViewModel->exists() ? $currentProductViewModel->get() 
 ?>
 <nav class="breadcrumbs bg-container-lighter shadow-sm" aria-label="Breadcrumb">
     <div class="container">
-        <ol x-data="initBreadcrumbsProduct()"
-            x-init="$nextTick(() => { setTimeout(()=>{ $el.scrollLeft = $el.scrollWidth }, 200) })"
-            class="items list-reset py-4 rounded flex flex-nowrap text-grey text-sm overflow-x-auto">
-            <li>&ZeroWidthSpace;</li>
+        <ol x-data="initBreadcrumbsProduct()" class="items list-reset py-4 rounded flex flex-nowrap text-grey text-sm overflow-x-auto relative">
             <template x-for="item in breadcrumbs">
-                <li class="item inline-flex whitespace-nowrap">
+                <li class="item inline-flex whitespace-nowrap last:mr-8">
                     <template x-if="item.name !== 'home'">
                         <span aria-hidden="true" class="separator text-primary-lighter px-2">/</span>
                     </template>
@@ -54,6 +51,7 @@ $product = $currentProductViewModel->exists() ? $currentProductViewModel->get() 
                     </template>
                 </li>
             </template>
+            <li class="sticky right-0 min-w-8 bg-gradient-to-l from-white">&ZeroWidthSpace;</li>
         </ol>
     </div>
 </nav>
@@ -135,15 +133,3 @@ $product = $currentProductViewModel->exists() ? $currentProductViewModel->get() 
         return {breadcrumbs};
     }
 </script>
-
-<style>
-    .breadcrumbs .items {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        scroll-behavior: smooth;
-    }
-
-    .breadcrumbs .items::-webkit-scrollbar {
-        display: none;
-    }
-</style>
