@@ -47,7 +47,8 @@ if (!$productId || !$attributeId) {
             <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
                 @mouseenter.self="activeTooltipItem = {
                     attribute: '<?= (int) $attributeId ?>',
-                    item: item.id
+                    item: item.id,
+                    index
                 }; tooltipPositionElement = $event.target;"
                 @mouseleave.self="activeTooltipItem = false"
             <?php endif; ?>
