@@ -10,14 +10,21 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\StoreConfig;
 
 /** @var ViewModelRegistry $viewModels */
+/** @var HeroiconsOutline $heroIcons */
+/** @var StoreConfig $storeConfig */
+$heroIcons = $viewModels->require(HeroiconsOutline::class);
+$storeConfig = $viewModels->require(StoreConfig::class);
 
-/** @var HeroiconsOutline $heroicons */
-$heroicons = $viewModels->require(HeroiconsOutline::class);
+$defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general/messages/success_message_timeout');
 
 ?>
 <script>
+    <?php if ($defaultSuccessMessageTimeout): ?>
+    window.defaultSuccessMessageTimeout = <?= (int) $defaultSuccessMessageTimeout ?>;
+    <?php endif; ?>
     function initMessages() {
         "use strict";
         return {
@@ -35,6 +42,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             addMessages(messages, hideAfter) {
                 messages.map((message) => {
                     this.messages = this.messages.concat(message);
+                    if (hideAfter === undefined && message.type === 'success' && window.defaultSuccessMessageTimeout) {
+                        hideAfter = window.defaultSuccessMessageTimeout;
+                    }
                     if (hideAfter) {
                         this.setHideTimeOut(this.messages.length -1, hideAfter);
                     }
@@ -82,7 +92,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                 <span x-html="message.text"></span>
                                 <a href="#" class="close cursor-pointer" title="close"
                                    @click.prevent="removeMessage(index)">
-                                    <?= $heroicons->xHtml('text-white', 18, 18); ?>
+                                    <?= $heroIcons->xHtml('text-white', 18, 18); ?>
                                 </a>
                             </div>
                         </template>
