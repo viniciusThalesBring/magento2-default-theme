@@ -11,16 +11,14 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Magento\GiftMessage\Block\Cart\GiftOptions;
 
 /** @var Escaper $escaper */
 /** @var GiftOptions $block */
-/** @var SecureHtmlRenderer $secureRenderer */
 /** @var ViewModelRegistry $viewModels */
-/** @var HeroiconsOutline $heroIcons */
+/** @var HeroiconsOutline $heroicons */
 
-$heroIcons = $viewModels->require(HeroiconsOutline::class);
+$heroicons = $viewModels->require(HeroiconsOutline::class);
 
 $slideOutDrawer = (bool) $block->getSlideOutDrawer();
 
@@ -210,10 +208,10 @@ if (! $isOrderLevelGiftOptionsEnabled) {
             <?= $escaper->escapeHtml(__('Gift options')) ?>
             <?php if (!$slideOutDrawer): ?>
                 <span x-show="!formBlockVisibility">
-                    <?= $heroIcons->chevronDownHtml('inline-block', 16, 16) ?>
+                    <?= $heroicons->chevronDownHtml('inline-block', 16, 16) ?>
                 </span>
                 <span x-show="formBlockVisibility">
-                    <?= $heroIcons->chevronUpHtml('inline-block', 16, 16) ?>
+                    <?= $heroicons->chevronUpHtml('inline-block', 16, 16) ?>
                 </span>
             <?php endif ?>
         </span>
@@ -248,7 +246,7 @@ if (! $isOrderLevelGiftOptionsEnabled) {
                 <div class="relative">
                     <h2 class="text-lg font-medium leading-7 text-gray-900 "><?= $escaper->escapeHtml('Order Gift Options') ?></h2>
                         <div class="absolute top-0 right-0 cursor-pointer" @click="formBlockVisibility=false" aria-label="Close panel" tabindex="0" role="button">
-                            <?= $heroIcons->xHtml('inline-block', 24, 24) ?>
+                            <?= $heroicons->xHtml('inline-block', 24, 24) ?>
                         </div>
                 </div>
                 <?= $block->getChildHtml('gift-options-body') ?>
