@@ -52,6 +52,12 @@ $swatchData = $block->getSwatchData();
             isTooltipVisible() {
                 return this.activeTooltipItem
             },
+            isFirstItemCol() {
+                const left = this.tooltipPositionElement.offsetLeft;
+                const leftParent = this.tooltipPositionElement.parentNode.offsetLeft;
+                const width = this.tooltipPositionElement.offsetWidth;
+                return left - leftParent < width;
+            },
             getTooltipImageStyle() {
                 const type = this.activeTooltipItem.type;
 
