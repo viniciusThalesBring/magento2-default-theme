@@ -114,7 +114,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             x-init="trapFocus($el)"
                             class="absolute top-0 right-0 z-10 flex flex-col gap-1 w-full h-full p-1 bg-container-lighter"
                             :class="{
-                                'invisible': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>'
+                                'hidden': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>'
                             }"
                         >
                             <ul
