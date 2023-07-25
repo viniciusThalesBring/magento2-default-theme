@@ -97,10 +97,12 @@ if (! $customer->customerLoggedIn()) {
      :class="{ 'hidden': !itemCount }"
      :aria-hidden="!itemCount"
 >
-    <h2 class="border-t border-container mb-6 pt-5 text-primary font-semibold text-lg"
-        id="block-reorder-heading"
-    >
-        <?= $escaper->escapeHtml(__('Recently Ordered')) ?>
+    <h2 class="border-t border-container mb-6 pt-5">
+        <strong id="block-reorder-heading"
+                class="block title text-primary font-semibold text-lg"
+        >
+            <?= $escaper->escapeHtml(__('Recently Ordered')) ?>
+        </strong>
     </h2>
     <div class="block-content">
         <form method="post"
@@ -124,8 +126,8 @@ if (! $customer->customerLoggedIn()) {
                                                :id="checkboxId + product.id"
                                                :value="product.id"
                                                :aria-label="product.is_saleable
-                                                   ? hyva.strf('<?= $escaper->escapeHtmlAttr(__('Select product "%0" to reorder')) ?>', product.name)
-                                                   : hyva.strf('<?= $escaper->escapeHtmlAttr(__('Product "%0" is not salable')) ?>', product.name)
+                                                   ? hyva.str('<?= $escaper->escapeJs(__('Select product "%1" to reorder')) ?>', product.name)
+                                                   : hyva.str('<?= $escaper->escapeJs(__('Product "%1" is not salable')) ?>', product.name)
                                                "
                                                :disabled="!product.is_saleable"
                                         />
@@ -149,14 +151,14 @@ if (! $customer->customerLoggedIn()) {
                                 type="button"
                                 @click.prevent="addToCart('<?= $escaper->escapeUrl($block->getFormActionUrl()) ?>')"
                                 class="action tocart btn btn-primary text-sm"
-                                aria-label="<?= $escaper->escapeHtml(__('Add selected products from list to cart')) ?>"
+                                aria-label="<?= $escaper->escapeHtmlAttr(__('Add selected products from list to cart')) ?>"
                             >
                                 <?= $escaper->escapeHtml(__('Add to Cart')) ?>
                             </button>
                         </template>
                         <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>#recent-orders-heading"
                            class="px-4 text-sm text-gray-500 hover:text-primary"
-                           aria-label="<?=  $escaper->escapeHtml(__('View recent orders table')) ?>"
+                           aria-label="<?=  $escaper->escapeHtmlAttr(__('View recent orders table')) ?>"
                         >
                             <?= $escaper->escapeHtml(__('View All')); ?>
                         </a>
