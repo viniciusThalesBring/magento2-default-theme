@@ -53,31 +53,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     this.cartItems = this.cartItems.slice(0, parseInt(this.maxItemsToDisplay, 10));
                 }
             },
-            trapFocus(rootElement) {
-                if (!rootElement) return;
-
-                const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-                const focusableContentWithoutTrigger = Array.from(rootElement.querySelectorAll(focusableElements))
-
-                const firstFocusableElement = focusableContentWithoutTrigger.length > 0
-                    ? focusableContentWithoutTrigger[0]
-                    : null;
-                const lastFocusableElement = focusableContentWithoutTrigger.length > 0
-                    ? focusableContentWithoutTrigger[focusableContentWithoutTrigger.length - 1]
-                    : null;
-
-                rootElement.addEventListener('keydown', function(e) {
-                    const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-                    if (!isTabPressed) {
-                        return;
-                    }
-
-                    e.shiftKey
-                        ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
-                        : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
-                });
-            },
             deleteItemFromCart(itemId) {
                 this.isLoading = true;
 
@@ -130,14 +105,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             openCartDrawer() {
                 this.open = true;
                 this.$nextTick(() => {
-                    if (this.$refs && this.$refs.cartDialogContent) {
-                        this.$refs.cartDialogContent.focus()
-                        this.trapFocus(this.$refs.cartDialogContent)
-                    }
+                    this.$refs && this.$refs.cartDialogContent && hyva.trapFocus(this.$refs.cartDialogContent)
                 })
             },
             closeCartDrawer() {
                 this.$dispatch('toggle-cart', { isOpen: false })
+                this.$refs && this.$refs.cartDialogContent && hyva.releaseFocus(this.$refs.cartDialogContent)
             }
         }
     }
