@@ -90,7 +90,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 });
             },
             toggleCartDrawer(event) {
-                if (event.detail && typeof event.detail.isOpen !== 'undefined') {
+                if (event.detail && event.detail.isOpen !== undefined) {
                     if (event.detail.isOpen) {
                         this.openCartDrawer()
                     } else {
