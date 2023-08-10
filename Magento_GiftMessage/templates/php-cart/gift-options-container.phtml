@@ -146,40 +146,17 @@ if (! $isOrderLevelGiftOptionsEnabled && ! $isItemLevelGiftOptionsEnabled) {
             openDialog(event) {
                 event.preventDefault()
                 this.formBlockVisibility = true
-                this.$nextTick(() => this.$refs['giftOptionsDialog']
-                    .querySelector('input')
-                    .focus()
-                );
+                this.$nextTick(() => hyva.trapFocus(this.$refs['giftOptionsDialog']));
             },
             closeDialog() {
                 if (this.formBlockVisibility) {
-                    this.$nextTick(() => this.$refs['giftOptionsTrigger'].focus());
+                    this.$nextTick(() => {
+                        hyva.releaseFocus(this.$refs['giftOptionsDialog'])
+                        this.$refs['giftOptionsTrigger'].focus()
+                    });
                 }
 
                 this.formBlockVisibility = false
-            },
-            trapFocus(node) {
-                const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-                const focusableContentWithoutTrigger = Array.from(node.querySelectorAll(focusableElements))
-
-                const firstFocusableElement = focusableContentWithoutTrigger.length > 0
-                    ? focusableContentWithoutTrigger[0]
-                    : null;
-                const lastFocusableElement = focusableContentWithoutTrigger.length > 0
-                    ? focusableContentWithoutTrigger[focusableContentWithoutTrigger.length - 1]
-                    : null;
-
-                document.addEventListener('keydown', function(e) {
-                    const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-                    if (!isTabPressed) {
-                       return;
-                    }
-
-                    e.shiftKey
-                        ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
-                        : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
-                });
             }
         }
     }
@@ -267,7 +244,6 @@ if (! $isOrderLevelGiftOptionsEnabled) {
             aria-modal="true"
             @keydown.window.escape="closeDialog"
             class="fixed inset-y-0 right-0 z-30 flex max-w-full"
-            x-init="trapFocus($refs['giftOptionsDialog'])"
             :aria-hidden="!formBlockVisibility"
         >
             <div class="backdrop"
