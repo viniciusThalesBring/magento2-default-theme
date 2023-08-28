@@ -25,7 +25,8 @@ $greyHex = '#cbd5e0';
          onclick="(
               document.getElementById('customer-review-list') ||
               document.getElementById('customer-reviews') ||
-              document.getElementById('review-form')).scrollIntoView({behavior: 'smooth'}
+              document.getElementById('review-form') ||
+              {scrollIntoView() {}}).scrollIntoView({behavior: 'smooth'}
               )"
         <?php if (!$rating): ?>
          title="<?= $escaper->escapeHtmlAttr(__('Be the first to review this product')) ?>"
