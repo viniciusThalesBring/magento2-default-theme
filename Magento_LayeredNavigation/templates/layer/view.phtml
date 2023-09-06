@@ -39,7 +39,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             <button
                 type="button"
                 @click="blockOpen = !blockOpen"
-                class="block-title h-10 flex items-center justify-between w-full"
+                class="block-title flex items-center justify-between w-full"
                 aria-controls="filters-content"
                 :aria-expanded="blockOpen"
                 :aria-disabled="!isMobile"
@@ -67,7 +67,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </h2>
         <div
             id="filters-content"
-            class="block-content filter-content pt-3"
+            class="block-content filter-content pt-4"
             x-show="isMobile && blockOpen || !isMobile"
         >
             <?= $block->getChildHtml('state') ?>
