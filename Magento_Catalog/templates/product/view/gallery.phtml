@@ -95,7 +95,8 @@ $productName = $block->getProduct()->getName();
                         height="<?= /* @noEscape */ $mediumHeight ?>"
                         :loading="active !== index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
-                        x-transition.opacity.duration.500ms x-show="active===index"
+                        x-transition.opacity.duration.500ms
+                        x-show="active === index"
                         @keydown.enter="openFullscreen($root)"
                         :tabindex="fullscreen ? '-1' : '0'"
                         :aria-describedby="fullscreen
