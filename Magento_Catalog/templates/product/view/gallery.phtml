@@ -182,7 +182,7 @@ $productName = $block->getProduct()->getName();
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="closeFullScreen($root)"
+            <button @click="closeFullScreen()"
                     type="button"
                     class="hidden text-gray-500 p-3 hover:text-gray-600 focus:text-gray-600
                         transition ease-in-out duration-150"
@@ -435,7 +435,7 @@ $productName = $block->getProduct()->getName();
             },
             eventListeners: {
                 ['@keydown.window.escape']() {
-                    this.closeFullScreen(this.$root)
+                    this.closeFullScreen()
                 },
                 ['@update-gallery.window'](event) {
                     this.receiveImages(event.detail);
@@ -473,11 +473,10 @@ $productName = $block->getProduct()->getName();
 
                 document.addEventListener('keydown', this.focusTrapListener);
             },
-            closeFullScreen(node) {
+            closeFullScreen() {
                 if (this.fullscreen) {
                     this.$refs.galleryMainImage.focus();
                 }
-
                 this.fullscreen = false;
 
                 document.removeEventListener('keydown', this.focusTrapListener);
