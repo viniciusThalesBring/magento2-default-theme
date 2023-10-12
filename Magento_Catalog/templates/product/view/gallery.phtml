@@ -182,7 +182,7 @@ $productName = $block->getProduct()->getName();
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="closeFullScreen()"
+            <button @click="closeFullScreen($root)"
                     type="button"
                     class="hidden text-gray-500 p-3 hover:text-gray-600 focus:text-gray-600
                         transition ease-in-out duration-150"
@@ -221,17 +221,6 @@ $productName = $block->getProduct()->getName();
             init() {
                 this.initActive();
                 this.$nextTick(() => this.calcPageSize());
-
-                this.$watch('fullscreen', (open) => {
-                    this.$nextTick(() => {
-                        this.scrollLock(open);
-
-                        window.requestAnimationFrame(() => {
-                            this.calcPageSize();
-                            this.tabLock(this.$refs.galleryBody, open);
-                        });
-                    })
-                });
             },
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
@@ -436,7 +425,7 @@ $productName = $block->getProduct()->getName();
             },
             eventListeners: {
                 ['@keydown.window.escape']() {
-                    this.closeFullScreen()
+                    this.closeFullScreen(this.$root)
                 },
                 ['@update-gallery.window'](event) {
                     this.receiveImages(event.detail);
@@ -445,45 +434,27 @@ $productName = $block->getProduct()->getName();
                     this.resetGallery();
                 }
             },
-            scrollLock(use = true) {
-                document.body.style.overflow = use ? "hidden" : "";
-            },
-            tabLock(target, use = true) {
-                if (!use) {
-                    document.removeEventListener('keydown', this.focusTrapListener);
-                    return;
-                }
-
-                const focusableElements = target.querySelectorAll(
-                    'button:not([tabindex="-1"]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-                ) || [];
-                const focusableContent = Array.from(focusableElements).filter(el => el.style.display !== 'none');
-                console.log(focusableElements, focusableContent);
-                if (!focusableContent.length) return;
-
-                const firstFocusableElement = focusableContent[0];
-                const lastFocusableElement = focusableContent[focusableContent.length - 1];
-                firstFocusableElement.focus();
-
-                this.focusTrapListener = (event) => {
-                    const isTabPressed = event.key === 'Tab' || event.keyCode === 9;
-                    if (!isTabPressed) return;
-
-                    const isFirst = document.activeElement === firstFocusableElement;
-                    const isLast = document.activeElement === lastFocusableElement;
-
-                    event.shiftKey
-                        ? isFirst && (event.preventDefault(), lastFocusableElement.focus())
-                        : isLast && (event.preventDefault(), firstFocusableElement.focus());
-                };
-
-                document.addEventListener('keydown', this.focusTrapListener);
-            },
-            openFullscreen() {
+            openFullscreen(node) {
                 this.fullscreen = true;
+                document.body.style.overflow = "hidden";
+                hyva.trapFocus(node);
+
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        this.calcPageSize()
+                    });
+                });
             },
-            closeFullScreen() {
+            closeFullScreen(node) {
                 this.fullscreen = false;
+                document.body.style.overflow = null;
+                hyva.releaseFocus(node);
+
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        this.calcPageSize()
+                    });
+                });
             },
             handleTouchStart(event) {
                 if (this.images.length <= 1) {
