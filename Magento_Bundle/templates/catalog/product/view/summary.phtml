@@ -33,19 +33,6 @@ $product = $block->getProduct();
                 </p>
 
                 <?= $block->getChildHtml('product.info.form') ?>
-
-                <?= $block->getChildHtml("product.info.bundle.price") ?>
-
-                <?php if ($product->isSaleable()): ?>
-                <div class="flex justify-between my-4 sm:mt-0 lg:justify-start">
-                    <?= $block->getChildHtml("product.info.quantity") ?>
-                    <?= $block->getChildHtml("product.info.addtocart") ?>
-                </div>
-                <div class="flex my-4 sm:mt-0">
-                    <?= $block->getChildHtml("addtocart.shortcut.buttons") ?>
-                </div>
-                <?php endif; ?>
-
             </div>
 
             <div class="py-4 my-2 tier-price-container">
@@ -74,6 +61,21 @@ $product = $block->getProduct();
                     </template>
                     </ul>
                 </div>
+            </div>
+
+            <div class="border-container border-t">
+                <?= $block->getChildHtml("product.info.bundle.price") ?>
+
+                <?php if ($product->isSaleable()): ?>
+                    
+                        <div class="flex justify-between mb-4 sm:mt-0 lg:justify-start">
+                            <?= $block->getChildHtml("product.info.quantity") ?>
+                            <?= $block->getChildHtml("product.info.addtocart") ?>
+                        </div>
+                        <div class="flex my-4 sm:mt-0">
+                            <?= $block->getChildHtml("addtocart.shortcut.buttons") ?>
+                        </div>
+                <?php endif; ?>
             </div>
         </div>
         <script>
