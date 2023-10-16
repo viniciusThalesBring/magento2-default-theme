@@ -67,14 +67,13 @@ $product = $block->getProduct();
                 <?= $block->getChildHtml("product.info.bundle.price") ?>
 
                 <?php if ($product->isSaleable()): ?>
-                    
-                        <div class="flex justify-between mb-4 sm:mt-0 lg:justify-start">
-                            <?= $block->getChildHtml("product.info.quantity") ?>
-                            <?= $block->getChildHtml("product.info.addtocart") ?>
-                        </div>
-                        <div class="flex my-4 sm:mt-0">
-                            <?= $block->getChildHtml("addtocart.shortcut.buttons") ?>
-                        </div>
+                    <div class="flex justify-between mb-4 sm:mt-0 lg:justify-start">
+                        <?= $block->getChildHtml("product.info.quantity") ?>
+                        <?= $block->getChildHtml("product.info.addtocart") ?>
+                    </div>
+                    <div class="flex my-4 sm:mt-0">
+                        <?= $block->getChildHtml("addtocart.shortcut.buttons") ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
