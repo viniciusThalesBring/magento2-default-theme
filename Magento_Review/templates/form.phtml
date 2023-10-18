@@ -45,6 +45,30 @@ $gqlViewModel = $viewModels->require(GraphqlViewModel::class);
 /** @var ReCaptcha $recaptcha */
 $recaptcha = $block->getData('viewModelRecaptcha');
 
+$gqlCreateProductReviewMutation = '
+mutation createProductReviewMutation(
+    $sku: String!,
+    $nick: String!,
+    $summary: String!,
+    $review: String!,
+    $ratings: [ProductReviewRatingInput]!
+) {
+    createProductReview(
+        input: {
+            sku: $sku,
+            nickname: $nick,
+            summary: $summary,
+            text: $review,
+            ratings: $ratings
+        }
+    ) {
+        review {
+            nickname
+        }
+    }
+}
+';
+
 ?>
 <div class="mx-auto py-6 items-center" id="review-form" tabindex="0">
     <div class="card w-full px-6 py-3">
@@ -291,29 +315,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                             this.isLoading = true;
                             this.displayErrorMessage = false;
 
-                            const query = `<?= /* @noEscape */ $gqlViewModel->query('create_product_review_mutation', '
-mutation createProductReviewMutation(
-    $sku: String!,
-    $nick: String!,
-    $summary: String!,
-    $review: String!,
-    $ratings: [ProductReviewRatingInput]!
-) {
-    createProductReview(
-        input: {
-            sku: $sku,
-            nickname: $nick,
-            summary: $summary,
-            text: $review,
-            ratings: $ratings
-        }
-    ) {
-        review {
-            nickname
-        }
-    }
-}
-                            ') ?>`;
+                            const query = `<?= /* @noEscape */ $gqlViewModel->query('create_product_review_mutation', $gqlCreateProductReviewMutation) ?>`;
                             const variables = {
                                 sku: '<?= $escaper->escapeJs($block->getProductInfo()->getSku()) ?>',
                                 nick: this.nickname,
