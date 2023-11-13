@@ -160,7 +160,7 @@ $swatchItemBlock->setData('product_id', $productId);
     </script>
 
 <div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>()"
-     x-init="findAllowedAttributeOptions()"
+     x-init="findAllowedAttributeOptions(); initShowSwatchesIntersect();"
      @private-content-loaded.window="onGetCartData($event.detail.data)"
      @resize.window="resizeEvent()"
      class="mb-2 relative"
@@ -177,19 +177,21 @@ $swatchItemBlock->setData('product_id', $productId);
             <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
         >
             <div class="w-full overflow-x-hidden swatch-attribute-options min-h-14">
-                <div
-                    id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
-                    class="flex flex-nowrap w-full overflow-auto snap items-center py-1"
-                    role="radiogroup"
-                    aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
-                    x-bind="scrollEvents"
-                >
-                    <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
-                                :key="item.id"
+                <template x-if="showSwatches">
+                    <div
+                        id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
+                        class="flex flex-nowrap w-full overflow-auto snap items-center py-1"
+                        role="radiogroup"
+                        aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
+                        x-bind="scrollEvents"
                     >
-                        <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
-                    </template>
-                </div>
+                        <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
+                                    :key="item.id"
+                        >
+                            <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
         <?php endforeach; ?>

@@ -161,6 +161,24 @@ use Magento\Framework\View\Element\Template;
             },
             getTooltipLabel() {
                 return this.getSwatchConfig(this.activeTooltipItem.attribute, this.activeTooltipItem.item).label
+            },
+            showSwatches: false,
+            initShowSwatchesIntersect() {
+                if ('IntersectionObserver' in window && !window.scrollY) {
+                    let io = new IntersectionObserver(
+                        entries => {
+                            entries.map(entry => {
+                                if (entry.isIntersecting) {
+                                    io.unobserve(this.$root);
+                                    this.showSwatches = true;
+                                }
+                            })
+                        }
+                    );
+                    io.observe(this.$root);
+                } else {
+                    this.showSwatches = true;
+                }
             }
         }
     }
