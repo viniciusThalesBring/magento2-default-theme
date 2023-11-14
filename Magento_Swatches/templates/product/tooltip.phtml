@@ -24,6 +24,7 @@ use Magento\Framework\View\Element\Template;
         <div class="shadow-lg">
             <div class="absolute top-0 left-0 z-10 min-w-20 p-2 -mt-6 text-sm leading-tight text-black
                     transform -translate-x-1/2 -translate-y-full bg-white rounded-lg shadow-lg text-center"
+                 :class="{'-translate-x-5' : isFirstItemCol()}"
             >
             <template x-if="isVisualSwatch(activeTooltipItem.attribute, activeTooltipItem.item)">
                 <div class="inline-block border shadow-sm border-container"
