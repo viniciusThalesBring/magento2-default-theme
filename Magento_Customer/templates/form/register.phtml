@@ -137,57 +137,61 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                             <?= $escaper->escapeHtml(__('Password')) ?>
                         </span>
                     </label>
-                    <div class="control flex items-center">
-                        <?php $minimumPasswordLength = $block->getMinimumPasswordLength() ?>
-                        <div class="sr-only" aria-live="polite">
-                            <template x-if="!showPassword">
-                                <span>
-                                    <?= $escaper->escapeHtml(__('Password hidden')) ?>
-                                </span>
-                            </template>
-                            <template x-if="showPassword">
-                                <span>
-                                    <?= $escaper->escapeHtml(__('Password shown')) ?>
-                                </span>
-                            </template>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="control flex items-center">
+                            <?php $minimumPasswordLength = $block->getMinimumPasswordLength() ?>
+                            <div class="sr-only" aria-live="polite">
+                                <template x-if="!showPassword">
+                                    <span>
+                                        <?= $escaper->escapeHtml(__('Password hidden')) ?>
+                                    </span>
+                                </template>
+                                <template x-if="showPassword">
+                                    <span>
+                                        <?= $escaper->escapeHtml(__('Password shown')) ?>
+                                    </span>
+                                </template>
+                            </div>
+                            <input
+                                :type="showPassword ? 'text' : 'password'"
+                                type="password"
+                                id="password"
+                                name="password"
+                                title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"
+                                minlength="<?= $escaper->escapeHtmlAttr($minimumPasswordLength) ?>"
+                                class="form-input"
+                                required
+                                data-validate='{"password-strength": {"minCharacterSets": <?= (int) $passwordMinCharacterSets ?>}}'
+                                @input.debounce="onChange"
+                                autocomplete="off"
+                            >
+                            <button
+                                type="button"
+                                :aria-pressed="showPassword ? true : false"
+                                x-on:click="showPassword = !showPassword"
+                                class="px-4 py-3"
+                                :aria-label="showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'"
+                            >
+                                <template x-if="!showPassword">
+                                    <?= $heroicons->eyeHtml('w-5 h-5'); ?>
+                                </template>
+                                <template x-if="showPassword">
+                                    <?= $heroicons->eyeOffHtml('w-5 h-5'); ?>
+                                </template>
+                            </button>
                         </div>
-                        <input
-                            :type="showPassword ? 'text' : 'password'"
-                            type="password"
-                            id="password"
-                            name="password"
-                            title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"
-                            minlength="<?= $escaper->escapeHtmlAttr($minimumPasswordLength) ?>"
-                            class="form-input"
-                            required
-                            data-validate='{"password-strength": {"minCharacterSets": <?= (int) $passwordMinCharacterSets ?>}}'
-                            @input.debounce="onChange"
-                            autocomplete="off"
-                        >
-                        <button
-                            type="button"
-                            :aria-pressed="showPassword ? true : false"
-                            x-on:click="showPassword = !showPassword"
-                            class="px-4 py-3"
-                            :aria-label="showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'"
-                        >
-                            <template x-if="!showPassword">
-                                <?= $heroicons->eyeHtml('w-5 h-5'); ?>
-                            </template>
-                            <template x-if="showPassword">
-                                <?= $heroicons->eyeOffHtml('w-5 h-5'); ?>
-                            </template>
-                        </button>
-                        <div
-                            id="password-strength-meter-container"
-                            data-role="password-strength-meter"
-                            aria-live="polite"
-                        >
-                            <div id="password-strength-meter" class="password-strength-meter">
-                                <?= $escaper->escapeHtml(__('Password Strength')) ?>:
-                                <span id="password-strength-meter-label" data-role="password-strength-meter-label">
-                                    <?= $escaper->escapeHtml(__('No Password')) ?>
-                                </span>
+                        <div class="self-center">
+                            <div
+                                id="password-strength-meter-container"
+                                data-role="password-strength-meter"
+                                aria-live="polite"
+                            >
+                                <div id="password-strength-meter" class="password-strength-meter">
+                                    <?= $escaper->escapeHtml(__('Password Strength')) ?>:
+                                    <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                                        <?= $escaper->escapeHtml(__('No Password')) ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
