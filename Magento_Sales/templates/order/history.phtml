@@ -88,40 +88,44 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             <?= $escaper->escapeHtml($order->getStatusLabel()) ?>
                         </td>
                         <td class="p-2">
-                            <div class="flex items-center justify-evenly">
-                                <a
-                                    href="<?= $escaper->escapeUrl($block->getViewUrl($order)) ?>"
-                                    class="inline-block text-sm underline text-secondary-darker"
-                                    title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>"
-                                    aria-label="<?= $escaper->escapeHtmlAttr(__('View order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
-                                >
-                                    <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                                </a>
-                                <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($order->getEntityId())): ?>
-                                    <?php $formData = json_decode(
-                                        $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)->getPostData(
-                                            $block->getReorderUrl($order)
-                                        ),
-                                        true
-                                    ) ?>
-                                    <form
-                                        action="<?= /* @noEscape */ $formData['action'] ?>"
-                                        method="post"
-                                        class="inline-flex items-center"
+                            <?php // 'received' is an order status added in Magento_AsyncOrder in Adobe Commerce ?>
+                            <?php // The condition will always return 'true' in Magento Open Source ?>
+                            <?php if ($order->getStatus() !== 'received'): ?>
+                                <div class="flex items-center justify-evenly">
+                                    <a
+                                        href="<?= $escaper->escapeUrl($block->getViewUrl($order)) ?>"
+                                        class="inline-block text-sm underline text-secondary-darker"
+                                        title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>"
+                                        aria-label="<?= $escaper->escapeHtmlAttr(__('View order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
                                     >
-                                        <?= $block->getBlockHtml('formkey'); ?>
-                                        <input type="hidden" name="data" value="<?= $escaper->escapeHtmlAttr(json_encode($formData['data'])) ?>">
-                                        <button
-                                            title="<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>"
-                                            type="submit"
-                                            class="inline-block text-sm underline text-secondary-darker"
-                                            aria-label="<?= $escaper->escapeHtmlAttr(__('Reorder') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                                        <?= $heroicons->eyeHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                    </a>
+                                    <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($order->getEntityId())): ?>
+                                        <?php $formData = json_decode(
+                                            $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)->getPostData(
+                                                $block->getReorderUrl($order)
+                                            ),
+                                            true
+                                        ) ?>
+                                        <form
+                                            action="<?= /* @noEscape */ $formData['action'] ?>"
+                                            method="post"
+                                            class="inline-flex items-center"
                                         >
-                                            <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                                        </button>
-                                    </form>
-                                <?php endif ?>
-                            </div>
+                                            <?= $block->getBlockHtml('formkey'); ?>
+                                            <input type="hidden" name="data" value="<?= $escaper->escapeHtmlAttr(json_encode($formData['data'])) ?>">
+                                            <button
+                                                title="<?= $escaper->escapeHtmlAttr(__('Reorder')) ?>"
+                                                type="submit"
+                                                class="inline-block text-sm underline text-secondary-darker"
+                                                aria-label="<?= $escaper->escapeHtmlAttr(__('Reorder') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+                                            >
+                                                <?= $heroicons->refreshHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+                                            </button>
+                                        </form>
+                                    <?php endif ?>
+                                </div>
+                            <?php endif ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
