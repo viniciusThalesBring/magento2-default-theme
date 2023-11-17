@@ -25,11 +25,7 @@ $uniqueId = $productId . uniqid();
 ?>
 <?php if ($block->isReviewEnabled()): ?>
     <div
-        x-data="initRating<?= /* @noEscape */ $uniqueId ?>()"
-        @keyup.enter="scrollToRatings()"
-        @click="scrollToRatings()"
         class="rating-summary flex"
-        :class="{'cursor-pointer' : reviewsSection}"
         <?php if (!$rating): ?>
             title="<?= $escaper->escapeHtmlAttr(__('Be the first to review this product')) ?>"
         <?php endif; ?>
@@ -122,35 +118,4 @@ $uniqueId = $productId . uniqid();
             <?php endwhile; ?>
         <?php endif; ?>
     </div>
-
-    <script>
-        'use strict';
-
-        function initRating<?= /* @noEscape */ $uniqueId ?>() {
-            return {
-                reviewsSection: document.getElementById('customer-review-list')
-                    || document.getElementById('customer-reviews')
-                    || document.getElementById('review-form'),
-                scrollToRatings() {
-                    let scrollTimeout = null
-
-                    if (!this.reviewsSection) {
-                        return
-                    }
-
-                    addEventListener('scroll', () => {
-                        clearTimeout(scrollTimeout);
-
-                        scrollTimeout = setTimeout(() => {
-                            if (this.reviewsSection) {
-                                this.reviewsSection.focus()
-                            }
-                        }, 50);
-                    }, { once: true });
-
-                    this.reviewsSection.scrollIntoView({behavior: 'smooth'})
-                }
-            }
-        }
-    </script>
 <?php endif; ?>
