@@ -1,0 +1,44 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+
+?>
+<a id="customer.header.wishlist.link"
+   class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100 relative"
+   href="<?= $escaper->escapeUrl($block->getUrl('wishlist')) ?>"
+   title="<?= $escaper->escapeHtml(__('My Wish List')) ?>"
+   x-data="initWishlistHeader()"
+   @private-content-loaded.window="receiveWishlistData($event.detail.data)"
+>
+    <span class="flex items-center">
+        <?= $escaper->escapeHtml(__('My Wish List')) ?>
+        <template x-if="itemCount">
+            <span class="h-5 px-2 py-1 ml-2 -mt-0.5 text-xs font-semibold leading-none text-center text-white uppercase bg-yellow-500 rounded-full">
+                <span x-text="itemCount"></span>
+            </span>
+        </template>
+    </span>
+</a>
+<script>
+    function initWishlistHeader() {
+        return {
+            wishlistProducts: null,
+            itemCount: 0,
+            receiveWishlistData(data) {
+                if (data['wishlist']) {
+                    this.wishlistProducts = data['wishlist'];
+                    this.itemCount = this.wishlistProducts.counter.split(' ')[0];
+                }
+            }
+        }
+    }
+</script>
