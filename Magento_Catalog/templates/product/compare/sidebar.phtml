@@ -116,10 +116,9 @@ function initCompareSidebarClear() {
 }
 </script>
 
-<div
-    x-data="initCompareOnCompareSidebar()"
-    @private-content-loaded.window="receiveCompareData($event.detail.data)"
-    class="compare-widget"
+<div x-data="initCompareOnCompareSidebar()"
+     @private-content-loaded.window="receiveCompareData($event.detail.data)"
+     class="compare-widget"
 >
     <template x-if="itemCount">
         <div class="mt-8">
