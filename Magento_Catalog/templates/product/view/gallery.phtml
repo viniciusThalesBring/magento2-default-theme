@@ -93,7 +93,14 @@ $productName = $block->getProduct()->getName();
                         :src="fullscreen ? image.full : image.img"
                         x-transition.opacity.duration.500ms
                         x-show="active === index"
-                    >
+                        @keydown.enter="openFullscreen($root)"
+                        :tabindex="fullscreen ? '-1' : '0'"
+                        :aria-describedby="fullscreen
+                            ? ''
+                            : 'main-image-description fullscreen-btn-label'
+                        "
+                        :role="fullscreen ? 'img' : 'button'"
+                    />
                 </template>
                 <button
                     type="button"
@@ -107,17 +114,15 @@ $productName = $block->getProduct()->getName();
                 ></button>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
                      :class="{ 'hidden': activeVideoType !== 'youtube' }"
-                     x-transition.opacity.duration.500ms x-show="
-                         images[active].type === 'video' && activeVideoType === 'youtube'
-                     "
+                     x-transition.opacity.duration.500ms
+                     x-show="images[active].type === 'video' && activeVideoType === 'youtube'"
                 >
                     <div id="youtube-player" class="w-full h-full"></div>
                 </div>
                 <div class="absolute inset-0 hidden w-full h-full bg-white"
                      :class="{ 'hidden': activeVideoType !== 'vimeo' }"
-                     x-transition.opacity.duration.500ms x-show="
-                         images[active].type === 'video' && activeVideoType === 'vimeo'
-                     "
+                     x-transition.opacity.duration.500ms
+                     x-show="images[active].type === 'video' && activeVideoType === 'vimeo'"
                 >
                     <div id="vimeo-player" class="w-full h-full"></div>
                 </div>
@@ -221,6 +226,16 @@ $productName = $block->getProduct()->getName();
             init() {
                 this.initActive();
                 this.$nextTick(() => this.calcPageSize());
+
+                this.$watch('fullscreen', open => {
+                    this.$nextTick(() => {
+                        this.scrollLock(open);
+
+                        window.requestAnimationFrame(() => {
+                            this.calcPageSize()
+                        });
+                    });
+                })
             },
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
@@ -435,11 +450,21 @@ $productName = $block->getProduct()->getName();
                 },
                 ['@reset-gallery.window'](event) {
                     this.resetGallery();
-                }
+                },
+                ['@keyup.arrow-right.window']() {
+                    if (!this.fullscreen) return;
+                    this.nextItem();
+                },
+                ['@keyup.arrow-left.window']() {
+                    if (!this.fullscreen) return;
+                    this.previousItem();
+                },
+            },
+            scrollLock(use = true) {
+                document.body.style.overflow = use ? "hidden" : "";
             },
             openFullscreen() {
                 this.fullscreen = true;
-                this.$nextTick(() => this.calcPageSize());
 
                 hyva.trapFocus(this.$root);
             },
@@ -480,7 +505,15 @@ $productName = $block->getProduct()->getName();
             },
             getNextIndex() {
                 return this.active + 1 === this.itemCount ? 0 : this.active + 1;
-            }
+            },
+            previousItem() {
+                if (this.active === 0) return;
+                this.setActiveAndScrollTo(this.active - 1);
+            },
+            nextItem() {
+                if ((this.active + 1) === this.itemCount) return;
+                this.setActiveAndScrollTo(this.active + 1);
+            },
         }
      }
 </script>
