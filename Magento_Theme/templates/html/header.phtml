@@ -152,6 +152,17 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 x-ref="cartButton"
                 :aria-disabled="isCartEmpty()"
                 title="<?= $escaper->escapeHtmlAttr(__('Cart')) ?>"
+                :aria-label="`
+                    <?= $escaper->escapeHtml($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>,
+                    ${isCartEmpty()
+                        ? '<?= $escaper->escapeHtml(__('Cart is empty')) ?>'
+                        : hyva.str(
+                            'You have %1 product%2 in your cart.',
+                            cart.summary_count,
+                            cart.summary_count === 1 ? '' : 's'
+                        )
+                    }
+                `"
                 <?php if ($showMiniCart): ?>
                     @click.prevent.stop="() => {
                         $dispatch('toggle-cart', { isOpen: true })
@@ -163,20 +174,6 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
                 <?php endif ?>
             >
-                <span
-                    class="sr-only label"
-                    x-text="`
-                        <?= $escaper->escapeHtml($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>,
-                        ${isCartEmpty() ?
-                        '<?= $escaper->escapeHtml(__('Cart is empty')) ?>' :
-                        hyva.str(
-                            'You have %1 product%2 in your cart.',
-                            cart.summary_count,
-                            cart.summary_count === 1 ? '' : 's'
-                        )}`
-                    "
-                >
-                </span>
 
                 <?= $heroicons->shoppingCartHtml(
                     "w-8 h-8 md:h-6 md:w-6 hover:text-black",
