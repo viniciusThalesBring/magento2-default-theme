@@ -102,21 +102,13 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     }
                 `"
             >
-
-
-                <span class="absolute top-0 right-0 h-5 px-2 py-1 -mt-5 -mr-4 text-xs font-semibold
-                    leading-none text-center text-white uppercase transform -translate-x-1
-                    translate-y-1/2 bg-yellow-500 rounded-full"
-                >
-                    <span x-text="itemCount"></span>
-                    <span x-show="itemCount === 1" class="sr-only">
-                        <?= $escaper->escapeHtml(__('item')) ?>
-                    </span>
-                    <span x-show="itemCount > 1" class="sr-only">
-                        <?= $escaper->escapeHtml(__('items')) ?>
-                    </span>
-                </span>
                 <?= $heroicons->scaleHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
+                <span
+                    x-text="itemCount"
+                    class="absolute -top-2.5 -right-3 h-5 px-2 py-1 rounded-full bg-yellow-500 text-white
+                        text-xs font-semibold leading-none text-center uppercase tabular-nums"
+                    aria-hidden="true"
+                ></span>
             </a>
 
             <!--Search Icon-->
@@ -176,11 +168,8 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     x-text="cart.summary_count"
                     x-show="!isCartEmpty()"
                     x-cloak
-                    class="
-                        absolute top-0 right-0 h-5 px-2 py-1 -mt-5 -mr-4 text-xs font-semibold
-                        leading-none text-center text-white uppercase transform -translate-x-1
-                        translate-y-1/2 rounded-full bg-primary
-                    "
+                    class="absolute -top-2.5 -right-3 h-5 px-2 py-1 rounded-full bg-primary text-white
+                        text-xs font-semibold leading-none text-center uppercase tabular-nums"
                     aria-hidden="true"
                 ></span>
             <?php if ($showMiniCart): ?>
@@ -188,7 +177,6 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
             <?php else: ?>
                 </a>
             <?php endif ?>
-
         </div>
     </div>
     <!--Search-->
