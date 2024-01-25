@@ -138,6 +138,9 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 ) ?>
             </button>
 
+            <!-- Additional Header Elements -->
+            <?= $block->getChildChildHtml('additional') ?>
+
             <!--Customer Icon & Dropdown-->
             <?= $block->getChildHtml('customer') ?>
 
