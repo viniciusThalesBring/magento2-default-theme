@@ -1,22 +1,29 @@
 <?php
 
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
 use Magento\AdvancedSearch\Block\SearchData;
+use Magento\Framework\Escaper;
 use Magento\Framework\Locale\LocaleFormatter;
 use Magento\Search\Model\QueryResult;
-use Magento\Framework\Escaper;
 
-/** @var SearchData $block */
 /** @var Escaper $escaper */
 /** @var LocaleFormatter $localeFormatter */
 /** @var QueryResult[] $data */
-
-$data = $block->getItems();
+/** @var SearchData $block */
 ?>
 
-<?php if (count($data)): ?>
+<?php if (count($block->getItems())): ?>
     <dl class="my-6">
         <dt class="mb-2 font-bold"><?= $escaper->escapeHtml(__($block->getTitle())) ?></dt>
-        <?php foreach ($data as $additionalInfo): ?>
+        <?php foreach ($block->getItems() as $additionalInfo): ?>
             <dd>
                 <a
                     class="hover:underline"
@@ -24,7 +31,7 @@ $data = $block->getItems();
                 >
                     <span><?= $escaper->escapeHtml($additionalInfo->getQueryText()) ?></span>
                     <?php if ($block->isShowResultsCount()): ?>
-                        <span class="count text-primary">(<?= /* @noEscape */ $localeFormatter->formatNumber((int)$additionalInfo->getResultsCount()) ?>)</span>
+                        <span class="count">(<?= /* @noEscape */ $localeFormatter->formatNumber((int)$additionalInfo->getResultsCount()) ?>)</span>
                     <?php endif; ?>
                 </a>
             </dd>
