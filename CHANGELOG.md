@@ -7,7 +7,305 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.1...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.5...main
+
+## [1.3.5] - 2023-12-20
+
+[1.3.5]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.4...1.3.5
+
+### Added
+
+- **Add selected swatch value next to product option on the Product page**
+
+  Previously, the selected swatch value was not displayed alongside the product option label on the product page.
+  This enhancement adds the swatch label to the label on product detail pages, making the selected swatch option more visible.
+
+  For more details, please refer to [issue #854](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/854).
+
+- **Add product slider type class to the slider wrapper**
+
+  Product slider wrappers now have one of the classes `related-product-slider`, `upsell-product-slider`, `crosssell-product-slider`, or `generic-product-slider`.
+  This can be used to apply distinct styles for different sliders.
+
+  For more details, please refer to [merge request #848](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/848).
+  
+  Many thanks to Iman Aboheydary (Customgento) for their contribution!
+
+- **Product image gallery: add fullscreen arrow keys support and scroll-lock**
+
+  For more details, please refer to [merge request #884](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/884).
+
+  Many thanks to Lars de Weert (Made by Mouses) for their contribution!
+
+### Changed
+
+- **Fix CLS issue with layered navigation**
+
+  The initial render for the layered navigation is now handled entirely by CSS, resolving the CLS issue.
+
+  For more details, please refer to [issue #862](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/862).
+
+- **Fix layout XML schema violation regression**
+
+  This change fixes a regression introduced in release 1.3.4. The tailwind class `md:grid-cols-2` is not compatible with
+  the native Magento layout container `htmlClass` attribute regular expression, resulting in a broken customer login page.  
+  The error made it into production because test instances used a patched XSD as described as a [workaround in the docs](https://docs.hyva.io/hyva-themes/building-your-theme/styling-layout-containers.html#workaround-1-patch-the-schema-pattern).
+
+  The offending class was moved into the `web/tailwind/components/customer.css` file as part of the `customer-login-container` class.
+
+  For more details, please refer to [issue #861](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/861).
+
+- **Improve workaround for Mobile Safari bug requiring double tap to activate buttons on product list items**
+
+  The workaround for swatch selection in product lists released in 1.3.3 did not cover the add-to-cart button or the image link of product list items.
+
+  For more details, please refer to [issue #858](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/858).
+
+- **Gracefully handle customer registration form with prefilled region text input**
+
+  A manually entered region could be rendered as a JavaScript string without quotes. This error did not occur in the default registration form configuration.  
+
+  For more details, please refer to [issue #860](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/860).
+
+- **Remove superfluous argument to Product::getTypeInstance()**
+
+  Previously `true` was passed, but since the method signature does not accept parameters it had no effect.
+
+  For more details, please refer to [merge request #986](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/986).
+
+  Many thanks to Tjitse Efdé (Vendic) for their contribution!
+
+- **Replace GIF loader with SVG version for consistency with other Hyvä loaders**
+
+  The Default theme provides three loader icon variants, two using custom SVG icons, and one using the Magento `loader-1.gif`.  
+  With this change, all Hyvä default theme loaders look the same.
+
+  For more details, please refer to [merge request #857](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/857).
+
+- **Wrap product dropdown options on mobile**
+
+  For more details, please refer to [merge request #849](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/849).
+
+- **Remove duplicate border width specification for swatches**
+
+  For more details, please refer to [merge request #815](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/815).
+
+- **Do not render hidden sidebar wishlist and compare section headers if there are no items**
+
+  Previously, even without items, the headings were rendered, even though they were hidden with CSS.
+
+  For more details, please refer to [merge request #806](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/806).
+
+- **Change cart drawer heading from H2 to P**
+
+  Previously, the H2 tag in the cart drawer was rendered before the H1 tag in the main content area.  
+  To improve accessibility, the title in the cart drawer is now rendered in a P tag.
+
+  For more details, please refer to [merge request #804](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/804).
+
+### Removed
+
+- **Remove "Show Password" from en_US.csv (covered by core Magento)**
+
+  The default-theme i18n/en_US.csv file only contains phrases that differ from Luma.  
+  Since "Show Password" is present in the core language packs, it should not be part of the Hyvä translation phrases.
+
+  This removal is backward compatible.
+
+  For more details, please refer to [issue #867](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/867).
+
+## [1.3.4] - 2023-11-21
+
+[1.3.4]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.3...1.3.4
+
+### Added
+
+- **Add missing translation phrase "Show Password"**
+
+    Previously this phrase was missing from the Hyvä translation CSV dictionary.  
+    The phrase is not part of the Magento core translation phases, where it is surrounded by single quotes `"'Show Password'"`.
+
+    For more information, please refer to [issue #838](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/838).
+  
+    Many thanks to Tom Muir (e3n - Die Magento Agentur) for the contribution!
+
+### Changed
+
+- **Use HTML unordered list for product listings instead of div-based grid**
+
+    Using semantic HTML improves accessibility.   
+    BC Note: this change can require updates to DOM selectors in end-to-end tests like Cypress or Playwright.
+
+    For more information, please refer to [issue #652](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/652).
+
+- **Use HTML tables for customer order history, recent orders, and customer downloadable products**
+
+    Using semantic HTML improves accessibility.
+    BC Note: this change can require updates to DOM selectors in end-to-end tests like Cypress or Playwright.
+
+    For details, please refer to merge request [#931](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/931).
+
+- **Accommodate additional blocks on customer login page without breaking layout**
+
+    Previously, when adding another widget to the login container, the layout did not automatically wrap the widget to the next line, leading to a broken layout.
+    BC Note: the `web/tailwind/components/customer.css` styles need to be manually removed from existing themes after the upgrade for a theme to profit from this change.
+
+    For more information, please refer to [issue #775](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/775).
+
+- **Update Tailwindcss from 3.2.4 to 3.2.7**
+
+    This change is backward compatible. The newer tailwind version fixes some issues.
+
+    For a list of changes in Tailwindcss, please refer to [issue #820](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/820).
+
+- **Remove superfluous container class on forgot password page**
+
+    This change removes an extra indent on the left of the card block.
+
+    For more information, please refer to [issue #836](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/836).
+
+    Many thanks to Viktor Yakaba (Perspective Magento Team) for the contribution!
+
+- **Fix: layered navigation on 1column page layouts hidden**
+
+    For more information, please refer to [issue #678](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/678).
+
+    Many thanks to Ivan Matsii (Perspective Magento Team) for the contribution!
+
+- **Fix: keyboard navigation on desktop menu ESC focusses mini cart button**
+
+    For more information, please refer to [issue #768](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/768).
+
+- **Align the text on layered navigation toggle buttons to the beginning**
+
+    Previously, for long attribute labels that caused a line wrap, the second line was centered.
+
+    For more information, please refer to [issue #783](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/783).
+
+- **Use hyva.trapFocus for product gallery instead of individual implementation**
+
+    Using the hyva.trapFocus method introduced in Hyvä 1.2.6 improves the overall consistency within the default theme.
+
+    For more information, please refer to [issue #793](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/793).
+
+- **Ensure consistent PLP list view image size**
+
+    In the list view, the product image size previously depended on the product short description length. 
+
+    For more information, please refer to [issue #799](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/799).
+
+- **Update product gallery itemCount when images are received after option selection**
+
+    The itemCount property is used for the calculation of the product thumbnail gallery slider.
+
+    For more information, please refer to [issue #801](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/801).
+
+- **Fix whitespace around layered navigation filter options with zero matching products**
+
+    For more information, please refer to [issue #802](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/802).
+
+### Removed
+
+- Nothing removed
+
+## [1.3.3] - 2023-11-16
+
+[1.3.3]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.2...1.3.3
+
+### Added
+
+- **Added new containers for Customer Custom Attributes**
+
+    Containers were added to the customer_account_create, customer_account_edit, customer_address_form, and layout XML instructions to facilitate rendering custom customer attributes with Hyvä Enterprise.
+
+    Note: while these changes reference features in Adobe Commerce, no Commerce code is depended upon.
+
+    For more information, please refer to [issue #812](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/812).
+
+### Changed
+
+- **Fix: Mobile Safari iOS double click required to start swatch selection**
+
+    For more information, please refer to [merge request #885](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/885).
+
+- **Fix: set initial state of mobile navigation to hidden**
+
+    Previously the mobile navigation default state was visible until JavaScript kicked in.
+
+    For more information, please refer to [issue #767](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/767).
+
+- **Render customer.account.dashboard.info.blocks container on customer dashboard**
+
+    Additional blocks can now be rendered by assigning them as children of the  `customer.account.dashboard.info.blocks` container.
+
+    For more information, please refer to [issue #812](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/812).
+
+- **Render SVG icons on customer dashboard with view model**
+
+    Previously the SVG icons were declared as inline markup in the template without using the SVG icons view model.
+
+    For more information, please refer to [issue #812](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/812).
+
+- **Facilitate Gift Wrapping support (for Hyvä Enterprise)**
+
+    These changes allow gift-wrapping support in the cart page for Hyvä Enterprise to function as expected.
+
+    Note: while these changes reference features in Adobe Commerce, no Commerce code is depended upon.  
+    All checks are based on configuration values which always return null or false in Magento Open Source
+
+    For more information, please refer to [issue #807](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/807).
+
+- **Fix: Order History mobile view order date clipping**
+
+    For more information, please refer to [issue #930](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/930).
+
+- **Hide view/reorder links for received async orders**
+    
+    This change renders orders as expected if asynchronous order processing in Adobe Commerce is enabled.
+
+    For more information, please refer to [merge request #935](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/935).
+
+### Removed
+
+- **Removed superfluous duplicate display css property from product gallery**
+
+    The `block` had no effect since it was overridden by the `flex` property.
+
+    For more information, please refer to [merge request #885](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/885).
+
+## [1.3.2] - 2023-09-30
+
+[1.3.2]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.1...1.3.2
+
+### Added
+
+- Nothing added
+
+### Changed
+
+- **Allow adding additional links to header customer menu**
+
+    Previously, it was not possible to add additional links to the customer-menu.phtml template without overriding the template.
+
+    For more information please refer to the 1.3.2 upgrade notes or [issue #730](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/730).
+
+- **Update version constraint for hyva-themes/magento2-reset-theme to 1.1.5**
+
+     The updated reset theme contains the resets for the Adobe Sensei related modules.
+
+     For more information please refer to [merge request #893](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/893).
+
+- **Fix missing translation function for product gallery thumbnail alt text**
+
+    For more information please refer to [issue #777](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/777).
+
+### Removed
+
+- **Removed obsolete href attribute from button**
+
+    After the accessibility update, the customer menu button (previously a link) still had the href attribute.
+
+    For more information please refer to [issue #766](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/766).
 
 ## [1.3.1] - 2023-09-06
 
@@ -1253,7 +1551,7 @@ This default-theme release only exists to keep the version synchronized with the
 
   For more information please refer to the [issue #433](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/433).
 
-  Many thanks to Stephanie Ehrling (Artplants) for the report and suggesting a fix!
+  Many thanks to Stephanie Ehrling (ECOPLAN) for the report and suggesting a fix!
 
 - **Bugfix: Show new password mismatch method on customer edit form**
 
