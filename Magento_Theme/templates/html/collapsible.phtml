@@ -20,8 +20,11 @@ use Magento\Framework\View\Element\Template;
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 ?>
 
-<div class="block <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?> card filter-option py-4 px-8 mb-6"
-     x-data="{ open: true }">
+<div class="block <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?> filter-option p-4 mb-6 rounded-md bg-container-lighter border"
+     x-data="{ open: false, maybeOpen() { this.open = window.innerWidth >= 768 } }"
+     @resize.debounce.100.window="maybeOpen()"
+     x-init="maybeOpen()"
+>
     <button
         type="button"
         class="
@@ -45,7 +48,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </span>
     </button>
     <span x-show="open" class="delimiter block border-b border-container w-full mt-4 mb-3"></span>
-    <div class="content <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>-content block"
+    <div class="content <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>-content hidden"
          :class="{ 'hidden': !open , 'block': open }"
          id="<?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>"
     >

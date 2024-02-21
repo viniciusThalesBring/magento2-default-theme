@@ -31,6 +31,12 @@ body {
     .page-main-full-width & {
         @apply max-w-none px-0;
     }
+
+    .account & {
+        .sidebar-main {
+            @apply order-1;
+        }
+    }
 }
 
 .page-with-filter {
