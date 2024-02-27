@@ -68,7 +68,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
                 hyva.replaceDomElement('#maincontent', content)
 
             }).catch((error) => {
-                if( error.name !== 'AbortError'){
+                if (error.name !== 'AbortError') {
                     console.error(error);
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                         [{
