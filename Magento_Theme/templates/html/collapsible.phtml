@@ -22,7 +22,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 <div class="block <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?> card filter-option py-4 px-8 mb-6"
      x-data="initAccountNavigation()"
-     x-data="{ open: true }"
      x-init="checkIsMobileResolution()"
      @resize.window.debounce="checkIsMobileResolution()"
      @visibilitychange.window.debounce="checkIsMobileResolution()"
