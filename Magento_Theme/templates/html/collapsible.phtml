@@ -59,7 +59,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             ); ?>
         </span>
     </button>
-    <span :class="{ 'hidden': !blockOpen }" class="delimiter block border-b border-container w-full mt-4 mb-3"></span>
+    <div :class="{ 'hidden': !blockOpen }" class="delimiter border-b border-container w-full mt-4 mb-3 hidden md:block"></div>
     <div class="content <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>-content hidden md:block"
          :class="{ 'hidden': !blockOpen }"
          id="<?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>"
