@@ -48,7 +48,7 @@ $productName = $block->getProduct()->getName();
      class="w-full pt-6 md:pt-0 md:h-auto md:row-start-1 md:row-span-2 md:col-start-1"
     >
     <div
-        :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}"
+        :class="{'w-full h-full fixed top-0 left-0 bg-white z-50 flex': fullscreen}"
         :role="fullscreen ? 'dialog' : false"
         :aria-modal="fullscreen"
         :aria-label="fullscreen ? '<?= $escaper->escapeJs(__('Gallery modal fullscreen')) ?>' : false"
@@ -81,21 +81,18 @@ $productName = $block->getProduct()->getName();
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
                     itemprop="image"
-                    @click="openFullscreen($root)"
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
-                        x-ref="galleryMainImage"
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                        @click="openFullscreen($root)"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-screen-75"
-                        :class="{ 'cursor-pointer': !fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
-                        :loading="active!==index ? 'lazy' : 'eager'"
+                        :loading="active !== index ? 'lazy' : 'eager'"
                         :src="fullscreen ? image.full : image.img"
-                        x-transition.opacity.duration.500ms x-show="active===index"
+                        x-transition.opacity.duration.500ms
+                        x-show="active === index"
                         @keydown.enter="openFullscreen($root)"
                         :tabindex="fullscreen ? '-1' : '0'"
                         :aria-describedby="fullscreen
@@ -105,19 +102,27 @@ $productName = $block->getProduct()->getName();
                         :role="fullscreen ? 'img' : 'button'"
                     />
                 </template>
+                <button
+                    type="button"
+                    class="absolute inset-0 outline-offset-2"
+                    aria-describedby="main-image-description fullscreen-btn-label"
+                    x-ref="galleryFullscreenBtn"
+                    x-show="!fullscreen"
+                    x-cloak
+                    @click="openFullscreen()"
+                    @keydown.enter="openFullscreen()"
+                ></button>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
                      :class="{ 'hidden': activeVideoType !== 'youtube' }"
-                     x-transition.opacity.duration.500ms x-show="
-                         images[active].type === 'video' && activeVideoType === 'youtube'
-                     "
+                     x-transition.opacity.duration.500ms
+                     x-show="images[active].type === 'video' && activeVideoType === 'youtube'"
                 >
                     <div id="youtube-player" class="w-full h-full"></div>
                 </div>
                 <div class="absolute inset-0 hidden w-full h-full bg-white"
                      :class="{ 'hidden': activeVideoType !== 'vimeo' }"
-                     x-transition.opacity.duration.500ms x-show="
-                         images[active].type === 'video' && activeVideoType === 'vimeo'
-                     "
+                     x-transition.opacity.duration.500ms
+                     x-show="images[active].type === 'video' && activeVideoType === 'vimeo'"
                 >
                     <div id="vimeo-player" class="w-full h-full"></div>
                 </div>
@@ -221,6 +226,16 @@ $productName = $block->getProduct()->getName();
             init() {
                 this.initActive();
                 this.$nextTick(() => this.calcPageSize());
+
+                this.$watch('fullscreen', open => {
+                    this.$nextTick(() => {
+                        this.scrollLock(open);
+
+                        window.requestAnimationFrame(() => {
+                            this.calcPageSize()
+                        });
+                    });
+                })
             },
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
@@ -232,9 +247,11 @@ $productName = $block->getProduct()->getName();
                     this.images = images;
                     this.setActive(0);
                 }
+                this.itemCount = this.images.length;
             },
             resetGallery() {
                 this.images = this.initialImages;
+                this.itemCount = this.images.length;
                 this.setActive(0);
             },
             initActive() {
@@ -425,6 +442,7 @@ $productName = $block->getProduct()->getName();
             },
             eventListeners: {
                 ['@keydown.window.escape']() {
+                    if (!this.fullscreen) return;
                     this.closeFullScreen()
                 },
                 ['@update-gallery.window'](event) {
@@ -432,46 +450,31 @@ $productName = $block->getProduct()->getName();
                 },
                 ['@reset-gallery.window'](event) {
                     this.resetGallery();
-                }
+                },
+                ['@keyup.arrow-right.window']() {
+                    if (!this.fullscreen) return;
+                    this.nextItem();
+                },
+                ['@keyup.arrow-left.window']() {
+                    if (!this.fullscreen) return;
+                    this.previousItem();
+                },
             },
-            focusTrapHandler: function(firstFocusableElement, lastFocusableElement, e) {
-                const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-                if (!isTabPressed) {
-                    return;
-                }
-
-                e.shiftKey
-                    ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
-                    : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
+            scrollLock(use = true) {
+                document.body.style.overflow = use ? "hidden" : "";
             },
-            openFullscreen(node) {
+            openFullscreen() {
                 this.fullscreen = true;
-                this.$nextTick(() => this.calcPageSize());
 
-                const focusableElements = 'button, [href], input, select, textarea';
-                const focusableContent = Array.from(node.querySelectorAll(focusableElements))
-                    .filter(el => (el.attributes.tabindex >= 0 || !el.attributes.tabindex) && el.style.display !== 'none');
-
-                const firstFocusableElement = focusableContent.length > 0
-                    ? focusableContent[0]
-                    : null;
-                const lastFocusableElement = focusableContent.length > 0
-                    ? focusableContent[focusableContent.length - 1]
-                    : null;
-
-                this.focusTrapListener = this.focusTrapHandler.bind(this, firstFocusableElement, lastFocusableElement);
-
-                document.addEventListener('keydown', this.focusTrapListener);
+                hyva.trapFocus(this.$root);
             },
-            closeFullScreen() {
-                if (this.fullscreen) {
-                    this.$refs.galleryMainImage.focus();
-                }
+            closeFullScreen(setFocusTo = this.$refs.galleryFullscreenBtn) {
                 this.fullscreen = false;
-                this.$nextTick(() => this.calcPageSize());
-
-                document.removeEventListener('keydown', this.focusTrapListener);
+                hyva.releaseFocus(this.$root);
+                this.$nextTick(() => {
+                    this.calcPageSize();
+                    setFocusTo && setFocusTo.focus()
+                });
             },
             handleTouchStart(event) {
                 if (this.images.length <= 1) {
@@ -502,7 +505,15 @@ $productName = $block->getProduct()->getName();
             },
             getNextIndex() {
                 return this.active + 1 === this.itemCount ? 0 : this.active + 1;
-            }
+            },
+            previousItem() {
+                if (this.active === 0) return;
+                this.setActiveAndScrollTo(this.active - 1);
+            },
+            nextItem() {
+                if ((this.active + 1) === this.itemCount) return;
+                this.setActiveAndScrollTo(this.active + 1);
+            },
         }
      }
 </script>
