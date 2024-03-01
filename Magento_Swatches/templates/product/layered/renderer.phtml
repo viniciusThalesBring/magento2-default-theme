@@ -104,7 +104,7 @@ $swatchData = $block->getSwatchData();
                :style="getSwatchBackgroundStyle(
                     '<?= (string) $swatchData['swatches'][$option]['type'] ?>',
                     '<?= (string) $swatchData['swatches'][$option]['value'] ?>',
-                    '<?= $escaper->escapeUrl($isImageSwatch ? $block->getSwatchPath('swatch_image',$swatchData['swatches'][$option]['value']) : '' )?>'
+                    '<?= $isImageSwatch ? $escaper->escapeJs($block->getSwatchPath('swatch_image', $swatchData['swatches'][$option]['value'])) : '' ?>'
                 )"
                 <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
                     <?php $swatchThumbPath = $isImageSwatch ? $block->getSwatchPath(
@@ -112,12 +112,12 @@ $swatchData = $block->getSwatchData();
                         $swatchData['swatches'][$option]['value']
                     ) : '' ; ?>
                     @mouseenter.self="activeTooltipItem = {
-                            attribute: '<?= $escaper->escapeHtmlAttr($swatchData['swatches'][$option]['value']) ?>',
-                            type: '<?= $escaper->escapeHtmlAttr($swatchData['swatches'][$option]['type']) ?>',
-                            id: '<?= $escaper->escapeHtmlAttr($option) ?>',
-                            label: '<?= $escaper->escapeHtmlAttr($label['label']) ?>',
-                            thumb: '<?= $escaper->escapeUrl($swatchThumbPath) ?>',
-                            value: '<?= $escaper->escapeHtmlAttr($swatchData['swatches'][$option]['value']) ?>'
+                            attribute: '<?= $escaper->escapeJs($swatchData['swatches'][$option]['value']) ?>',
+                            type: '<?= $escaper->escapeJs($swatchData['swatches'][$option]['type']) ?>',
+                            id: '<?= $escaper->escapeJs($option) ?>',
+                            label: '<?= $escaper->escapeJs($label['label']) ?>',
+                            thumb: '<?= $escaper->escapeJs($swatchThumbPath) ?>',
+                            value: '<?= $escaper->escapeJs($swatchData['swatches'][$option]['value']) ?>'
                         }; tooltipPositionElement = $event.target;"
                     @mouseleave.self="activeTooltipItem = false"
                 <?php endif; ?>
