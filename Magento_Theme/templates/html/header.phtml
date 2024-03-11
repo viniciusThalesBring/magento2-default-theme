@@ -92,10 +92,10 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                @private-content-loaded.window="receiveCompareData($event.detail.data)"
                :aria-label="`
                     <?= $escaper->escapeHtmlAttr(__('Compare Products')) ?>,
-                    hyva.str(itemCount > 1
-                        ? '<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', itemCount
-                        : '<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', itemCount
-                    )
+                    ${itemCount > 1
+                        ? hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', itemCount)
+                        : hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', itemCount)
+                    }
                 `"
             >
                 <?= $heroicons->scaleHtml("md:h-6 md:w-6", 28, 28, ["aria-hidden" => "true"]) ?>
@@ -140,10 +140,9 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     <?= $escaper->escapeHtmlAttr($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>,
                     ${isCartEmpty()
                         ? '<?= $escaper->escapeHtmlAttr(__('Cart is empty')) ?>'
-                        : hyva.str(itemCount > 1
-                            ? '<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', itemCount
-                            : '<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', itemCount
-                        )
+                        : cart.summary_count > 1
+                            ? hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', cart.summary_count)
+                            : hyva.str('<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', cart.summary_count)
                     }
                 `"
                 <?php if ($showMiniCart): ?>
