@@ -35,9 +35,9 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
     <!-- desktop -->
     <div x-ref="nav-desktop"
          @load.window="setActiveMenu($root)"
-         class="hidden lg:block lg:relative lg:min-h-0 lg:px-8 lg:w-auto lg:pt-0">
+         class="hidden lg:block lg:px-8">
         <nav
-            class="duration-150 ease-in-out transform w-auto relative min-h-0 transition-display"
+            class="relative"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
         >
             <ul class="flex justify-start flex-wrap py-3">
