@@ -140,10 +140,9 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     <?= $escaper->escapeHtmlAttr($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>,
                     ${isCartEmpty()
                         ? '<?= $escaper->escapeHtmlAttr(__('Cart is empty')) ?>'
-                        : hyva.str(
-                            '<?= $escaper->escapeHtmlAttr(__('You have %1 product%2 in your cart.')) ?>',
-                            cart.summary_count,
-                            cart.summary_count === 1 ? '' : 's'
+                        : hyva.str(itemCount > 1
+                            ? '<?= $escaper->escapeHtmlAttr(__('%1 items')) ?>', itemCount
+                            : '<?= $escaper->escapeHtmlAttr(__('%1 item')) ?>', itemCount
                         )
                     }
                 `"
