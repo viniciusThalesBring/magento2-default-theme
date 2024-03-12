@@ -36,12 +36,12 @@ $title = $block->getData('title') ? __($block->getData('title')) : $block->getTi
                 >
                     <span><?= $escaper->escapeHtml($additionalInfo->getQueryText()) ?></span>
                     <?php if ($block->isShowResultsCount()): ?>
-                        <?php $resultsCount = $localeFormatter->formatNumber((int)$additionalInfo->getResultsCount()) ?>
+                        <?php $resultsCount = $localeFormatter->formatNumber((int) $additionalInfo->getResultsCount()) ?>
                         <span
                             class="count"
                             aria-label="<?= $escaper->escapeHtmlAttr($resultsCount > 1
                                 ? __('%1 search results', $resultsCount)
-                                : __('%1 search result', $resultsCount)) ?>"
+                                : __('1 search result')) ?>"
                         >(<?= /* @noEscape */ $resultsCount ?>)</span>
                     <?php endif; ?>
                 </a>
