@@ -117,6 +117,19 @@ $recaptcha = $block->getData('viewModelRecaptcha');
          @toggle-authentication.window="open = forceAuthentication; redirectIfAuthenticated(event)"
          @keydown.window.escape="open = false"
 >
+        <div
+            class="backdrop"
+            aria-hidden="true"
+            x-cloak
+            x-show="open"
+            x-transition:enter="ease-in-out duration-500"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="ease-in-out duration-500"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            @click="open = false"
+        ></div>
         <div role="dialog"
              aria-modal="true"
              @click.outside="open = false"
