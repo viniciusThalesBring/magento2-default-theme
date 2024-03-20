@@ -26,6 +26,6 @@ $urlPath = $block->getData('path') ?? 'wishlist';
 >
     <?= $escaper->escapeHtml($label) ?>
     <template x-if="itemCount">
-        <span x-text="`(${itemCount})`"></span>
+        <span class="tabular-nums" x-text="`(${itemCount})`"></span>
     </template>
 </a>
