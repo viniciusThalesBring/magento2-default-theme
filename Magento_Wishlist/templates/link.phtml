@@ -17,12 +17,14 @@ use Magento\Framework\View\Element\Template;
 $label = $block->getData('label') ?? __('My Wish List');
 $urlPath = $block->getData('path') ?? 'wishlist';
 ?>
-<a id="<?= $escaper->escapeHtmlAttr($block->getNameInLayout()) ?>"
-   class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100 relative"
-   href="<?= $escaper->escapeUrl($block->getUrl($urlPath)) ?>"
-   title="<?= $escaper->escapeHtmlAttr($label) ?>"
-   x-data="{itemCount: 0}"
-   @private-content-loaded.window="itemCount = parseInt($event.detail.data.wishlist.counter)"
+
+<a
+    id="<?= $escaper->escapeHtmlAttr($block->getNameInLayout()) ?>"
+    class="block px-4 py-2 lg:px-5 lg:py-2 hover:bg-gray-100 relative"
+    href="<?= $escaper->escapeUrl($block->getUrl($urlPath)) ?>"
+    title="<?= $escaper->escapeHtmlAttr($label) ?>"
+    x-data="{ itemCount: 0 }"
+    @private-content-loaded.window="itemCount = parseInt($event.detail.data.wishlist.counter)"
 >
     <?= $escaper->escapeHtml($label) ?>
     <template x-if="itemCount">
