@@ -109,9 +109,8 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 Array.from(menuNode.querySelectorAll('a')).filter(link => {
                     return link.href === window.location.href.split('?')[0];
                 }).map(item => {
-                    item.classList.add('underline');
-                    item.closest('div.level-0') &&
-                    item.closest('div.level-0').querySelector('a.level-0').classList.add('underline');
+                    item.setAttribute('aria-current', 'page');
+                    item.closest('li.level-0').setAttribute('data-active', 'true');
                 });
             },
             openMenuOnClick(menuNode) {
