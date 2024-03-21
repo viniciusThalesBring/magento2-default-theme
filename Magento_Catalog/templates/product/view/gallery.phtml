@@ -247,12 +247,20 @@ $productName = $block->getProduct()->getName();
                     this.images = images;
                     this.setActive(0);
                 }
+
+                this.$nextTick(() => {
+                    this.scrollTo(this.active);
+                });
+
                 this.itemCount = this.images.length;
             },
             resetGallery() {
                 this.images = this.initialImages;
                 this.itemCount = this.images.length;
                 this.setActive(0);
+                this.$nextTick(() => {
+                    this.scrollTo(this.active);
+                });
             },
             initActive() {
                 let active = this.images.findIndex(function(image) {
