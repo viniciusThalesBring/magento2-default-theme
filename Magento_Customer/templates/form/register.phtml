@@ -44,6 +44,8 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
 $regionLabel = $block->getAttributeData()->getFrontendLabel('region');
 $minimumPasswordLength = $block->getMinimumPasswordLength();
 $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
+$isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_storefront');
+
 ?>
 <div class="mb-8">
     <?php /* Extensions placeholder */ ?>
@@ -156,7 +158,7 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                                 required
                                 data-validate='{"password-strength": {"minCharacterSets": <?= (int) $passwordMinCharacterSets ?>}}'
                                 @input.debounce="onChange"
-                                autocomplete="off"
+                                autocomplete="<?= $isAutocompleteEnabled ? 'new-password' : 'off' ?>"
                             >
                             <button
                                 type="button"
@@ -216,7 +218,7 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                             @input.debounce="onChange"
                             required
                             class="form-input"
-                            autocomplete="off"
+                            autocomplete="<?= $isAutocompleteEnabled ? 'new-password' : 'off' ?>"
                         >
                         <button
                             type="button"

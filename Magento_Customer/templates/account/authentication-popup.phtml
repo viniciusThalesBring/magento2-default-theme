@@ -12,6 +12,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\ReCaptcha;
+use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 use Magento\Customer\Block\Account\Customer;
 
@@ -20,6 +21,7 @@ use Magento\Customer\Block\Account\Customer;
 /** @var ViewModelRegistry $viewModels */
 /** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
+/** @var StoreConfig $storeConfig */
 
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 $loginButtonViewModel = $viewModels->require(LoginButton::class);
@@ -27,6 +29,9 @@ $loginButtonViewModel = $viewModels->require(LoginButton::class);
 // Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
 // on the Magento_ReCaptchaCustomer module
 $recaptcha = $block->getData('viewModelRecaptcha');
+$storeConfig = $viewModels->require(StoreConfig::class);
+$isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocomplete_on_storefront');
+
 ?>
 <script>
     function initAuthentication() {
@@ -173,6 +178,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                                                @change="errors = 0"
                                                type="email"
                                                required
+                                               autocomplete="<?= $isAutocompleteEnabled ? 'username' : 'off' ?>"
                                                class="form-input input-text"
                                         >
                                     </div>
@@ -188,6 +194,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                                                class="form-input input-text"
                                                required
                                                x-ref="customer-password"
+                                               autocomplete="<?= $isAutocompleteEnabled ? 'current-password' : 'off' ?>"
                                                @change="errors = 0"
                                         >
                                     </div>

@@ -64,7 +64,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                                class="form-input"
                                required
                                value="<?= $escaper->escapeHtmlAttr($block->getUsername()) ?>"
-                               autocomplete="<?= $block->isAutocompleteDisabled() ? 'off' : 'email' ?>"
+                               autocomplete="<?= $block->isAutocompleteDisabled() ? 'off' : 'username' ?>"
                                id="email"
                                type="email"
                                title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
