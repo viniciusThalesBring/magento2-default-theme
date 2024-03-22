@@ -117,7 +117,19 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 })
             },
             closeCartDrawer() {
-                this.$dispatch('toggle-cart', { isOpen: false });
+                this.$dispatch('toggle-cart', { isOpen: false })
+            },
+            getSectionDataExtraActions() {
+                if (!this.cart.extra_actions) {
+                    return '';
+                }
+
+                const contentNode = document.createElement('div');
+                contentNode.innerHTML = this.cart.extra_actions;
+
+                hyva.activateScripts(contentNode);
+
+                return contentNode.innerHTML;
             }
         }
     }
@@ -257,7 +269,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                     <?= $escaper->escapeHtml(__('View and Edit Cart')) ?>
                                 </a>
                             </div>
-                            <?= $block->getChildHtml('extra_actions') ?>
+                            <div x-html="getSectionDataExtraActions()"></div>
+                            <?= $block->getChildHtml('extra_actions'); ?>
                         </div>
                     </div>
                 </template>
