@@ -198,8 +198,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         <template x-for="item in cartItems">
                             <div class="flex items-start p-3 space-x-4 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100">
                                 <a :href="item.product_url"
-                                    class="w-1/4"
-                                    :aria-label="hyva.strf('<?= $escaper->escapeJs(__('Product "%0"')) ?>', item.product_name)"
+                                   class="w-1/4"
+                                   :aria-label="hyva.strf('<?= $escaper->escapeJs(__('Product "%0"')) ?>', item.product_name)"
                                 >
                                     <img
                                         :src="item.product_image.src"
@@ -225,9 +225,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                     <p><span x-html="item.product_price"></span></p>
                                     <div class="pt-4">
                                         <a :href="item.configure_url"
-                                            x-show="item.product_type !== 'grouped' && item.is_visible_in_site_visibility"
-                                            class="inline-flex p-2 mr-2 btn btn-primary"
-                                            :aria-label="hyva.strf('<?= $escaper->escapeJs(__('Edit product "%0"')) ?>', item.product_name)"
+                                           x-show="item.product_type !== 'grouped' && item.is_visible_in_site_visibility"
+                                           class="inline-flex p-2 mr-2 btn btn-primary"
+                                           :aria-label="hyva.strf('<?= $escaper->escapeJs(__('Edit product "%0"')) ?>', item.product_name)"
                                         >
                                             <?= $heroicons->pencilHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                         </a>
@@ -255,16 +255,16 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                 <p><?= $escaper->escapeHtml(__('Subtotal')) ?>: <span x-html="cart.subtotal"></span></p>
                             </div>
                             <div class="w-full p-3 space-x-4 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100">
-                                <a @click.prevent.stop="$dispatch('toggle-authentication',
+                                <a @click.prevent.stop="closeCartDrawer; $dispatch('toggle-authentication',
                                     {url: '<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>'});"
-                                    href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
-                                    class="inline-flex btn btn-primary"
+                                   href="<?= $escaper->escapeUrl($block->getUrl('checkout')) ?>"
+                                   class="inline-flex btn btn-primary"
                                 >
                                     <?= $escaper->escapeHtml(__('Checkout')) ?>
                                 </a>
                                 <span><?= $escaper->escapeHtml(__('or')) ?></span>
                                 <a href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart')) ?>"
-                                    class="underline"
+                                   class="underline"
                                 >
                                     <?= $escaper->escapeHtml(__('View and Edit Cart')) ?>
                                 </a>
