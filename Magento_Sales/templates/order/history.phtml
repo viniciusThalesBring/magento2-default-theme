@@ -10,6 +10,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
 use Magento\Sales\Block\Order\History;
+use Magento\Sales\Model\Order;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
@@ -20,8 +21,9 @@ use Magento\Sales\Block\Order\History;
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var Order[] $orders */
+$orders = $block->getOrders();
 ?>
-<?php $orders = $block->getOrders(); ?>
 <h2 id="my-orders-title" class="text-2xl mb-6"><?= $escaper->escapeHtml(__('My Orders')) ?></h2>
 <?= $block->getChildHtml('info') ?>
 <?php if ($orders && count($orders)): ?>
@@ -58,17 +60,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             </thead>
             <tbody>
                 <?php foreach ($orders as $order): ?>
-                    <?php $shippingAddress = $order->getShippingAddress(); ?>
-                    <?php $billingAddress = $order->getBillingAddress(); ?>
-                    <?php $shipToName = '&nbsp;'; ?>
-                    <?php if ($shippingAddress && $shippingAddress->getCompany()): ?>
-                        <?php $shipToName = $shippingAddress->getCompany() ?>
-                    <?php elseif ($billingAddress && $billingAddress->getCompany()): ?>
-                        <?php $shipToName = $billingAddress->getCompany() ?>
-                    <?php elseif ($shippingAddress && $shippingAddress->getLastName()): ?>
-                        <?php $shipToName = $shippingAddress->getFirstname() . ' ' . $shippingAddress->getMiddlename() . ' ' . $shippingAddress->getLastName()  ?>
-                    <?php endif; ?>
-
                     <tr class="align-top even:bg-container-darker">
                         <th class="p-2 text-start font-normal">
                             <?= $escaper->escapeHtml($order->getRealOrderId()) ?>
@@ -88,7 +79,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             </time>
                         </td>
                         <td class="p-2">
-                            <?= $escaper->escapeHtml($shipToName) ?>
+                            <?= $order->getShippingAddress() ? $block->escapeHtml($order->getShippingAddress()->getName()) : '&nbsp;' ?>
                         </td>
                         <td class="p-2 hidden lg:table-cell">
                             <?= /* @noEscape */$order->formatPrice($order->getGrandTotal()) ?>

@@ -12,6 +12,7 @@ use Magento\Framework\Data\Helper\PostHelper;
 use Magento\Framework\Escaper;
 use Magento\Sales\Block\Order\Recent;
 use Magento\Sales\Helper\Reorder;
+use Magento\Sales\Model\Order;
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
@@ -22,6 +23,7 @@ use Magento\Sales\Helper\Reorder;
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
+/** @var Order[] $orders */
 $orders = $block->getOrders();
 $count  = count($orders);
 ?>
@@ -80,17 +82,6 @@ $count  = count($orders);
                 </thead>
                 <tbody>
                     <?php foreach ($orders as $order): ?>
-                        <?php $shippingAddress = $order->getShippingAddress(); ?>
-                        <?php $billingAddress = $order->getBillingAddress(); ?>
-                        <?php $shipToName = '&nbsp;'; ?>
-                        <?php if ($shippingAddress && $shippingAddress->getCompany()): ?>
-                            <?php $shipToName = $shippingAddress->getCompany() ?>
-                        <?php elseif ($billingAddress && $billingAddress->getCompany()): ?>
-                            <?php $shipToName = $billingAddress->getCompany() ?>
-                        <?php elseif ($shippingAddress && $shippingAddress->getLastName()): ?>
-                            <?php $shipToName = $shippingAddress->getFirstname() . ' ' . $shippingAddress->getMiddlename() . ' ' . $shippingAddress->getLastName()  ?>
-                        <?php endif; ?>
-
                         <tr class="align-top even:bg-container-darker">
                             <th
                                 id="order<?= $escaper->escapeHtmlAttr($order->getRealOrderId()) ?>"
@@ -115,7 +106,7 @@ $count  = count($orders);
                                 </span>
                             </td>
                             <td class="p-2">
-                                <?= $escaper->escapeHtml($shipToName) ?>
+                                <?= $order->getShippingAddress() ? $block->escapeHtml($order->getShippingAddress()->getName()) : '&nbsp;' ?>
                             </td>
                             <td class="p-2 hidden lg:table-cell">
                                 <?= /* @noEscape */ $order->formatPrice($order->getGrandTotal()) ?>
