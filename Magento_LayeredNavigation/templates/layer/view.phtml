@@ -39,7 +39,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             <button
                 type="button"
                 @click="blockOpen = !blockOpen"
-                class="block-title flex items-center justify-between w-full"
+                class="block-title flex items-center justify-between w-full text-start"
                 aria-controls="filters-content"
                 :aria-expanded="blockOpen"
                 :aria-disabled="!isMobile"
@@ -49,8 +49,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     <?= $escaper->escapeHtml(__('Shop By')) ?>
                 </span>
                 <span
-                    class="py-1 px-1 bg-container-lighter rounded border border-container-darker hidden"
-                    :class="{ 'block' : isMobile, 'hidden': !isMobile }"
+                    class="py-1 px-1 bg-container-lighter rounded border border-container-darker md:hidden"
+                    x-ref="LayeredNavigationMobileToggleIcon"
                 >
                     <?= $heroicons->chevronDownHtml(
                         'transition-transform transform duration-300 ease-in-out',
@@ -67,8 +67,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </h2>
         <div
             id="filters-content"
-            class="block-content filter-content pt-4"
-            x-show="isMobile && blockOpen || !isMobile"
+            class="block-content filter-content hidden md:block pt-4"
+            :class="{ 'hidden': !blockOpen }"
         >
             <?= $block->getChildHtml('state') ?>
             <a
@@ -90,7 +90,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             <button
                                 type="button"
                                 @click="open = !open"
-                                class="filter-options-title flex justify-between items-center cursor-pointer hover:text-secondary-darker border-container w-full"
+                                class="filter-options-title flex justify-between items-center cursor-pointer text-start hover:text-secondary-darker border-container w-full"
                                 :class="{ 'border-b pb-4': open }"
                                 :aria-controls="`${id}-content`"
                                 :aria-expanded="open"
@@ -132,7 +132,10 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 isMobile: false,
                 blockOpen: false,
                 checkIsMobileResolution() {
-                    this.isMobile = window.matchMedia('(max-width: 767px)').matches;
+                    const mobileElement = this.$refs.LayeredNavigationMobileToggleIcon;
+                    this.isMobile = mobileElement
+                        ? getComputedStyle(mobileElement).display !== "none"
+                        : window.matchMedia('(max-width: 767px)').matches; // Fallback to `md` breakpoint
                 }
             }
         }
