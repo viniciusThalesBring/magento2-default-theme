@@ -34,7 +34,7 @@ $wishlistViewModel    = $viewModels->require(Wishlist::class);
 $compareViewModel     = $viewModels->require(ProductCompare::class);
 $storeViewModel       = $viewModels->require(Store::class);
 
-$sliderName        = $block->getNameInLayout();
+$sliderName        = str_replace('.', '_', $block->getNameInLayout());
 $categoryIds       = $block->getData('category_ids') ?: '';
 $isAnchorCategory  = $block->getData('include_child_category_products');
 $pageSize          = $block->getData('page_size') ?: 8;
