@@ -12,8 +12,6 @@
     <update handle="hyva_modal"/>
     <update handle="hyva_form_validation"/>
     <body>
-        <!-- Revert the template switches in Magento 2.4.7 that duplicate most of the template files -->
-        <referenceBlock name="sales.order.info.buttons" template="Magento_Sales::order/info/buttons.phtml"/>
         <referenceBlock name="sales.order.buttons">
             <block name="order-cancellation-button" template="Magento_OrderCancellationUi::order/actions/order-view-cancel-order-button.phtml"/>
         </referenceBlock>
