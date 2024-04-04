@@ -50,6 +50,17 @@ END_OF_CONTENT
 ->withAriaLabelledby('cancel-order-modal-title')
 ->addDialogClass('m-4');
 
+$createCancelOrderMutation = '
+mutation cancelOrder($order_id: ID!, $reason: String!) {
+  cancelOrder(input: {order_id: $order_id, reason: $reason}) {
+    error
+    order {
+      status,
+      increment_id
+    }
+  }
+}';
+
 ?>
 <script>
     function initOrderCancellationModal() {
@@ -63,16 +74,7 @@ END_OF_CONTENT
                 this.reasons = event.detail.reasons;
             },
             cancelOrder(order_id, reason) {
-                const mutation = `
-mutation cancelOrder($order_id: ID!, $reason: String!) {
-  cancelOrder(input: {order_id: $order_id, reason: $reason}) {
-    error
-    order {
-      status,
-      increment_id
-    }
-  }
-}`;
+                const mutation = `<?= /* @noEscape */ $createCancelOrderMutation ?>`;
                 fetch(BASE_URL + 'graphql', {
                     method: 'POST',
                     headers: {
