@@ -32,13 +32,13 @@ $order = $block->getData('order');
 $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getId())
 ?>
 
-<div x-data="hyva.modal()">
 <?php if ($orderCancellation->canCancel($order->getEntityId())): ?>
     <button
         type="button"
-        class="inline-block align-middle text-sm text-secondary-darker"
+        class="inline-block text-sm text-secondary-darker"
         title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
+        x-data
         @click="$dispatch('confirm-cancel-order', {
             order_id: <?= (int) $order->getId() ?>,
             increment_id: '<?= $escaper->escapeJs($order->getRealOrderId()) ?>',
@@ -50,4 +50,3 @@ $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getI
 <?php else: ?>
     <?= $heroicons->xCircleHtml('text-gray-300', 24, 24, ['aria-hidden' => 'true']) ?>
 <?php endif ?>
-</div>
