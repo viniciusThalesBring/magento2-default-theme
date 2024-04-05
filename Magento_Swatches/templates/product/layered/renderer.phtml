@@ -85,14 +85,14 @@ $swatchData = $block->getSwatchData();
     <div class="swatch-attribute-options clearfix">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <?php
-                // check required if attribute property "is_filterable" is set to "Filterable (no results)"
-                if (!isset($swatchData['swatches'][$option])) {
-                    continue;
-                }
+            // check required if attribute property "is_filterable" is set to "Filterable (no results)"
+            if (!isset($swatchData['swatches'][$option])) {
+                continue;
+            }
 
-                $swatchType = (string) $swatchData['swatches'][$option]['type'];
-                $swatchValue = (string) $swatchData['swatches'][$option]['value'];
-                $isVisualSwatch = $swatchType === "1" || $swatchType === "2";
+            $swatchType = (string) $swatchData['swatches'][$option]['type'];
+            $swatchValue = (string) $swatchData['swatches'][$option]['value'];
+            $isVisualSwatch = $swatchType === "1" || $swatchType === "2";
             ?>
             <a
                 href="<?= $escaper->escapeUrl($label['link']) ?>" rel="nofollow"
