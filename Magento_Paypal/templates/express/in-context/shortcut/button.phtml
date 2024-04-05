@@ -38,7 +38,7 @@ $renderTargetElementId = sprintf('paypalInContextRenderTarget%d', $isMinicart)
      id="<?= $escaper->escapeHtmlAttr($renderTargetElementId) ?>"
     <?php if ($isMinicart): ?>
      x-init="cartSection = cart"
-     @toggle-cart.window="checkAndInitializeButtons()"
+     x-intersect="checkAndInitializeButtons()"
     <?php endif; ?>
      class="paypal checkout paypal-logo min-h-a11y cart-extra-actions-container isolate"
     <?php if ($isCartPage): ?>
@@ -82,7 +82,7 @@ $renderTargetElementId = sprintf('paypalInContextRenderTarget%d', $isMinicart)
             async initializeButtons() {
                 try {
                     const paypal = await this.initializePayPalScript();
-                    this.paypalButtons = paypal && paypal.Buttons({
+                    return paypal && paypal.Buttons({
                         style: Object.assign({}, config.styles, {
                             height: 44, // Sets the style.height option to a value from 25 to 55.
                             disableMaxWidth: false, // The button has a default maximum width of 750px, but you can make the button larger with true and set container size
@@ -180,10 +180,9 @@ $renderTargetElementId = sprintf('paypalInContextRenderTarget%d', $isMinicart)
             async checkAndInitializeButtons() {
                 if (this.cartSection.items && this.cartSection.items.length) {
                     if (! this.paypalButtons) {
-                        await this.initializeButtons();
+                        this.paypalButtons = await this.initializeButtons();
+                        this.paypalButtons && this.paypalButtons.render(document.getElementById(renderTargetId));
                     }
-                    const container = document.getElementById(renderTargetId);
-                    this.paypalButtons && ! container.innerHTML.trim().length && this.paypalButtons.render(container);
                 }
             }
         }
