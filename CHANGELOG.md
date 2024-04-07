@@ -34,6 +34,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   For more information, please refer to [merge request #1086](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1086) and the [x-defer directive documentation](https://docs.hyva.io/hyva-themes/view-utilities/alpine-defer-plugin.html).
 
+- **Add new dependency on module hyva-themes/magento2-order-cancellation-webapi**
+  
+  Out of the box the order-cancellation feature introduced in Magento 2.4.7 only comes with a GraphQL API.  
+  To be able to reduce the use of GraphQL in Hyvä in the future, the compatibility module uses a REST API provided by hyva-themes/magento2-order-cancellation-webapi instead.
+
 ### Changed
 
 - **Reserve correct space for slider buttons to avoid CLS**
@@ -51,6 +56,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Fix PayPal In-Context buttons disappearing on cart page after cart updates**
 
   For more information, please refer to [merge request #1087](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1087).
+
+- **Update reset theme dependency constraint to >= 1.1.6**
+
+  The dependency is updated because of new layout XML resets for the Magento_OrderCancellationUi module introduced in Magento 2.4.7.
 
 ### Removed
 
