@@ -9,7 +9,6 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsSolid;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\StoreSwitcher;
 use Magento\Framework\Escaper;
@@ -21,9 +20,6 @@ use Magento\Store\ViewModel\SwitcherUrlProvider;
 /** @var Template $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-
-/** @var HeroiconsSolid $heroiconsSolid */
-$heroiconsSolid = $viewModels->require(HeroiconsSolid::class);
 
 /** @var SwitcherUrlProvider $switcherUrlProvider */
 $switcherUrlProvider = $viewModels->require(SwitcherUrlProvider::class);
