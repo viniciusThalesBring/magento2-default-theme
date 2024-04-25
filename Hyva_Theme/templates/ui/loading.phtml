@@ -25,7 +25,7 @@ $hyvaicons = $viewModels->require(SvgIcons::class);
     x-transition.opacity.duration.200ms
 >
     <div class="flex gap-10 items-center p-4">
-        <?= $hyvaicons->loaderHtml('text-primary', 57, 57); ?>
+        <?= $hyvaicons->loaderHtml('', 57, 57, ['aria-hidden' => 'true']); ?>
         <span class="text-xl select-none">
             <?= $escaper->escapeHtml(__('Loading...')) ?>
         </span>
