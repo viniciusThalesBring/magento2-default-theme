@@ -56,7 +56,7 @@ $currentStore = $storeSwitcherViewModel->getStore();
                         aria-expanded="true"
                 >
                     <?= $escaper->escapeHtml($group->getName()) ?>
-                    <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5 -mr-1 ml-2", 25, 25) ?>
+                    <?= $heroiconsSolid->chevronDownHtml("flex self-center -mr-1 ml-2", 20, 20, ['aria-hidden' => 'true']) ?>
                 </button>
                 <?php endif; ?>
             <?php endforeach; ?>
