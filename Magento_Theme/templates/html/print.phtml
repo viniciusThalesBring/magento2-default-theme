@@ -11,12 +11,14 @@ declare(strict_types=1);
 ?>
 
 <style>
-    .page-print .page-main {
-        margin-block: 0 !important;
-    }
+    @media print {
+        .page-print .page-main {
+            margin-block: 0 !important;
+        }
 
-    .page-print :is(.actions-toolbar, .order-title a) {
-        display: none !important;
+        .page-print :is(.actions-toolbar, .order-title a) {
+            display: none !important;
+        }
     }
 </style>
 
