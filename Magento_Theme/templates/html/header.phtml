@@ -76,7 +76,9 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
 >
     <div class="container flex flex-wrap lg:flex-nowrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
         <!--Logo-->
-        <?= $block->getChildHtml('logo'); ?>
+        <div class="sm:order-2 w-full pb-2 sm:w-auto sm:pb-0">
+            <?= $block->getChildHtml('logo'); ?>
+        </div>
 
         <!--Main Navigation-->
         <?= $block->getChildHtml('topmenu') ?>
