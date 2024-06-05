@@ -117,25 +117,26 @@ $helper = $this->helper(SearchHelper::class);
             >
                 <?= $heroicons->searchHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
             </button>
-        <template x-if="suggestions.length > 0">
-            <div class="w-full leading-normal transition appearance-none text-grey-800 flex flex-col mt-1">
-                <template x-for="suggestion in suggestions">
-                    <div class="flex justify-between p-2 bg-container-lighter even:bg-container mb-1 cursor-pointer
-                                border border-container hover:bg-container-darker"
-                        tabindex="0"
-                        @click="search(suggestion.title)"
-                        @keydown.enter="search(suggestion.title)"
-                        @keydown.arrow-up.prevent="
-                            focusElement($event.target.previousElementSibling) || $refs.searchInput.focus()
-                        "
-                        @keydown.arrow-down.prevent="focusElement($event.target.nextElementSibling)"
-                    >
-                        <span x-text="suggestion.title"></span>
-                        <span x-text="suggestion.num_results"></span>
-                    </div>
-                </template>
-            </div>
-        </template>
         </form>
     </search>
+    <template x-if="suggestions.length > 0">
+        <nav
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
+            class="flex flex-col mt-1 text-grey-800 gap-1"
+        >
+            <template x-for="suggestion in suggestions">
+                <button
+                    type="button"
+                    class="flex justify-between p-2 bg-container-lighter even:bg-container border border-container hover:bg-container-darker"
+                    @click="search(suggestion.title)"
+                    @keydown.enter="search(suggestion.title)"
+                    @keydown.arrow-up.prevent="focusElement($event.target.previousElementSibling) || $refs.searchInput.focus()"
+                    @keydown.arrow-down.prevent="focusElement($event.target.nextElementSibling)"
+                >
+                    <span x-text="suggestion.title"></span>
+                    <span x-text="suggestion.num_results"></span>
+                </button>
+            </template>
+        </nav>
+    </template>
 </div>
