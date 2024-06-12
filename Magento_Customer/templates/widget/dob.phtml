@@ -24,9 +24,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 /** @var AddressViewModel $addressViewModel */
 $addressViewModel = $viewModels->require(AddressViewModel::class);
 ?>
-<div class="field date <?= $block->isRequired() ? 'required' : '' ?>"
-     x-data="initDatePicker()"
-     x-init="[initDate(), recalcDaysGrid()]"
+<div
+    class="field date <?= $block->isRequired() ? 'required' : '' ?>"
+    x-data="initDatePicker()"
 >
     <label for="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>" class="label">
         <span><?= $escaper->escapeHtml($block->getStoreLabel('dob')) ?></span>
@@ -162,7 +162,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
             labels: labelsConfig,
             dateFormatter: DateFormatter(format),
 
-            initDate() {
+            init() {
                 const today = new Date();
                 this.month = today.getMonth();
                 this.year = today.getFullYear();
