@@ -342,7 +342,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
     }
 </script>
 <div id="block-shipping"
-     class="flex flex-col pb-2 my-2 border-b-2 border-gray-300 estimate-shipping-form"
+     class="flex flex-col pb-2 border-b-2 border-gray-300 estimate-shipping-form"
      x-data="initShippingEstimation()"
      @private-content-loaded.window="receiveCustomerData($event.detail.data)"
 >
