@@ -58,18 +58,18 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             </div>
         <?php endif ?>
 
-        <?php if ($customerDefaultBillingAddress = $block->getDefaultShipping()): ?>
+        <?php if ($customerDefaultShippingAddress = $block->getDefaultShipping()): ?>
             <div class="box box-address-shipping card">
                 <div class="text-gray-900 text-lg title-font font-medium mb-3">
                     <span><?= $escaper->escapeHtml(__('Default Shipping Address')) ?></span>
                 </div>
                 <div class="box-content">
                     <address>
-                        <?= $block->getAddressHtml($block->getAddressById($customerDefaultBillingAddress)) ?>
+                        <?= $block->getAddressHtml($block->getAddressById($customerDefaultShippingAddress)) ?>
                     </address>
                 </div>
                 <div class="box-actions">
-                    <a href="<?= $escaper->escapeUrl($block->getAddressEditUrl($customerDefaultBillingAddress)) ?>"
+                    <a href="<?= $escaper->escapeUrl($block->getAddressEditUrl($customerDefaultShippingAddress)) ?>"
                        class="inline-flex items-center w-full mt-3 md:text-sm text-secondary
                         hover:text-secondary-darker"
                     >
