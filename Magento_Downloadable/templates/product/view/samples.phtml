@@ -33,8 +33,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 <a href="<?= $escaper->escapeHtml($block->getSampleUrl($sample)) ?>"
                    download
                    <?= $block->getIsOpenInNewWindow() ? 'onclick="this.target=\'_blank\'"' : '' ?>
-                   class="item-link samples-item-link">
-                    <?= $heroicons->documentDownloadHtml(); ?>
+                   class="item-link samples-item-link"
+                >
+                    <?= $heroicons->documentDownloadHtml('', 24, 24, ['aria-hidden' => true]); ?>
                     <?= $escaper->escapeHtml($sample->getTitle()) ?>
                 </a>
             </div>
