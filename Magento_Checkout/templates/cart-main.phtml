@@ -98,7 +98,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
 
                 if (cart) {
                     if (!window.checkoutConfig) {
-                        if (cart.items.length) {
+                        if (cart.items && cart.items.length) {
                             this.reloadCartContent();
                         }
                         return;
