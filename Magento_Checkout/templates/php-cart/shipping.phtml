@@ -261,6 +261,10 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
                 const sectionData = JSON.parse(browserStorage.getItem('mage-cache-storage'));
 
+                if (!sectionData) {
+                    sectionData = {};
+                }
+
                 if (!sectionData['checkout-data']) {
                     sectionData['checkout-data'] = {};
                 }
