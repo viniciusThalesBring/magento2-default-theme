@@ -20,9 +20,9 @@ use Magento\Framework\View\Element\Template;
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
-$blockId = $block->getBlockId() ?? 'collapsible';
+$blockId = $block->getBlockId() ?: 'collapsible';
 $blockClass = $block->getBlockCss();
-$blockTitle = $block->getBlockTitle() ?? __('Details');
+$blockTitle = $block->getBlockTitle() ?: __('Details');
 $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
 ?>
 
