@@ -34,6 +34,7 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
 >
     <button
         type="button"
+        id="<?= $escaper->escapeHtmlAttr($blockId) ?>-title"
         class="group py-2 flex justify-between items-center w-full"
         @click="blockOpen = !blockOpen"
         :aria-expanded="blockOpen"
@@ -41,8 +42,8 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
         :disabled="!isMobile ? '' : null"
     >
 
-            <?= $escaper->escapeHtml(__($block->getData('block_title'))) ?>
         <span class="text-lg">
+            <?= $escaper->escapeHtml($blockTitle) ?>
         </span>
         <span
             class="px-1 py-1 border rounded border-container md:hidden"
