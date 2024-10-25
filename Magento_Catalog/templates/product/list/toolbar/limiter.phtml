@@ -28,7 +28,6 @@ $availableLimitOptions = $block->getAvailableLimit();
                     <?= $escaper->escapeHtml((string)__('Show')) ?>
                 </span>
                 <select
-                    data-role="limiter"
                     class="form-select limiter-options"
                     @change="changeUrl(
                         'product_list_limit',
