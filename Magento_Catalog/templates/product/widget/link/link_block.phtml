@@ -16,7 +16,8 @@ use Magento\Framework\Escaper;
 ?>
 
 <div class="widget block-product-link">
-    <a class="underline font-medium" <?= /* @noEscape */ $block->getLinkAttributes() ?>>
-        <span><?= $escaper->escapeHtml($block->getLabel()) ?></span>
-    </a>
+    <a
+        class="underline font-medium"
+        <?= /* @noEscape */ $block->getLinkAttributes() ?>
+    ><?= $escaper->escapeHtml($block->getLabel()) ?></a>
 </div>
