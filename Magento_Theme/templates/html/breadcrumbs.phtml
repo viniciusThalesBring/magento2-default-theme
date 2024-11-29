@@ -31,10 +31,11 @@ use Magento\Framework\Escaper;
                        title="<?= $escaper->escapeHtmlAttr($crumbInfo['title']) ?>"
                     ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php elseif ($crumbInfo['last']): ?>
-                    <span
-                       class="text-primary-lighter"
-                       aria-current="page"
-                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></span>
+                    <a
+                        href="<?= $escaper->escapeUrl($block->getUrl('', ['_current' => true, '_use_rewrite' => true])) ?>"
+                        class="text-primary-lighter"
+                        aria-current="page"
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php else: ?>
                     <?= $escaper->escapeHtml($crumbInfo['label']) ?>
                 <?php endif; ?>
