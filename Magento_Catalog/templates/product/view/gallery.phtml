@@ -516,19 +516,24 @@ $productName = $block->getProduct()->getName();
                 });
             },
             handleTouchStart(event) {
-                if (this.images.length <= 1) {
-                    return;
-                }
-
+                if (
+                    this.images.length <= 1 ||
+                    event.touches.length > 1 ||
+                    (window.visualViewport && window.visualViewport.scale > 1.01)
+                ) return;
                 const firstTouch = event.touches[0];
 
                 touchXDown = firstTouch.clientX;
                 touchYDown = firstTouch.clientY;
             },
             handleTouchMove(event) {
-                if (this.images.length <= 1 || !touchXDown || !touchYDown) {
-                    return;
-                }
+                if (
+                    this.images.length <= 1 ||
+                    event.touches.length > 1 ||
+                    (window.visualViewport && window.visualViewport.scale > 1.01) ||
+                    !touchXDown ||
+                    !touchYDown
+                ) return;
 
                 const xDiff = touchXDown - event.touches[0].clientX;
                 const yDiff = touchYDown - event.touches[0].clientY;
