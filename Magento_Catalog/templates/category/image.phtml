@@ -23,18 +23,6 @@ $image = $block->getImage();
 $categoryOutput = $block->getOutput();
 
 $category = $block->getCurrentCategory();
-    $imgHtml = '<div class="category-image"><img src="'
-        . $escaper->escapeUrl($imgUrl)
-        . '" alt="'
-        . $escaper->escapeHtmlAttr($category->getName())
-        . '" title="'
-        . $escaper->escapeHtmlAttr($category->getName())
-        . '" class="image" '
-        . ($width ? sprintf('width="%s"', $escaper->escapeHtmlAttr($width)) : '')
-        . ' '
-        . ($height ? sprintf('height="%s"', $escaper->escapeHtmlAttr($height)) : '')
-        . '"/></div>';
-    /* @noEscape */ echo $categoryOutput->categoryAttribute($category, $imgHtml, 'image');
 $width = $block->getVar('category_page_category_image/width', 'Magento_Catalog') ?: 500;
 $height = $block->getVar('category_page_category_image/height', 'Magento_Catalog') ?: 500;
 $imgUrl = $image->getUrl($category);
@@ -51,3 +39,7 @@ $imgHtml = '<img'
     . ' loading="eager"'
     . '>';
 ?>
+
+<div class="category-image">
+    <?= /* @noEscape */ $categoryOutput->categoryAttribute($category, $imgHtml, 'image'); ?>
+</div>
