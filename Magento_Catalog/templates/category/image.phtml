@@ -22,13 +22,7 @@ $image = $block->getImage();
 /** @var Output $categoryOutput */
 $categoryOutput = $block->getOutput();
 
-?>
-<?php
 $category = $block->getCurrentCategory();
-$imgHtml  = '';
-if ($imgUrl = $image->getUrl($category)) {
-    $width = $block->getVar('category_page_category_image/width');
-    $height = $block->getVar('category_page_category_image/height');
     $imgHtml = '<div class="category-image"><img src="'
         . $escaper->escapeUrl($imgUrl)
         . '" alt="'
@@ -41,5 +35,19 @@ if ($imgUrl = $image->getUrl($category)) {
         . ($height ? sprintf('height="%s"', $escaper->escapeHtmlAttr($height)) : '')
         . '"/></div>';
     /* @noEscape */ echo $categoryOutput->categoryAttribute($category, $imgHtml, 'image');
+$width = $block->getVar('category_page_category_image/width', 'Magento_Catalog') ?: 500;
+$height = $block->getVar('category_page_category_image/height', 'Magento_Catalog') ?: 500;
+$imgUrl = $image->getUrl($category);
+
+if (!$imgUrl) {
+    return '';
 }
+
+$imgHtml = '<img'
+    . ' src="' . $escaper->escapeUrl($imgUrl) . '"'
+    . ' alt="' . $escaper->escapeHtmlAttr($category->getName()) . '"'
+    . ($width ? (' width="' . $escaper->escapeHtmlAttr($width) . '"') : '')
+    . ($height ? (' height="' . $escaper->escapeHtmlAttr($height) . '"') : '')
+    . ' loading="eager"'
+    . '>';
 ?>
