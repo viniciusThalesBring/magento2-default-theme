@@ -129,7 +129,6 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
             <a
                 class="product-item-link"
                 href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
-                :id="`slide-desc-<?= $escaper->escapeHtmlAttr($product->getId()) ?>-${$id('slider-id')}`"
             >
                 <?= /* @noEscape */ $productName ?>
             </a>

@@ -164,7 +164,6 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                              role="group"
                              :aria-hidden="<?= (int) $sliderIndex ?> > active && <?= (int) $sliderIndex ?> <= (active + pageSize) ? 'false' : 'true'"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Item %1', $sliderIndex++)) ?>"
-                             :aria-describedby="`slide-desc-<?= $escaper->escapeHtmlAttr($product->getId()) ?>-${$id('slider-id')}`"
                         >
                             <?= /** @noEscape */ $productListItemViewModel->getItemHtmlWithRenderer(
                                 $sliderItemRenderer,
