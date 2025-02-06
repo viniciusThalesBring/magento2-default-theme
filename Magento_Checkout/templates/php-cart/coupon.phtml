@@ -8,6 +8,7 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Checkout\Block\Cart\Coupon;
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
@@ -22,10 +23,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 // We should use strlen function because coupon code could be "0", converted to bool will lead to false
 $hasCouponCode = (bool) strlen($block->getCouponCode() ?: "");
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <script>
     function initCouponForm() {
         return {
+            errors: 0,
+            hasCaptchaToken: 0,
             showCouponForm: <?= $hasCouponCode ? 1 : 0 ?>,
             formData: {
                 coupon_code: '<?= $escaper->escapeJs($block->getCouponCode()) ?>',
@@ -41,6 +45,14 @@ $hasCouponCode = (bool) strlen($block->getCouponCode() ?: "");
                 hyva.getBrowserStorage().setItem('hyva.showCouponForm', this.showCouponForm);
 
                 this.$nextTick(() => this.$refs.couponInput.select());
+            },
+            submitForm() {
+                const $form = document.querySelector('#discount-coupon-form');
+                <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) : '' ?>
+
+                if (this.errors === 0) {
+                    hyva.postCart($form);
+                }
             }
         }
     };
@@ -63,10 +75,12 @@ $hasCouponCode = (bool) strlen($block->getCouponCode() ?: "");
             class="card my-4"
             action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
             method="post"
-            @submit.prevent="hyva.postCart($event.target)"
+            @submit.prevent="submitForm()"
         >
             <?= $block->getBlockHtml('formkey') ?>
-            <input type="hidden" name="remove" id="remove-coupon" value="<?= (int) $hasCouponCode ?>"/>
+            <?php if (!$hasCouponCode): ?>
+                <input type="hidden" name="remove" id="remove-coupon" value="1">
+            <?php endif ?>
             <label for="coupon_code" class="label sr-only">
                 <?= $escaper->escapeHtml(__('Enter discount code')) ?>
             </label>
@@ -95,6 +109,12 @@ $hasCouponCode = (bool) strlen($block->getCouponCode() ?: "");
                     <button type="submit" class="btn btn-primary" value="<?= $escaper->escapeHtmlAttr(__('Cancel Coupon')) ?>">
                         <?= $escaper->escapeHtml(__('Cancel Coupon')) ?>
                     </button>
+                <?php endif; ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) : '' ?>
+                <?php if ($recaptcha && $legalNoticeHtml = $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE)): ?>
+                    <div class="w-full">
+                        <?= $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_COUPON_CODE) ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </form>
