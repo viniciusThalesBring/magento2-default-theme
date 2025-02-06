@@ -58,10 +58,7 @@ $currentPageUrl = $block->getUrl('', ['_current' => true, '_use_rewrite' => true
                         ]
                     ];
                 } ?>
-            <?php
-                $crumbsCount++;
-                endforeach;
-            ?>
+            <?php $crumbsCount++; endforeach ?>
         </ol>
     </div>
 </nav>
