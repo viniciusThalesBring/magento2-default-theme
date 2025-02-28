@@ -8,14 +8,11 @@ use \Magento\CatalogInventory\Block\Stockqty\DefaultStockqty;
 /** @var Escaper $escaper */
 ?>
 <?php if ($block->isMsgVisible()): ?>
-    <div class="my-4">
-        <p class="availability only flex items-center gap-x-2
-                before:w-3 before:h-3 before:rounded-full before:shrink-0 before:bg-orange-500"
-           title="<?= $escaper->escapeHtmlAttr(__('Only %1 left', ($block->getStockQtyLeft()))) ?>"
-        >
-            <span>
-                <?= /* @noEscape */ __('Only %1 left', "<span class='font-bold'>{$escaper->escapeHtml($block->getStockQtyLeft())}</span>") ?>
-            </span>
-        </p>
-    </div>
+    <p class="availability only flex items-center gap-x-2"
+       title="<?= $escaper->escapeHtmlAttr(__('Only %1 left', ($block->getStockQtyLeft()))) ?>"
+    >
+        <span>
+            <?= /* @noEscape */ __('Only %1 left', "<span class='font-bold'>{$escaper->escapeHtml($block->getStockQtyLeft())}</span>") ?>
+        </span>
+    </p>
 <?php endif ?>
