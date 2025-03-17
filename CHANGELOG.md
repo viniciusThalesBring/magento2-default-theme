@@ -7,7 +7,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.11...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.12...main
+
+## [1.3.12] - 2025-03-17
+
+[1.3.12]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.11...1.3.12
+
+### Added
+
+- Nothing added
+
+### Changed
+
+- **Make components shared with Hyvä Checkout CSP compatible**
+    This allows Hyvä Checkout to work out-of-the-box when installed with the non-csp compatible default-theme.
+    For more information, please refer to [issue #1183](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1183).
+
+- **Fix PageBuilder slider renders empty slide if a lazy-loading background image is configured**
+    For more information, please refer to [issue #1145](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1145).
+
+- **Add missing css class to Clear shopping cart button**
+    For more information, please refer to [issue #1175](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1175).
+
+### Removed
+
+- Nothing removed
 
 ## [1.3.11] - 2025-03-06
 
