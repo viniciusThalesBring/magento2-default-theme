@@ -18,9 +18,12 @@ if (count($tierPrices) === 0) {
 ?>
 
 
-<ul class="<?= $escaper->escapeHtmlAttr((
-    $block->hasListClass() ? $block->getListClass() : 'prices-tier items'
-)) ?> mb-4">
+<ul
+    role="list"
+    class="<?= $escaper->escapeHtmlAttr((
+        $block->hasListClass() ? $block->getListClass() : 'prices-tier items'
+    )) ?> mb-4"
+>
     <?php foreach ($tierPrices as $index => $price): ?>
         <li class="item bg-container-lighter p-2 shadow mb-2 border-l-4 border-green-400 mx-1">
             <?php
