@@ -141,7 +141,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 </template>
             </div>
 
-            <button class="p-2 w-full text-sm text-center rounded border border-gray-300 hover:bg-gray-100"
+            <button type="button" class="p-2 w-full text-sm text-center rounded border border-gray-300 hover:bg-gray-100"
                 x-text="labels.currentText"
                 @click.prevent="goToday()"
             ></button>
