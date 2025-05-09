@@ -133,7 +133,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                                 flex items-center justify-center h-8"
                             :class="{
                                 'cursor-pointer hover:bg-gray-100 hover:text-black': canSelectDate(date),
-                                'bg-primary text-white': isToday(date),
+                                'bg-primary text-white': isSelected(date),
                                 'text-gray-500': isInFuture(date)
                             }"
                         ></div>
@@ -261,7 +261,17 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
             goToday() {
                 this.year = this.today.getFullYear();
                 this.month = this.today.getMonth();
+                this.value = this.dateFormatter.format(this.today);
                 this.recalcDaysGrid();
+            },
+
+            isSelected(date) {
+                if (!this.value) return false;
+
+                const d = new Date(this.year, this.month, date);
+                const selected = new Date(this.value);
+
+                return selected.toDateString() === d.toDateString();
             },
 
             isInFuture(date) {
