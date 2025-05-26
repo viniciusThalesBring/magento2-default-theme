@@ -20,36 +20,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - **Mark selected value in calendar, fix today button to also mark day**
-	For more information, please refer to [issue #1178](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1178)
+  For more information, please refer to [issue #1178](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1178)
 
 - **Fix missing type button to calendar button to stop preventing form submit on enter**
-	For more information, please refer to [issue #1179](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1179)
+  For more information, please refer to [issue #1179](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1179)
 
 - **Fix missing title and change icon to be aria-hidden**
-	For more information, please refer to [issue #1197](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1197)
+  For more information, please refer to [issue #1197](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1197)
 
 - **Set message index to remove from the value passed through setHideTimeOut in messages.phtml**
-	For more information, please refer to [issue #1195](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1195)
+  For more information, please refer to [issue #1195](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1195)
 
 - **Fix some incorrect DocBlocks in phtml files and remove some double newlines**
-	For more information, please refer to [merge request #1292](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1292)
+  For more information, please refer to [merge request #1292](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1292)
 
 - **Fix pagination on account review page**
-	For more information, please refer to [merge request #1281](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1281)
+  For more information, please refer to [merge request #1281](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1281)
 
 - **Fix lazy background**
-	For more information, please refer to [issue #1147](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1147)
+  For more information, please refer to [issue #1147](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1147)
 
 - **Fix the wishlist link display in dropdown after disabling the wishlist from the admin**
-	For more information, please refer to [issue #1162](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1162)
+  For more information, please refer to [issue #1162](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1162)
 
 - **Fix Paypal Express not working on product page when in-context checkout is enabled**
-	For more information, please refer to [issue #1099](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1099)
+  For more information, please refer to [issue #1099](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1099)
 
 ### Removed 
 
 - **Remove an unused variable in coupon.phtml**
-    For more information, please refer to [merge request #1272](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1272).
+  For more information, please refer to [merge request #1272](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1272).
 
 ## [1.3.13] - 2025-04-22
 
