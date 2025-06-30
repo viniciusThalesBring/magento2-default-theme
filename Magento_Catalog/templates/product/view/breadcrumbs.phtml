@@ -80,7 +80,7 @@ $product = $currentProductViewModel->exists() ? $currentProductViewModel->get() 
         function getProductCategoryUrl() {
             <?php if ($breadcrumbsViewModel->isCategoryUsedInProductUrl()): ?>
             const productUrl = window.location.href.split('?')[0];
-            return productUrl.substring(0, productUrl.lastIndexOf('/')) + '<?= $escaper->escapeJs($categoryUrlSuffix) ?>';;
+            return productUrl.substring(0, productUrl.lastIndexOf('/')) + '<?= $escaper->escapeJs($categoryUrlSuffix) ?>';
             <?php else: ?>
             return document.referrer.split('?')[0]
             <?php endif; ?>
