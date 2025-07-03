@@ -33,10 +33,11 @@ use Magento\Framework\Escaper;
                         <?php endif; ?>
                     ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php elseif ($crumbInfo['last']): ?>
-                    <span
-                       class="text-slate-600"
-                       aria-current="page"
-                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></span>
+                    <a
+                        href="<?= $escaper->escapeUrl($block->getUrl('', ['_current' => true, '_use_rewrite' => true])) ?>"
+                        class="text-slate-600"
+                        aria-current="page"
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php else: ?>
                     <?= $escaper->escapeHtml($crumbInfo['label']) ?>
                 <?php endif; ?>
