@@ -161,7 +161,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
             >
                 <?= $escaper->escapeHtml(__('Press to skip carousel')) ?>
             </a>
-            <div class="flex-none relative w-full focus-within:ring-2 ring-offset-2 active:ring-0 ring-blue-500/50">
+            <div class="flex-none relative w-full">
                 <div class="relative flex flex-nowrap -mx-1 overflow-auto js_slides snap"
                      @scroll.debounce="calcActive"
                      id="<?= $escaper->escapeHtmlAttr($name) ?>-slider-track"
