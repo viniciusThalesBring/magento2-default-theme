@@ -82,7 +82,7 @@ $hasAssociatedProducts = count($associatedProducts) > 0;
     </div>
 
     <?php foreach ($associatedProducts as $item): ?>
-        <div class="flex flex-wrap border-t border-gray-300 py-2 w-full items-center justify-between gap-2"
+        <div class="sm:flex border-t border-gray-300 py-2 items-center justify-between gap-2"
              <?php foreach ($block->getData('product_data_attributes') ?? [] as $attribute => $include): ?>
                  <?php if ($include): ?>
                      <?php /** Append data-* attributes based on layout XML arguments */ ?>
