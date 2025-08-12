@@ -87,7 +87,8 @@ $currencyViewModel = $viewModels->require(Currency::class);
                     return this.open() ? 'true' : 'false';
                 },
                 switchCurrency() {
-                    hyva.postForm(this.$el.dataset.currencyData)
+                    const data = JSON.parse(this.$el.dataset.currencyData);
+                    hyva.postForm(data);
                 }
             });
         }
