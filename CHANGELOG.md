@@ -59,10 +59,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   For more information, please refer to [issue #1322](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1322)
 
-- **Fix: Correct `for` attribute in `<label>` for customizable options**  
+- **Fix Correct `for` attribute in `<label>` for customizable options**  
   For more information, please refer to [issue #1132](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1132)
 
   Many thanks to Valeriia Prokhina (Perspective Magento Team) for the contribution!
+
+- **Fix CLS in customer login page**  
+  For more information, please refer to [CSP issue #16](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/issues/16)
+
+  Many thanks to Christoph Hendreich (In Session) for the contribution!
 
 ### Removed
 
