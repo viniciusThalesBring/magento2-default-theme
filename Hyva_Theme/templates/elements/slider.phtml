@@ -25,7 +25,7 @@ $title = $block->getTitle() ?: '';
 $headingTag = $block->getHeadingTag() ?: 'h3';
 $cssClasses = $block->getCssClasses() ?: 'my-8';
 $headingCssClasses = $block->getHeadingCssClasses() ?: 'text-2xl font-medium';
-$columnCount = $block->getColumnCount() ?: 1;
+$columnCount = $block->getColumnCount() ?? 1;
 $sliderClasses = implode(' ', array_filter([
     'snap-track',
     $columnCount > 1 ? 'md:[--snap-cols:2]' : '',
