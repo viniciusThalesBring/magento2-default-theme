@@ -36,6 +36,7 @@ use Magento\Framework\View\Element\Template;
             el.appendChild(track);
             el.insertBefore(skipLink, track);
             el.appendChild(skipLinkTarget);
+            el.classList.add('snap-slider');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
