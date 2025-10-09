@@ -23,7 +23,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
-- Nothing removed
+- **Removed the scroll to review function summary short**  
+  For more information, please refer to [issue #814](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/814)
+
+  Many thanks to Ivan Tarkovych (Perspective Magento Team) for the contribution!
 
 ## [1.3.17] - 2025-09-02
 
