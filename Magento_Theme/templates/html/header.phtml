@@ -138,7 +138,8 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     }`"
                 <?php if ($showMiniCart): ?>
                     @click.prevent="() => {
-                        $dispatch('toggle-cart', { isOpen: true })
+                        isCartOpen = !isCartOpen;
+                        $dispatch('toggle-cart', { isOpen: isCartOpen })
                     }"
                     @toggle-cart.window="toggleCart($event)"
                     :aria-expanded="isCartOpen"
