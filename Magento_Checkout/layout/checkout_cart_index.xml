@@ -51,6 +51,7 @@
                                         <block name="shipping" template="Magento_Checkout::php-cart/totals/shipping.phtml"/>
                                         <block name="subtotal" template="Magento_Checkout::php-cart/totals/subtotal.phtml"/>
                                     </block>
+                                    <container name="checkout.cart.totals.scripts"></container>
                                 </container>
 
                                 <block class="Magento\Checkout\Block\Cart" name="checkout.cart.methods.bottom" template="Magento_Checkout::php-cart/methods.phtml">
@@ -77,6 +78,7 @@
                         </block>
                     </container>
 
+                    <block name="checkout-cart-loading" as="loading" template="Hyva_Theme::ui/loading.phtml"/>
                 </container>
 
                 <container name="checkout.cart.noitems" as="no-items">
