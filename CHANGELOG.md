@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   Many thanks to Thomas Hauschild (e3n) for the contribution!
 
+- **Improve way to handle call to null, edge case for Hyva CMS**  
+  For more information, please refer to [merge request #1347](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1347)
+
 ### Removed
 
 - **Removed the scroll to review function summary short**  
