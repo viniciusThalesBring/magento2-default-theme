@@ -6,6 +6,12 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\MagentoMetadata;
+
+/** @var ViewModelRegistry $viewModels */
+$magento = $viewModels->require(MagentoMetadata::class);
+
 /**
  * The AlpineJS scope of this file is the method `initCartTotals()` in Magento_Checkout::php-cart/totals.phtml
  */
@@ -18,8 +24,19 @@
             <div x-text="hyva.formatPrice(segment.value)" class="justify-self-end"></div>
         </div>
         <div :class="wrapperClass" class="text-base">
-            <div x-text="`${segment.title} ${excludingTaxMessage}`" class="font-semibold"></div>
-            <div x-text="hyva.formatPrice(totalsData.grand_total)" class="justify-self-end"></div>
+            <div
+                class="font-semibold"
+                x-html="`${segment.title} ${excludingTaxMessage}`"
+            ></div>
+            <div
+                class="justify-self-end"
+                <?php /* All Mage-OS releases with a version < 2.4.6 match Magento code >= 2.4.6 */ ?>
+                <?php if ($magento->versionCompare('<', '2.4.6') && $magento->getDistributionName() === 'Magento'): ?>
+                x-text="hyva.formatPrice(totalsData.grand_total)"
+                <?php else: ?>
+                x-text="hyva.formatPrice(totalsData.grand_total - totalsData.tax_amount)"
+                <?php endif; ?>
+            ></div>
         </div>
     </div>
 </template>
