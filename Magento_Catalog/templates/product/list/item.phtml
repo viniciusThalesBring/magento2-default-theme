@@ -113,17 +113,20 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
 >
 <?php endif; ?>
     <?php /* Product Image */ ?>
-    <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
-        title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
-        class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:shrink-0' ?>"
-        tabindex="-1"
-    >
-        <?= $block->getImage($product, $imageDisplayArea)
-            ->setTemplate('Magento_Catalog::product/list/image.phtml')
-            ->setData('custom_attributes', $imageCustomAttributes)
-            ->setProductId($productId)
-            ->toHtml(); ?>
-    </a>
+    <?php if ($blockImage = $block->getImage($product, $imageDisplayArea)): ?>
+        <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+            title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
+            class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:shrink-0' ?>"
+            tabindex="-1"
+        >
+            <?= $blockImage
+                ->setTemplate('Magento_Catalog::product/list/image.phtml')
+                ->setData('custom_attributes', $imageCustomAttributes)
+                ->setProductId($productId)
+                ->toHtml();
+            ?>
+        </a>
+    <?php endif; ?>
     <div class="product-info flex flex-col grow <?= $viewIsGrid ? '' : 'md:pl-5 md:w-4/6' ?>">
         <div class="mt-2 mb-1 items-center justify-center font-semibold text-lg text-center <?= $viewIsGrid ? '' : 'md:text-left' ?>">
             <a
@@ -199,8 +202,8 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
             </div>
             <?php endif; ?>
             <div class="flex flex-wrap gap-2">
-                <?php if ($showAddToWishlist): ?>
-                    <?= $block->getChildBlock('wishlist')->setData('product', $product)->toHtml() ?>
+                <?php if ($showAddToWishlist && $blockWishlist = $block->getChildBlock('wishlist')): ?>
+                    <?= $blockWishlist->setData('product', $product)->toHtml() ?>
                 <?php endif; ?>
                 <?php if ($showAddToCompare): ?>
                 <button x-data="initCompareOnProductList()"
