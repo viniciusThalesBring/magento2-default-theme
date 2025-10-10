@@ -50,7 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
 
 - **Replaced GliderJs in PageBuilder Sliders with Hyvä Snap Slider**  
-- For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
+  For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
 
 
 ### Removed
