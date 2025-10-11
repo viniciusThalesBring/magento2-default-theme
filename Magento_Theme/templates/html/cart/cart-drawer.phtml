@@ -32,6 +32,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             cart: {},
             maxItemsToDisplay: <?= (int) $maxItemsToDisplay ?>,
             itemsCount: 0,
+            init() {
+                if (document.prerendering) {
+                    document.addEventListener("prerenderingchange", () => {
+                        this.reloadData()
+                    }, { once: true });
+                }
+            },
             reloadData() {
                 window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
             },
