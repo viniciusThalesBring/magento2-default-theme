@@ -235,7 +235,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 },
                 ['@pageshow.window'](event) {
                     if (event.persisted) {
-                        this.open = false;
+                        this.closeMenu();
                     };
                 }
             }
