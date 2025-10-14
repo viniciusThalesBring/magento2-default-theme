@@ -66,12 +66,14 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
 >
     <div class="container flex flex-wrap lg:flex-nowrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
         <!--Logo-->
-        <?= $block->getChildHtml('logo'); ?>
+        <div class="sm:order-1 lg:order-none w-full pb-2 sm:w-auto sm:pb-0">
+            <?= $block->getChildHtml('logo'); ?>
+        </div>
 
         <!--Main Navigation-->
         <?= $block->getChildHtml('topmenu') ?>
 
-        <div class="flex items-center gap-2 md:gap-1 order-3 md:-mr-1">
+        <div class="flex items-center gap-2 md:gap-1 order-1 lg:order-none md:-mr-1">
             <!--Compare Icon-->
             <a id="compare-link"
                class="relative inline-block rounded p-1 hover:bg-primary/10 outline-offset-2 invisible"

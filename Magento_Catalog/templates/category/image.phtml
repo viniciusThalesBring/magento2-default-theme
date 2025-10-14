@@ -6,6 +6,8 @@
  * See https://hyva.io/license
  */
 
+declare(strict_types=1);
+
 use Magento\Catalog\Block\Category\View;
 use Magento\Catalog\ViewModel\Category\Image;
 use Magento\Catalog\ViewModel\Category\Output;
@@ -13,30 +15,31 @@ use Magento\Framework\Escaper;
 
 /** @var View $block */
 /** @var Escaper $escaper */
-/** @var Image $image */
-/** @var Output $categoryOutput */
 
+/** @var Image $image */
 $image = $block->getImage();
+
+/** @var Output $categoryOutput */
 $categoryOutput = $block->getOutput();
 
-?>
-<?php
 $category = $block->getCurrentCategory();
-$imgHtml  = '';
-if ($imgUrl = $image->getUrl($category)) {
-    $width = $block->getVar('category_page_category_image/width', 'Magento_Catalog');
-    $height = $block->getVar('category_page_category_image/height', 'Magento_Catalog');
-    $imgHtml = '<div class="category-image"><img src="'
-        . $escaper->escapeUrl($imgUrl)
-        . '" alt="'
-        . $escaper->escapeHtmlAttr($category->getName())
-        . '" title="'
-        . $escaper->escapeHtmlAttr($category->getName())
-        . '" class="image" '
-        . ($width ? sprintf('width="%s"', $escaper->escapeHtmlAttr($width)) : '')
-        . ' '
-        . ($height ? sprintf('height="%s"', $escaper->escapeHtmlAttr($height)) : '')
-        . '/></div>';
-    /* @noEscape */ echo $categoryOutput->categoryAttribute($category, $imgHtml, 'image');
+$width = $block->getVar('category_page_category_image/width', 'Magento_Catalog') ?: 500;
+$height = $block->getVar('category_page_category_image/height', 'Magento_Catalog') ?: 500;
+$imgUrl = $image->getUrl($category);
+
+if (!$imgUrl) {
+    return '';
 }
+
+$imgHtml = '<img'
+    . ' src="' . $escaper->escapeUrl($imgUrl) . '"'
+    . ' alt="' . $escaper->escapeHtmlAttr($category->getName()) . '"'
+    . ($width ? (' width="' . $escaper->escapeHtmlAttr($width) . '"') : '')
+    . ($height ? (' height="' . $escaper->escapeHtmlAttr($height) . '"') : '')
+    . ' loading="eager"'
+    . '>';
 ?>
+
+<div class="category-image">
+    <?= /* @noEscape */ $categoryOutput->categoryAttribute($category, $imgHtml, 'image'); ?>
+</div>

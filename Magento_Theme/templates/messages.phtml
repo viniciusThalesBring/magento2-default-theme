@@ -81,6 +81,11 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
                 },
                 ['@clear-messages.window']() {
                     this.messages = [];
+                },
+                ['@pageshow.window'](event) {
+                    if (event.persisted) {
+                        this.messages = [];
+                    };
                 }
             },
             getMessageUiId() {

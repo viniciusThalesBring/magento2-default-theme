@@ -29,8 +29,10 @@ $menuItems = $viewModelNavigation->getNavigation(4);
 $block->setData('cache_tags', $viewModelNavigation->getIdentities());
 
 ?>
-<div x-data="initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>()"
-     class="z-20 order-2 sm:order-1 lg:order-2 navigation hidden lg:flex"
+<div
+    x-data="initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>()"
+    x-bind="eventListeners"
+    class="z-20 navigation hidden lg:flex"
 >
     <!-- desktop -->
     <div x-ref="nav-desktop"
@@ -120,6 +122,13 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     this.hoverPanelActiveId = 0;
                 } else {
                     this.hoverPanelActiveId = menuNode
+                }
+            },
+            eventListeners: {
+                ['@pageshow.window'](event) {
+                    if (event.persisted) {
+                        this.hoverPanelActiveId = null;
+                    };
                 }
             }
         }
