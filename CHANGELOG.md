@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Add checkout.cart.totals.scripts container to cart**  
   For more information, please refer to [issue #1209](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1209)
 
+- **Implement Design Tokens**  
+  For more information, please refer to [issue #1203](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1203)
+
+- **Add support for 'Swatches per Product' config setting**  
+  For more information, please refer to [issue #1211](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1211)
+
+  Many thanks to Andrei Pavlikov (Perspective Magento Team) for the contribution!
+
 ### Changed
 
 - **Simplify cart data handling and improve toggle logic**  
@@ -52,6 +60,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Replaced GliderJs in PageBuilder Sliders with Hyvä Snap Slider**  
   For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
 
+- **Fix and Cleanup Category image template**  
+  For more information, please refer to [merge request #1263](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1263)
+
+- **Improve header layout and customization**  
+  For more information, please refer to [issue #1010](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1010)
+
+- **Update TailwindCSS to v4**  
+  For more information, please refer to [issue #1167](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1167)
+
+- **Add support for the native HTML input date in the DOB Widget**  
+  For more information, please refer to [merge request #1152](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1152)
 
 ### Removed
 
