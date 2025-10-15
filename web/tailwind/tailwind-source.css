@@ -1,3 +1,15 @@
+/**
+ * Welcome to your Hyvä Theme!
+ *
+ * If you're new to TailwindCSS, get started with the official documentation:
+ * https://tailwindcss.com/
+ *
+ * For Hyvä-specific topics like CSS merging from modules or using design tokens,
+ * refer to the Hyvä Themes documentation:
+ * https://docs.hyva.io/hyva-themes/working-with-tailwindcss/index.html
+ */
+
+@import "@hyva-themes/hyva-modules/css";
 @import "tailwindcss" source(none);
 @source "../../**/*.phtml";
 @source "../../**/*.xml";
@@ -13,11 +25,6 @@
 @import "./generated/hyva-tokens.css";
 
 @theme {
-    --color-bg: var(--color-slate-50);
-    --color-text: var(--color-slate-950);
-    --color-text-secondary: var(--color-slate-600);
-    --color-surface: var(--color-white);
-
     /* @deprecated Will be removed in favor for named variables, in the future */
     --color-container-lighter: #f5f5f5;
     --color-container: #e7e7e7;
