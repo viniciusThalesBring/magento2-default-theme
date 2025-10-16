@@ -28,7 +28,7 @@
         max-width: 100% !important;
     }
 
-    /* Optionaly hide the header and footer, depends on your design an prefrence */
+    /* Optionally hide the header and footer, depends on your design an preference */
     /* :is(.page-header, .page-footer) {
         display: none !important;
     } */
