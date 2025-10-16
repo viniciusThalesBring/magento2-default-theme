@@ -8,7 +8,7 @@
 
     :root {
         scrollbar-color: var(--scrollthumb-color, var(--color-primary))
-            var(--scrolltrack-color, transparent);
+            var(--scrolltrack-color, #0000);
         accent-color: var(--color-primary);
         caret-color: var(--color-primary);
         interpolate-size: allow-keywords;
