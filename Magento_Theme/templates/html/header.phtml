@@ -78,7 +78,7 @@ $showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishl
 <?php $hyvaCsp->registerInlineScript() ?>
 
 <div id="header"
-     class="relative z-30 w-full border-b shadow bg-container-lighter border-container-lighter"
+     class="relative z-30 w-full border-b shadow bg-white border-gray-100"
      x-data="initHeader()"
      @private-content-loaded.window="getData(event.detail.data)"
 >
@@ -154,7 +154,7 @@ $showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishl
 
     <div
         id="search-content"
-        class="absolute z-10 w-full border-t shadow-sm bg-container-lighter border-container-lighter"
+        class="absolute z-10 w-full border-t shadow-sm bg-white border-gray-100"
         x-cloak
         x-show="searchOpen"
         @click.outside="searchClose"
