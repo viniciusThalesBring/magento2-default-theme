@@ -91,27 +91,24 @@ mutation createProductReviewMutation(
                         </span>
                     </legend>
                     <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
-                        <fieldset name="rating-group">
+                        <div name="rating-group">
                             <div class="flex flex-col mt-4 mb-3">
                                 <div class="text-md <?php if ($block->getRatings()->getSize() <= 1): ?>hidden<?php endif ?>">
                                     <?= $escaper->escapeHtml(__('Your Rating')) ?>:
                                 </div>
-                                <div class="mt-4">
+                                <div>
                                     <div id="product-review-table">
                                         <?php foreach ($block->getRatings() as $rating): ?>
-                                            <div class="table-row">
-                                                <label
-                                                    class="table-cell pr-6 align-middle text-left"
-                                                    id="<?= $escaper->escapeHtmlAttr($rating->getRatingCode()) ?>_rating_label"
-                                                >
-                                                    <span>
+                                            <fieldset class="flex flex-col md:flex-row gap-y-2 gap-x-4 md:items-center mb-2">
+                                                <div>
+                                                    <legend class="inline-block my-0">
                                                         <?php if ($block->getRatings()->getSize() <= 1): ?>
                                                             <?= $escaper->escapeHtml(__('Your Rating')) ?>:
                                                         <?php else: ?>
                                                             <?= $escaper->escapeHtml($rating->getRatingCode()) ?>
                                                         <?php endif ?>
-                                                    </span>
-                                                </label>
+                                                    </legend>
+                                                </div>
                                                 <div
                                                     class="rating-summary grow-0 has-[:focus-visible]:outline-2 outline-primary"
                                                     x-data="{ clickedRatingId: 0 }"
@@ -126,18 +123,16 @@ mutation createProductReviewMutation(
                                                             <label
                                                                 class="rating-<?= (int)$iterator ?> m-0 text-current"
                                                                 for="<?= $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>"
-                                                                id="<?= $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>_label"
                                                             >
                                                                 <?= $lucideIcons->starHtml('', 24, 24, [
                                                                     'aria-hidden' => 'true',
                                                                     ':class' => (int)$iterator . "<= clickedRatingId ? 'fill-current' : ''"
                                                                 ]); ?>
                                                                 <input
-                                                                    class="absolute inset-0 opacity-0"
+                                                                    name="ratings[<?= $escaper->escapeHtmlAttr($rating->getId()) ?>]"
+                                                                    class="absolute inset-0 size-full opacity-0 cursor-pointer"
                                                                     type="radio"
                                                                     <?php if ($iterator === 1): ?>required<?php endif; ?>
-                                                                    name="ratings[<?= $escaper->escapeHtmlAttr($rating->getId()) ?>]"
-                                                                    id="<?= $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>"
                                                                     value="<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
                                                                     <?php if ($iterator === 1): ?>
                                                                     aria-label="<?= $escaper->escapeHtmlAttr(__('1 star')) ?>"
@@ -151,13 +146,13 @@ mutation createProductReviewMutation(
                                                         <?php $iterator++; ?>
                                                     <?php endforeach; ?>
                                                 </div>
-                                            </div>
+                                            </fieldset>
                                         <?php endforeach; ?>
                                     </div>
                                     <input type="hidden" name="validate_rating" value="">
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
                     <?php endif ?>
                     <div>
                         <div>
