@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Add AlpineJs based HTML Dialog to the Header Mobile Menu and Minicart**
   For more information, please refer to [merge request #1358](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1358)
 
+- **Add view-transitions to the theme as a stable feature**
+  For more information, please refer to [merge request #1360](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1360)
+
 ### Changed
 
 - **Simplify cart data handling and improve toggle logic**  
