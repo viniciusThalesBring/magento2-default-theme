@@ -112,8 +112,6 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
             },
             setActiveMenu() {
                 Array.from(this.$root.querySelectorAll('a')).forEach(link => {
-                    console.log(link.href === `${window.location.origin}${window.location.pathname}`);
-
                     if (link.href === `${window.location.origin}${window.location.pathname}`) {
                         link.setAttribute('aria-current', 'page');
                     }
