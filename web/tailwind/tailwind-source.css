@@ -1,11 +1,16 @@
 /**
  * Welcome to your Hyvä Theme!
  *
+ * This is the main entry file for your theme's CSS, processed by Tailwind CSS.
+ *
  * If you're new to TailwindCSS, get started with the official documentation:
  * https://tailwindcss.com/
  *
- * For Hyvä-specific topics like CSS merging from modules or using design tokens,
- * refer to the Hyvä Themes documentation:
+ * To learn about creating a Hyvä Theme, check out the build guide:
+ * https://docs.hyva.io/hyva-themes/building-your-theme/index.html
+ *
+ * For Hyvä-specific topics, such as merging module CSS or using design tokens,
+ * please refer to the documentation:
  * https://docs.hyva.io/hyva-themes/working-with-tailwindcss/index.html
  */
 
