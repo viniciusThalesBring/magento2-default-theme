@@ -4,7 +4,7 @@
 }
 
 @layer components {
-    :where(body:not(.product-main-full-width, .page-main-full-width)) {
+    :where(main:not(.product-main-full-width, .page-main-full-width)) {
         & .columns {
             @apply container;
         }
