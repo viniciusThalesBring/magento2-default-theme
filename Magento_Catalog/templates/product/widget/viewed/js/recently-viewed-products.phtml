@@ -14,7 +14,6 @@ use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\RecentlyViewedProducts;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\StoreConfig;
-use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -44,11 +43,6 @@ $recentlyViewed = $viewModels->require(RecentlyViewedProducts::class);
 
 $currentProduct    = $viewModelProducts->getProduct();
 $currentProductSku = $currentProduct ? $currentProduct->getSku() : '';
-
-/** @var Image $productImage */
-$productImage = $currentProduct
-    ? $viewModelProducts->getImage($currentProduct, 'category_page_grid')
-    : null;
 
 /** @var Store $viewModelStore */
 $viewModelStore = $viewModels->require(Store::class);
