@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\RecentlyViewedProducts;
@@ -55,15 +56,13 @@ $viewModelCurrency = $viewModels->require(Currency::class);
 
 ?>
 <script>
-
-    function initRecentlyViewedProductsComponent<?= /** @noEscape */ $uniqueId ?>(options) {
-
         const defaultOptions = {
             isSlider: false,
             useGraphQL: <?= /** @noEscape */ $recentlyViewed->isFetchRecentlyViewedEnabled() ? 'true' : 'false' ?>,
             noOfProductsToShow: <?= (int) $storeConfig->getStoreConfig('catalog/recently_products/viewed_count') ?>
         };
         const config = Object.assign({}, defaultOptions, options || {});
+    function initRecentlyViewedProductsComponent() {
 
         function readRecentlyViewedFromStorage () {
             const data = hyva.getBrowserStorage().getItem('recently_viewed_products');
@@ -285,4 +284,8 @@ $viewModelCurrency = $viewModels->require(Currency::class);
         }
     }
 
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initRecentlyViewedProductsComponent', initRecentlyViewedProductsComponent);
+    }, { once: true })
 </script>
+<?php $hyvaCsp->registerInlineScript() ?>
