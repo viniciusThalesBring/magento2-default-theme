@@ -293,8 +293,6 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                                                value="<?= $escaper->escapeHtmlAttr($block
                                                    ->getFormData()
                                                    ->getStreet($i - 1)) ?>"
-                                               title="<?= $escaper
-                                                   ->escapeHtmlAttr(__('Street Address %1', $i)) ?>"
                                                id="street_<?= (int) $i ?>"
                                                class="form-input <?= $escaper
                                                    ->escapeHtmlAttr($streetValidationClass) ?>"
