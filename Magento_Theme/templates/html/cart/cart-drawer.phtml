@@ -41,7 +41,9 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
             init() {
                 if (document.prerendering) {
                     document.addEventListener("prerenderingchange", () => {
-                        this.reloadData()
+                        window.dispatchEvent(
+                            new CustomEvent('reload-customer-section-data')
+                        );
                     }, { once: true });
                 }
             },
